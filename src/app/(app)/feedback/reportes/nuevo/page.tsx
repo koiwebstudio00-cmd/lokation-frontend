@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ReporteForm } from "@/components/feedback/reporte-form";
 
-export const metadata = { title: "Reportar un error — Lamelas & Chaumont" };
+export const metadata = { title: "Reportar un error — Ubikka" };
 
 export default function NuevoReportePage() {
   return (

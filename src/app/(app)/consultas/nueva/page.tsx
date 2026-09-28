@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { NewLeadForm } from "@/components/leads/new-lead-form";
 import { getPropiedadesParaSelect } from "@/lib/queries";
 
-export const metadata = { title: "Cargar consulta — Lamelas & Chaumont" };
+export const metadata = { title: "Cargar consulta — Ubikka" };
 
 export default async function NuevaConsultaPage() {
   const propiedades = await getPropiedadesParaSelect();

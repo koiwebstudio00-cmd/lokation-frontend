@@ -23,7 +23,7 @@ import {
   type AnalyticsFilters as Filters,
 } from "@/lib/queries";
 
-export const metadata = { title: "Analíticas — Lamelas & Chaumont" };
+export const metadata = { title: "Analíticas — Ubikka" };
 
 type Params = Record<string, string | undefined>;
 
@@ -166,11 +166,11 @@ function Overview({ kpis }: { kpis: Awaited<ReturnType<typeof getAnalyticsOvervi
 
       <div className="grid gap-5 lg:grid-cols-2">
         <AnalyticsSection
-          title="Sofía y derivaciones"
+          title="Agente y derivaciones"
           description="Conversaciones atendidas por el agente y transferidas al equipo."
         >
           <div className="grid gap-3 sm:grid-cols-2">
-            <AnalyticsMetric label="Conversaciones de Sofía" value={kpis.sofia_conversations} detail="Iniciadas dentro del período" icon={Bot} />
+            <AnalyticsMetric label="Conversaciones del agente" value={kpis.sofia_conversations} detail="Iniciadas dentro del período" icon={Bot} />
             <AnalyticsMetric label="Derivadas al equipo" value={kpis.handed_off_conversations} detail={`${kpis.handoff_rate}% de las conversaciones`} icon={ContactRound} />
           </div>
         </AnalyticsSection>

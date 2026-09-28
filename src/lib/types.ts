@@ -1,5 +1,5 @@
 // Modelo que consumen los componentes del panel, en snake_case.
-// La API (back-lamelas) habla camelCase: la traducción vive en src/lib/queries.ts
+// La API de Ubikka habla camelCase: la traducción vive en src/lib/queries.ts
 // y ningún componente conoce el formato de la API.
 
 export type Operacion = "venta" | "alquiler" | "ambos";

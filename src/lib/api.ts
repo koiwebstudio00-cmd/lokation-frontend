@@ -1,5 +1,5 @@
 /**
- * Transporte hacia back-lamelas.
+ * Transporte hacia el backend de Ubikka.
  *
  * El navegador nunca habla con la API: siempre pasa por el servidor de Next,
  * que reenvía las cookies de sesión del usuario. Todo lo de este archivo corre

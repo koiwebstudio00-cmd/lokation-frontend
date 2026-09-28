@@ -13,7 +13,7 @@ import {
 import { getApiKeys, getApiKeyScopes } from "@/lib/queries";
 import { formatDate } from "@/lib/utils";
 
-export const metadata = { title: "Configuración — Lamelas & Chaumont" };
+export const metadata = { title: "Configuración — Ubikka" };
 
 export default async function ConfiguracionPage() {
   const [keys, scopes] = await Promise.all([getApiKeys(), getApiKeyScopes()]);

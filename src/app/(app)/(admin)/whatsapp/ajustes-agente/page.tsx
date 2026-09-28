@@ -1,7 +1,7 @@
 import { AgentSettingsPanel } from "@/components/whatsapp/agent-settings-panel";
 import { getChannels, getFollowupSettings } from "@/lib/queries";
 
-export const metadata = { title: "Ajustes del agente — Lamelas & Chaumont" };
+export const metadata = { title: "Ajustes del agente — Ubikka" };
 
 export default async function AgentSettingsPage() {
   const [settings, channels] = await Promise.all([
@@ -15,7 +15,7 @@ export default async function AgentSettingsPage() {
       <div>
         <h1 className="text-2xl font-semibold">Ajustes del agente</h1>
         <p className="text-sm text-muted-foreground">
-          Estado, seguimientos y capacidades de Sofi para las conversaciones de WhatsApp.
+          Estado, seguimientos y capacidades del agente para las conversaciones de WhatsApp.
         </p>
       </div>
 

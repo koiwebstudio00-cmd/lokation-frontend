@@ -143,11 +143,13 @@ export function AppNav({
   nombre,
   email,
   rol,
+  tenantNombre,
   consultasSinTomar,
 }: {
   nombre: string;
   email: string;
   rol: Rol;
+  tenantNombre: string;
   consultasSinTomar: number;
 }) {
   const pathname = usePathname();
@@ -172,9 +174,9 @@ export function AppNav({
             >
               <Link href="/" prefetch={false} onClick={alNavegar}>
                 <Logo className="shrink-0" />
-                <span className="flex flex-col font-semibold leading-tight">
-                  <span>Lamelas &amp;</span>
-                  <span>Chaumont</span>
+                <span className="min-w-0 font-semibold leading-tight">
+                  <span className="block truncate">{tenantNombre}</span>
+                  <span className="block text-xs font-normal text-muted-foreground">Ubikka</span>
                 </span>
               </Link>
             </SidebarMenuButton>

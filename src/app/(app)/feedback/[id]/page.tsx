@@ -13,7 +13,7 @@ import { esAdmin } from "@/lib/permisos";
 import { getFeedbackItem } from "@/lib/queries";
 import { formatDateTime } from "@/lib/utils";
 
-export const metadata = { title: "Feedback — Lamelas & Chaumont" };
+export const metadata = { title: "Feedback — Ubikka" };
 
 export default async function FeedbackDetallePage({
   params,

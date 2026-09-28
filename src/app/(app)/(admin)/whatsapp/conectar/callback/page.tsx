@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { completarConexion } from "@/actions/channels";
 import type { ChannelCanal } from "@/lib/types";
 
-export const metadata = { title: "Conectando… — Lamelas & Chaumont" };
+export const metadata = { title: "Conectando… — Ubikka" };
 
 /**
  * Adonde vuelve el usuario después de autorizar en Meta. No lee la identidad de

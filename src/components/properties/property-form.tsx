@@ -604,7 +604,7 @@ export function PropertyForm({
             />
           </Field>
           <p className="text-xs text-muted-foreground">
-            Sofi (el asistente) puede compartir estos requisitos con quien consulte por el alquiler.
+            El agente de IA puede compartir estos requisitos con quien consulte por el alquiler.
           </p>
         </CardContent>
       </Card>

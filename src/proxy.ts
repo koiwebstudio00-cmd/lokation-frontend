@@ -32,7 +32,7 @@ async function renew(refreshToken: string): Promise<ParsedCookie[]> {
   }
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname, searchParams } = request.nextUrl;
 
   // El refresh rota el token: si dos requests renuevan a la vez, el segundo

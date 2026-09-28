@@ -1,7 +1,7 @@
 import { createProperty } from "@/actions/properties";
 import { PropertyForm } from "@/components/properties/property-form";
 
-export const metadata = { title: "Nueva propiedad — Lamelas & Chaumont" };
+export const metadata = { title: "Nueva propiedad — Ubikka" };
 
 export default function NuevaPropiedadPage() {
   return (

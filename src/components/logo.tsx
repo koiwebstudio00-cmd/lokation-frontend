@@ -1,20 +1,15 @@
 import { cn } from "@/lib/utils";
 
-// Isotipo Lamelas: edificio isométrico verde (aproximación SVG del logo).
+// Marca provisional de Ubikka hasta definir el sistema visual del producto.
 export function Logo({ className }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 100 100"
       className={cn("size-8 text-primary", className)}
       fill="currentColor"
-      aria-label="Lamelas & Chaumont"
+      aria-label="Ubikka"
     >
-      <path d="M50 92 8 71l14-7 28 14 28-14 14 7L50 92zm0-6.5L86 71 50 53 14 71l36 14.5z" />
-      <rect x="30" y="36" width="6" height="34" />
-      <rect x="40" y="28" width="6" height="40" />
-      <rect x="48" y="20" width="7" height="52" />
-      <rect x="59" y="28" width="6" height="40" />
-      <rect x="69" y="36" width="6" height="34" />
+      <path d="M15 17h18v47c0 12 7 19 17 19s17-7 17-19V17h18v48c0 22-14 35-35 35S15 87 15 65V17Z" />
     </svg>
   );
 }

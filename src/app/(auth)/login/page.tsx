@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { Label } from "@/components/ui/label";
 
-export const metadata = { title: "Iniciar sesión — Lamelas & Chaumont" };
+export const metadata = { title: "Iniciar sesión — Ubikka" };
 
 export default async function LoginPage({
   searchParams,

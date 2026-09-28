@@ -19,7 +19,7 @@ import { getClienteMock, type ClientePropiedad } from "@/lib/clientes-mock";
 import { formatDate, formatPrice, waLink } from "@/lib/utils";
 import { TIPOS } from "@/lib/types";
 
-export const metadata = { title: "Detalle de cliente — Lamelas & Chaumont" };
+export const metadata = { title: "Detalle de cliente — Ubikka" };
 
 const OPERACION_LABEL = {
   venta: "Venta",

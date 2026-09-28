@@ -14,7 +14,7 @@ import {
 import { CLIENTES_EJEMPLO } from "@/lib/clientes-mock";
 import { formatDate } from "@/lib/utils";
 
-export const metadata = { title: "Clientes — Lamelas & Chaumont" };
+export const metadata = { title: "Clientes — Ubikka" };
 
 export default function ClientesPage() {
   const clientes = CLIENTES_EJEMPLO;

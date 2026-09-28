@@ -10,7 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import type { Rol } from "@/lib/types";
 import { getPerfil } from "@/lib/queries";
 
-export const metadata = { title: "Mi perfil — Lamelas & Chaumont" };
+export const metadata = { title: "Mi perfil — Ubikka" };
 
 const ROL_LABEL: Record<Rol, string> = {
   super_admin: "Soporte",

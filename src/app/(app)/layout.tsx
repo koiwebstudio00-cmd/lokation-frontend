@@ -26,6 +26,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         nombre={me.nombre}
         email={me.email}
         rol={me.rol}
+        tenantNombre={me.tenant?.nombre ?? "Ubikka"}
         consultasSinTomar={consultasSinTomar}
       />
       <SidebarInset className="bg-secondary">

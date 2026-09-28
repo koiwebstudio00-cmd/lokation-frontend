@@ -29,7 +29,7 @@ import { formatDateTime, formatPrice, imageUrl } from "@/lib/utils";
 import type { PropertyCardData } from "@/components/properties/property-card";
 import type { Lead, Operacion } from "@/lib/types";
 
-export const metadata = { title: "Inicio — Lamelas & Chaumont" };
+export const metadata = { title: "Inicio — Ubikka" };
 
 const ESTADO_CARDS = [
   {

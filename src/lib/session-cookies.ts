@@ -1,5 +1,5 @@
 /**
- * Cookies de sesión que emite back-lamelas.
+ * Cookies de sesión que emite el backend de Ubikka.
  *
  * Vive separado de `lib/api.ts` porque el middleware corre en el runtime edge y
  * no puede importar `next/headers`.

@@ -18,7 +18,7 @@ import { getCurrentUser } from "@/lib/api";
 import { getConversacionDeLead, getLead, getVendedores } from "@/lib/queries";
 import { formatDateTime, waLink } from "@/lib/utils";
 
-export const metadata = { title: "Consulta — Lamelas & Chaumont" };
+export const metadata = { title: "Consulta — Ubikka" };
 
 export default async function ConsultaPage({
   params,

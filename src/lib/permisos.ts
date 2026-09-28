@@ -9,5 +9,5 @@ import type { Rol } from "@/lib/types";
  * por ruta). Acá decidimos qué mostrar y a dónde redirigir.
  */
 export function esAdmin(rol: Rol) {
-  return rol === "admin" || rol === "super_admin";
+  return rol === "admin";
 }

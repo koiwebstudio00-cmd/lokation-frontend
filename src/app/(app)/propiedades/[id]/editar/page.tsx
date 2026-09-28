@@ -5,7 +5,7 @@ import { PhotoManager } from "@/components/properties/photo-manager";
 import { getCurrentUser } from "@/lib/api";
 import { getProperty } from "@/lib/queries";
 
-export const metadata = { title: "Editar propiedad — Lamelas & Chaumont" };
+export const metadata = { title: "Editar propiedad — Ubikka" };
 
 export default async function EditarPropiedadPage({
   params,
