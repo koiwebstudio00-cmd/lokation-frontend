@@ -32,6 +32,9 @@ export async function enviarMensajeAgente(input: {
   nombre?: string;
   mensaje: string;
 }): Promise<RespuestaAgente> {
+  if (process.env.NODE_ENV === "production") {
+    return { error: "El agente de Ubikka está en preparación. Las pruebas estarán disponibles cuando se migre a código." };
+  }
   if (!WEBHOOK_URL) {
     return {
       error:

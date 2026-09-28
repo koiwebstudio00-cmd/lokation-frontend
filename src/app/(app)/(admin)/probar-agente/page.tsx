@@ -4,6 +4,17 @@ import { getConversacionesPrueba } from "@/lib/queries";
 export const metadata = { title: "Probar agente — Ubikka" };
 
 export default async function ProbarAgentePage() {
+  if (process.env.NODE_ENV === "production") {
+    return (
+      <div className="max-w-2xl space-y-3">
+        <h1 className="text-2xl font-semibold">Probar agente</h1>
+        <p className="text-sm text-muted-foreground">
+          El agente de Ubikka está en preparación. El probador estará disponible
+          cuando la ejecución se migre a código y pueda configurarse por inmobiliaria.
+        </p>
+      </div>
+    );
+  }
   const conversaciones = await getConversacionesPrueba();
 
   return (
