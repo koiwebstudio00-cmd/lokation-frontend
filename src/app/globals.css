@@ -1,0 +1,169 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171d19;
+  --card: #ffffff;
+  --card-foreground: #171d19;
+  --popover: #ffffff;
+  --popover-foreground: #171d19;
+  --primary: #0e9145;
+  --primary-foreground: #ffffff;
+  --primary-hover: #12a853;
+  --primary-active: #0b7438;
+  --secondary: #f7f8f7;
+  --secondary-foreground: #171d19;
+  --muted: #f7f8f7;
+  --muted-foreground: #6b7570;
+  --accent: #ebf7ef;
+  --accent-foreground: #07481f;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --warning: #d97706;
+  --info: #2563eb;
+  --border: #e4e7e4;
+  --input: #e4e7e4;
+  --ring: #0e9145;
+  --radius: 0rem; /* bordes rectos en toda la UI (design-system.md §5) */
+
+  /* badges de estado de propiedad */
+  --estado-disponible-bg: #d2eedd;
+  --estado-disponible-fg: #07481f;
+  --estado-reservada-bg: #fef3c7;
+  --estado-reservada-fg: #92400e;
+  --estado-vendida-bg: #dbeafe;
+  --estado-vendida-fg: #1e40af;
+
+  /* badges de estado de consulta (CRM) */
+  --lead-nueva-bg: #dbeafe;
+  --lead-nueva-fg: #1e40af;
+  --lead-contacto-bg: #fef3c7;
+  --lead-contacto-fg: #92400e;
+  --lead-ganada-bg: #d2eedd;
+  --lead-ganada-fg: #07481f;
+  --lead-perdida-bg: #f1f2f1;
+  --lead-perdida-fg: #4b524e;
+
+  /* barra lateral (componente `sidebar` de shadcn).
+     Blanca como estaba antes, con el contenido en `secondary` al lado, para
+     que las Card sigan destacando. El item activo usa el verde suave `accent`. */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #171d19;
+  --sidebar-primary: #0e9145;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #ebf7ef;
+  --sidebar-accent-foreground: #07481f;
+  --sidebar-border: #e4e7e4;
+  --sidebar-ring: #0e9145;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-active: var(--primary-active);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --radius-none: 0;
+
+  /* El design-system (§5) pide bordes rectos en toda la UI, pero el codigo
+     del registro de shadcn viene lleno de `rounded-md`. En vez de editar los
+     componentes uno por uno, dejamos la escala de radios en cero: cualquier
+     `rounded-*` queda recto. Para volver a las esquinas redondeadas, borrar
+     este bloque. */
+  --radius-xs: 0;
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-2xl: 0;
+  --radius-3xl: 0;
+
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+}
+
+* {
+  border-color: var(--border);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+/* Animaciones del cajón lateral en movil. Son las unicas que usa `sheet.tsx`;
+   están acá para no depender de `tw-animate-css`. Tienen que ser animaciones
+   (no transiciones) porque Radix espera el `animationend` para desmontar. */
+@keyframes fundido-entra {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes fundido-sale {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+@keyframes cajon-entra-izq {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+@keyframes cajon-sale-izq {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+@keyframes cajon-entra-der {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+@keyframes cajon-sale-der {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+@keyframes cajon-entra-arriba {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+@keyframes cajon-sale-arriba {
+  from { transform: translateY(0); }
+  to { transform: translateY(-100%); }
+}
+@keyframes cajon-entra-abajo {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+@keyframes cajon-sale-abajo {
+  from { transform: translateY(0); }
+  to { transform: translateY(-100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="sheet-content"],
+  [data-slot="sheet-overlay"] {
+    animation-duration: 1ms !important;
+  }
+}
