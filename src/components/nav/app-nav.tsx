@@ -10,6 +10,7 @@ import {
   Home,
   Inbox,
   KeyRound,
+  Globe2,
   Megaphone,
   Users,
 } from "lucide-react";
@@ -114,6 +115,7 @@ const ITEMS: Item[] = [
   },
   { href: "/clientes", label: "Clientes", icon: HeartHandshake, soloAdmin: true, subs: [] },
   { href: "/equipo", label: "Equipo", icon: Users, soloAdmin: true, subs: [] },
+  { href: "/mi-sitio", label: "Mi sitio web", icon: Globe2, soloAdmin: true, subs: [] },
   {
     href: "/configuracion",
     label: "Configuración",
