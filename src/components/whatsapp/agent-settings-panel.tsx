@@ -46,7 +46,7 @@ const TOOLS = [
   {
     name: "Buscar propiedades",
     icon: Search,
-    description: "Busca opciones reales aplicando operación, tipo, zona, presupuesto y características."
+    description: "Busca opciones reales aplicando operación, tipo, zona y presupuesto confirmado."
   },
   {
     name: "Identificar propiedad",
@@ -64,10 +64,6 @@ const TOOLS = [
     description: "Asigna la conversación a un vendedor y le entrega el contexto reunido por el agente."
   }
 ];
-
-function ReadOnlyBadge() {
-  return <Badge variant="secondary">Solo lectura</Badge>;
-}
 
 export function AgentSettingsPanel({
   settings,
@@ -225,12 +221,12 @@ export function AgentSettingsPanel({
           >
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
-                <h3 className="font-semibold">Herramientas previstas</h3>
+                <h3 className="font-semibold">Herramientas del nuevo motor</h3>
                 <p className="text-sm text-muted-foreground">
-                  Funciones que se conectarán al nuevo motor durante la migración.
+                  Las consultas de propiedades están disponibles para pruebas. La derivación y la activación general siguen pendientes.
                 </p>
               </div>
-              <ReadOnlyBadge />
+              <Badge variant="secondary">En desarrollo</Badge>
             </div>
             <div className="divide-y border">
               {TOOLS.map((tool) => (
