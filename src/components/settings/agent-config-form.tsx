@@ -14,11 +14,11 @@ export function AgentConfigForm({ config }: { config: FollowupSettings["agentCon
   return (
     <form action={formAction} className="space-y-5">
       <div className="space-y-2">
-        <Label htmlFor="agent-model">Modelo</Label>
+        <Label htmlFor="agent-model">Modelo de OpenAI</Label>
         <Input id="agent-model" name="model" defaultValue={config?.model ?? ""}
-          placeholder="proveedor/modelo" maxLength={120} required />
+          placeholder="gpt-5-mini" maxLength={120} required />
         <p className="text-xs text-muted-foreground">
-          Identificador del modelo disponible en la cuenta de IA de la plataforma.
+          Usá un identificador habilitado en la cuenta OpenAI de la plataforma, sin prefijo de proveedor.
         </p>
       </div>
       <div className="space-y-2">

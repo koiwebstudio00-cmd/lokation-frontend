@@ -80,7 +80,7 @@ export async function saveAgentConfig(
 ): Promise<FollowupSettingsState> {
   if (!(await onlyAdmin())) return { error: "No tenés permiso para hacer esto." };
   const parsed = z.object({
-    model: z.string().trim().regex(/^[a-z0-9][a-z0-9._-]*\/[a-zA-Z0-9._-]+$/, "Ingresá un identificador de modelo válido."),
+    model: z.string().trim().regex(/^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,119}$/, "Ingresá un identificador de modelo OpenAI válido."),
     instructions: z.string().trim().min(20, "Escribí al menos 20 caracteres de instrucciones.").max(6000)
   }).safeParse({ model: formData.get("model"), instructions: formData.get("instructions") });
   if (!parsed.success) return { error: parsed.error.issues[0]?.message };
