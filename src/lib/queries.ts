@@ -700,6 +700,7 @@ export async function getApiKeyScopes(): Promise<ScopeOption[]> {
 
 export interface FollowupSettings {
   agentEnabled: boolean;
+  agentConfig: { model: string; instructions: string } | null;
   enabled: boolean;
   firstMessage: string;
   secondMessage: string;
@@ -709,6 +710,7 @@ export async function getFollowupSettings(): Promise<FollowupSettings> {
   const { tenant } = await apiFetch<{
     tenant: {
       agentEnabled: boolean;
+      agentConfig: { model: string; instructions: string } | null;
       followupEnabled: boolean;
       followupFirstMessage: string;
       followupSecondMessage: string;
@@ -716,6 +718,7 @@ export async function getFollowupSettings(): Promise<FollowupSettings> {
   }>("/v1/tenants/current");
   return {
     agentEnabled: tenant.agentEnabled,
+    agentConfig: tenant.agentConfig,
     enabled: tenant.followupEnabled,
     firstMessage: tenant.followupFirstMessage,
     secondMessage: tenant.followupSecondMessage

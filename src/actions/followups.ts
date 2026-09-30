@@ -73,3 +73,24 @@ export async function setAgentEnabled(enabled: boolean): Promise<string | null> 
       : "No pudimos cambiar el estado del agente. Intentá de nuevo.";
   }
 }
+
+export async function saveAgentConfig(
+  _previous: FollowupSettingsState,
+  formData: FormData
+): Promise<FollowupSettingsState> {
+  if (!(await onlyAdmin())) return { error: "No tenés permiso para hacer esto." };
+  const parsed = z.object({
+    model: z.string().trim().regex(/^[a-z0-9][a-z0-9._-]*\/[a-zA-Z0-9._-]+$/, "Ingresá un identificador de modelo válido."),
+    instructions: z.string().trim().min(20, "Escribí al menos 20 caracteres de instrucciones.").max(6000)
+  }).safeParse({ model: formData.get("model"), instructions: formData.get("instructions") });
+  if (!parsed.success) return { error: parsed.error.issues[0]?.message };
+  try {
+    await apiFetch("/v1/tenants/current", {
+      method: "PATCH", body: { agent_config: parsed.data }
+    });
+    revalidatePath("/whatsapp/ajustes-agente");
+    return { success: "Configuración del agente guardada." };
+  } catch (error) {
+    return { error: error instanceof ApiError ? error.message : "No pudimos guardar la configuración." };
+  }
+}

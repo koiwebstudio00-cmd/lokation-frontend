@@ -9,7 +9,6 @@ import {
   CirclePlay,
   ExternalLink,
   Handshake,
-  ListChecks,
   MessageSquareText,
   Search,
   Settings2,
@@ -18,6 +17,7 @@ import {
 import { toast } from "sonner";
 import { setAgentEnabled } from "@/actions/followups";
 import { FollowupSettingsForm } from "@/components/settings/followup-settings-form";
+import { AgentConfigForm } from "@/components/settings/agent-config-form";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -40,25 +40,6 @@ const TABS: Array<{ id: Tab; label: string; icon: typeof Settings2 }> = [
   { id: "followups", label: "Seguimientos", icon: MessageSquareText },
   { id: "behavior", label: "Comportamiento", icon: Settings2 },
   { id: "tools", label: "Herramientas", icon: Wrench }
-];
-
-const BEHAVIOR = [
-  {
-    title: "Forma de responder",
-    description: "Habla de manera cercana, breve y rioplatense, en uno, dos o tres mensajes cortos."
-  },
-  {
-    title: "Uso de información",
-    description: "Responde con datos públicos del inventario y no inventa precios, disponibilidad ni condiciones."
-  },
-  {
-    title: "Búsqueda y calificación",
-    description: "Averigua la necesidad de forma conversacional y conserva presupuesto, zonas y detalles útiles."
-  },
-  {
-    title: "Derivación a personas",
-    description: "Deriva visitas, reservas, tasaciones, pedidos humanos y consultas que no puede resolver con certeza."
-  }
 ];
 
 const TOOLS = [
@@ -227,24 +208,13 @@ export function AgentSettingsPanel({
           >
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
-                <h3 className="font-semibold">Comportamiento actual</h3>
+                <h3 className="font-semibold">Comportamiento del agente</h3>
                 <p className="text-sm text-muted-foreground">
-                  Reglas principales con las que el agente conversa y decide cuándo derivar.
+                  Configurá cómo se presenta y responde para tu inmobiliaria.
                 </p>
               </div>
-              <ReadOnlyBadge />
             </div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {BEHAVIOR.map((item) => (
-                <article key={item.title} className="border p-4">
-                  <div className="mb-2 flex items-center gap-2">
-                    <ListChecks className="size-4 text-primary" />
-                    <h4 className="font-medium">{item.title}</h4>
-                  </div>
-                  <p className="text-sm text-muted-foreground">{item.description}</p>
-                </article>
-              ))}
-            </div>
+            <AgentConfigForm config={settings.agentConfig} />
           </div>
         ) : (
           <div
@@ -255,9 +225,9 @@ export function AgentSettingsPanel({
           >
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div>
-                <h3 className="font-semibold">Herramientas habilitadas</h3>
+                <h3 className="font-semibold">Herramientas previstas</h3>
                 <p className="text-sm text-muted-foreground">
-                  Acciones que el agente puede ejecutar mientras atiende una conversación.
+                  Funciones que se conectarán al nuevo motor durante la migración.
                 </p>
               </div>
               <ReadOnlyBadge />
