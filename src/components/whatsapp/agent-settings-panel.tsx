@@ -223,7 +223,7 @@ export function AgentSettingsPanel({
               <div>
                 <h3 className="font-semibold">Herramientas del nuevo motor</h3>
                 <p className="text-sm text-muted-foreground">
-                  Las consultas de propiedades están disponibles para pruebas. La derivación y la activación general siguen pendientes.
+                  Las consultas de propiedades están disponibles para pruebas. La derivación funciona sólo en el motor experimental; la activación general sigue pendiente.
                 </p>
               </div>
               <Badge variant="secondary">En desarrollo</Badge>
