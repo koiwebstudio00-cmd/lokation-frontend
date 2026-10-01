@@ -91,7 +91,7 @@ export function AgentSettingsPanel({
 
   return (
     <div className="space-y-4">
-      <section className="border bg-background">
+      <section className="rounded-xl border bg-background">
         <div className="flex flex-wrap items-center justify-between gap-4 p-4 sm:p-5">
           <div className="flex min-w-0 items-start gap-3">
             <div
@@ -154,7 +154,7 @@ export function AgentSettingsPanel({
         </div>
       </section>
 
-      <section className="border bg-background">
+      <section className="rounded-xl border bg-background">
         <div
           role="tablist"
           aria-label="Secciones de ajustes del agente"
@@ -228,7 +228,7 @@ export function AgentSettingsPanel({
               </div>
               <Badge variant="secondary">En desarrollo</Badge>
             </div>
-            <div className="divide-y border">
+            <div className="rounded-xl divide-y border">
               {TOOLS.map((tool) => (
                 <article key={tool.name} className="flex items-start gap-3 p-4">
                   <div className="flex size-9 shrink-0 items-center justify-center bg-primary/10 text-primary">

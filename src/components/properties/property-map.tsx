@@ -122,7 +122,7 @@ export function PropertyMap({
       )}
       <div
         ref={containerRef}
-        className="h-64 w-full overflow-hidden border"
+        className="rounded-xl h-64 w-full overflow-hidden border"
         // z-0 evita que los controles de Leaflet tapen menús/overlays del panel.
         style={{ zIndex: 0 }}
       />

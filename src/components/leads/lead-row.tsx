@@ -20,7 +20,7 @@ export function LeadRow({ lead }: { lead: Lead }) {
   const necesitaAtencion = lead.derivacion?.pendiente === true;
   const esFantasma = lead.clasificacion === "fantasma";
   return (
-    <li className="border bg-background">
+    <li className="overflow-hidden rounded-xl border bg-background">
       <Link
         href={`/consultas/${lead.id}`}
         prefetch={false}

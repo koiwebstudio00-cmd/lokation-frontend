@@ -27,14 +27,14 @@ export default async function ConectarWhatsappPage({
       </div>
 
       {params.error && (
-        <div className="flex items-start gap-2 border border-destructive/30 bg-destructive/5 p-3">
+        <div className="rounded-xl flex items-start gap-2 border border-destructive/30 bg-destructive/5 p-3">
           <TriangleAlert className="mt-0.5 size-4 shrink-0 text-destructive" />
           <p className="text-sm">{params.error}</p>
         </div>
       )}
 
       {params.conectado && !params.error && (
-        <div className="border border-primary/30 bg-primary/5 p-3 text-sm">
+        <div className="rounded-xl border border-primary/30 bg-primary/5 p-3 text-sm">
           Listo, el número quedó conectado. El agente ya recibe los mensajes que
           lleguen ahí.
         </div>

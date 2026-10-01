@@ -31,7 +31,7 @@ export function LeadEstadoBadge({
   return (
     <div
       className={cn(
-        "inline-flex items-center px-2.5 py-0.5 text-xs font-medium",
+        "inline-flex rounded-md items-center px-2.5 py-0.5 text-xs font-medium",
         ESTADO_STYLES[estado],
         className
       )}
@@ -43,7 +43,7 @@ export function LeadEstadoBadge({
 
 export function LeadSinTomarBadge() {
   return (
-    <span className="inline-flex items-center gap-1 border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-800">
+    <span className="inline-flex rounded-md items-center gap-1 border border-amber-200 bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-800">
       <Clock3 className="size-3.5 shrink-0" />
       Sin tomar
     </span>
@@ -57,7 +57,7 @@ export function LeadSinTomarBadge() {
  */
 export function LeadAtencionBadge({ motivo }: { motivo: MotivoDerivacion }) {
   return (
-    <span className="inline-flex items-center gap-1 border border-red-200 bg-red-50 px-2 py-0.5 text-xs font-semibold text-red-700">
+    <span className="inline-flex rounded-md items-center gap-1 border border-red-200 bg-red-50 px-2 py-0.5 text-xs font-semibold text-red-700">
       <TriangleAlert className="size-3.5 shrink-0" />
       {MOTIVOS_DERIVACION[motivo]}
     </span>
@@ -70,7 +70,7 @@ export function LeadAtencionBadge({ motivo }: { motivo: MotivoDerivacion }) {
  */
 export function LeadFantasmaBadge() {
   return (
-    <span className="inline-flex items-center gap-1 border border-zinc-200 bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600">
+    <span className="inline-flex rounded-md items-center gap-1 border border-zinc-200 bg-zinc-100 px-2 py-0.5 text-xs font-medium text-zinc-600">
       <Ghost className="size-3.5 shrink-0" />
       Fantasma
     </span>
@@ -106,7 +106,7 @@ export function CanalBadge({ canal }: { canal: CanalLead }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1 border px-2 py-0.5 text-xs font-medium",
+        "inline-flex rounded-md items-center gap-1 border px-2 py-0.5 text-xs font-medium",
         CANAL_STYLES[canal]
       )}
     >

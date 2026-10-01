@@ -143,7 +143,7 @@ export default async function PropiedadPage({
       </div>
 
       {puedeGestionar && (
-        <div className="flex flex-wrap items-center gap-2 border bg-background p-3">
+        <div className="rounded-xl flex flex-wrap items-center gap-2 border bg-background p-3">
           <EstadoSelect propertyId={property.id} estado={property.estado} />
           {esAdmin && (
             <DestacarButton propertyId={property.id} destacada={property.destacada} />
@@ -163,12 +163,12 @@ export default async function PropiedadPage({
 
       {/* Gestión de fotos */}
       {puedeGestionar && (
-        <div className="border bg-background p-4">
+        <div className="rounded-xl border bg-background p-4">
           <PhotoManager propertyId={property.id} images={gallery} />
         </div>
       )}
 
-      <div className="space-y-4 border bg-background p-4 sm:p-6">
+      <div className="rounded-xl space-y-4 border bg-background p-4 sm:p-6">
         {(ubicacion || mapsHref) && (
           <p className="flex flex-wrap items-center gap-2 text-sm">
             <MapPin className="size-4 shrink-0 text-muted-foreground" />
@@ -239,7 +239,7 @@ export default async function PropiedadPage({
         )}
 
         {property.notas && (
-          <div className="border border-[var(--estado-reservada-bg)] bg-[var(--estado-reservada-bg)]/30 p-3">
+          <div className="rounded-xl border border-[var(--estado-reservada-bg)] bg-[var(--estado-reservada-bg)]/30 p-3">
             <h2 className="mb-1 flex items-center gap-1.5 text-sm font-semibold">
               <StickyNote className="size-4" /> Notas internas
             </h2>

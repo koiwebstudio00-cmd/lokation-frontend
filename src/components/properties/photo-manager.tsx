@@ -108,13 +108,13 @@ export function PhotoManager({
       </div>
 
       {images.length === 0 ? (
-        <p className="border border-dashed p-8 text-center text-sm text-muted-foreground">
+        <p className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">
           Sin fotos todavía. La primera que subas queda como portada.
         </p>
       ) : (
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
           {images.map((img) => (
-            <div key={img.id} className="group relative aspect-[4/3] border bg-muted">
+            <div key={img.id} className="rounded-xl group relative aspect-[4/3] border bg-muted">
               <Image
                 src={imageUrl(img.url)}
                 alt="Foto de la propiedad"

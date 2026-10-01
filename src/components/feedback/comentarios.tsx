@@ -43,7 +43,7 @@ export function Comentarios({
       ) : (
         <ul className="space-y-3">
           {comentarios.map((c) => (
-            <li key={c.id} className="border bg-muted/30 p-3">
+            <li key={c.id} className="rounded-xl border bg-muted/30 p-3">
               <p className="whitespace-pre-wrap text-sm">{c.cuerpo}</p>
               <p className="mt-1 text-xs text-muted-foreground">
                 {c.autor ?? "—"} · {formatDateTime(c.created_at)}

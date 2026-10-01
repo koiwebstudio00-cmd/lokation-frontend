@@ -72,7 +72,7 @@ export default async function ConsultasPage({
             { label: "Fantasmas", value: clasif.fantasma ?? 0 },
             { label: "Sin clasificar", value: clasif.sin_clasificar ?? 0 },
           ].map((s) => (
-            <div key={s.label} className="border bg-background p-3">
+            <div key={s.label} className="rounded-xl border bg-background p-3">
               <p className="text-2xl font-semibold tabular-nums">{s.value}</p>
               <p className="text-xs text-muted-foreground">{s.label}</p>
             </div>
@@ -85,7 +85,7 @@ export default async function ConsultasPage({
       </Suspense>
 
       {leads.length === 0 ? (
-        <div className="flex flex-col items-center gap-2 border border-dashed p-12 text-center">
+        <div className="rounded-xl flex flex-col items-center gap-2 border border-dashed p-12 text-center">
           <Inbox className="size-8 text-muted-foreground" />
           <p className="font-medium">No hay consultas para mostrar</p>
           <p className="text-sm text-muted-foreground">

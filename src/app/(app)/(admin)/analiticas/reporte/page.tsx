@@ -106,7 +106,7 @@ export default async function MonthlyReportPage({ searchParams }: { searchParams
       </header>
 
       <AnalyticsSection title="Resumen del mes" description="Los números principales y cómo se movieron respecto del período anterior.">
-        <table className="w-full border bg-background text-sm">
+        <div className="overflow-hidden rounded-xl border"><table className="w-full bg-background text-sm">
           <tbody className="divide-y">
             {summary.map((row) => (
               <tr key={row.label}>
@@ -118,7 +118,7 @@ export default async function MonthlyReportPage({ searchParams }: { searchParams
               </tr>
             ))}
           </tbody>
-        </table>
+        </table></div>
       </AnalyticsSection>
 
       <div className="space-y-4 print:break-before-page">

@@ -51,7 +51,7 @@ const TIPO_ICONS: Record<FeedbackTipo, typeof Bug> = {
 export function FeedbackTipoBadge({ tipo }: { tipo: FeedbackTipo }) {
   const Icon = TIPO_ICONS[tipo];
   return (
-    <span className="inline-flex items-center gap-1 border px-2 py-0.5 text-xs text-muted-foreground">
+    <span className="rounded-xl inline-flex items-center gap-1 border px-2 py-0.5 text-xs text-muted-foreground">
       <Icon className="size-3.5 shrink-0" />
       {TIPO_LABELS[tipo]}
     </span>

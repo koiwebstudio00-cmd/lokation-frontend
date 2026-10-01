@@ -640,7 +640,7 @@ export function PropertyForm({
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="flex w-full flex-col items-center gap-2 border border-dashed p-8 text-sm text-muted-foreground hover:border-primary hover:text-primary"
+                className="rounded-xl flex w-full flex-col items-center gap-2 border border-dashed p-8 text-sm text-muted-foreground hover:border-primary hover:text-primary"
               >
                 <ImagePlus className="size-6" />
                 Tocá para agregar fotos (máx. {MAX_FOTOS}). La primera queda como
@@ -650,7 +650,7 @@ export function PropertyForm({
               <>
                 <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
                   {photos.map((file, i) => (
-                    <div key={i} className="relative aspect-[4/3] border bg-muted">
+                    <div key={i} className="rounded-xl relative aspect-[4/3] border bg-muted">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={URL.createObjectURL(file)}
@@ -689,7 +689,7 @@ export function PropertyForm({
       )}
 
       {state.error && (
-        <p className="border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">
+        <p className="rounded-xl border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">
           {state.error}
         </p>
       )}

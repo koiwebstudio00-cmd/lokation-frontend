@@ -13,7 +13,7 @@ export default async function NuevaPropiedadPage() {
         Solo título, operación, tipo y precio son obligatorios. Las fotos las
         podés agregar acá mismo o después desde el detalle.
       </p>
-      <div className="border bg-background p-4 sm:p-6">
+      <div className="rounded-xl border bg-background p-4 sm:p-6">
         <PropertyForm locations={locations} action={createProperty} submitLabel="Crear propiedad" />
       </div>
     </div>

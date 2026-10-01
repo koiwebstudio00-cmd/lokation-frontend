@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import type { EstadoPropiedad } from "@/lib/types";
 
 const badgeVariants = cva(
-  "inline-flex items-center px-2.5 py-0.5 text-xs font-medium",
+  "inline-flex rounded-md items-center px-2.5 py-0.5 text-xs font-medium",
   {
     variants: {
       variant: {
@@ -52,7 +52,7 @@ function EstadoBadge({ estado, className }: { estado: EstadoPropiedad; className
   return (
     <div
       className={cn(
-        "inline-flex items-center px-2.5 py-0.5 text-xs font-medium",
+        "inline-flex rounded-md items-center px-2.5 py-0.5 text-xs font-medium",
         ESTADO_STYLES[estado],
         className
       )}

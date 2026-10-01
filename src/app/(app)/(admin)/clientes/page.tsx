@@ -6,7 +6,7 @@ export default function ClientesPage() {
   return (
     <div className="mx-auto max-w-3xl space-y-4">
       <h1 className="text-2xl font-semibold">Clientes</h1>
-      <div className="flex items-start gap-3 border bg-muted/40 p-5">
+      <div className="rounded-xl flex items-start gap-3 border bg-muted/40 p-5">
         <Users className="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
         <div>
           <p className="font-medium">Módulo en preparación</p>

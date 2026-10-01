@@ -12,7 +12,7 @@ export function FeedbackList({ items }: { items: FeedbackItem[] }) {
           <Link
             href={`/feedback/${f.id}`}
             prefetch={false}
-            className="block border bg-background p-3 hover:bg-muted/40"
+            className="rounded-xl block border bg-background p-3 hover:bg-muted/40"
           >
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">

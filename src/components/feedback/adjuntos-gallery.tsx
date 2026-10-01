@@ -46,7 +46,7 @@ export function AdjuntosGallery({
               <img
                 src={a.url}
                 alt="Captura del reporte"
-                className="aspect-video w-full border object-cover"
+                className="rounded-xl aspect-video w-full border object-cover"
               />
             </a>
             {puedeEliminar && (

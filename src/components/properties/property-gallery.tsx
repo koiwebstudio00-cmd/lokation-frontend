@@ -43,7 +43,7 @@ export function PropertyGallery({
 
   return (
     <section className="space-y-3" aria-label="Galería de fotos">
-      <div className="relative aspect-[4/3] overflow-hidden border bg-muted sm:aspect-[16/10]">
+      <div className="rounded-xl relative aspect-[4/3] overflow-hidden border bg-muted sm:aspect-[16/10]">
         <Image
           key={activeImage.id}
           src={imageUrl(activeImage.url)}

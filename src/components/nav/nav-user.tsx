@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useTransition } from "react";
-import { useTheme } from "next-themes";
 import { ChevronsUpDown, LogOut, UserCog } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -41,7 +40,6 @@ function iniciales(nombre: string) {
 export function NavUser({ nombre, email }: { nombre: string; email: string }) {
   const { isMobile, setOpenMobile } = useSidebar();
   const [pending, startTransition] = useTransition();
-  const { setTheme } = useTheme();
 
   return (
     <SidebarMenu>
@@ -52,7 +50,7 @@ export function NavUser({ nombre, email }: { nombre: string; email: string }) {
               size="lg"
               type="button"
               aria-label="Mi cuenta"
-              tooltip="Mi cuenta"
+              title="Mi cuenta"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="size-8">
@@ -69,9 +67,10 @@ export function NavUser({ nombre, email }: { nombre: string; email: string }) {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56"
-            side={isMobile ? "top" : "right"}
-            align="end"
+            className="w-60 max-w-[calc(100vw-1.5rem)]"
+            side="top"
+            align="start"
+            collisionPadding={12}
             sideOffset={4}
           >
             <DropdownMenuLabel className="p-0 font-normal">
@@ -106,11 +105,6 @@ export function NavUser({ nombre, email }: { nombre: string; email: string }) {
 
             <DropdownMenuSeparator />
 
-            <DropdownMenuLabel>Apariencia</DropdownMenuLabel>
-            <DropdownMenuItem onSelect={() => setTheme("light")}>Tema claro</DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => setTheme("dark")}>Tema oscuro</DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => setTheme("system")}>Usar tema del dispositivo</DropdownMenuItem>
-            <DropdownMenuSeparator />
             <DropdownMenuItem disabled={pending} onSelect={(event) => {
               event.preventDefault();
               startTransition(() => signOut());

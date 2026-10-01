@@ -17,7 +17,7 @@ export function FollowupSettingsForm({ settings }: { settings: FollowupSettings 
 
   return (
     <form action={formAction} className="space-y-5 p-4">
-      <div className="flex items-start justify-between gap-4 border p-3 text-sm has-data-[state=checked]:border-primary has-data-[state=checked]:bg-primary/5">
+      <div className="rounded-xl flex items-start justify-between gap-4 border p-3 text-sm has-data-[state=checked]:border-primary has-data-[state=checked]:bg-primary/5">
         <div className="space-y-0.5">
           <Label htmlFor="followup-enabled">Activar seguimiento automático</Label>
           <p id="followup-enabled-description" className="text-muted-foreground">

@@ -66,7 +66,7 @@ export function PropertyCard({
 }) {
   const precios = preciosDeCard(property, filtroOperacion);
   return (
-    <div className="flex flex-col border bg-card shadow-sm">
+    <div className="overflow-hidden rounded-xl flex flex-col border bg-card shadow-sm">
       <Link
         href={`/propiedades/${property.id}`}
         prefetch={false}

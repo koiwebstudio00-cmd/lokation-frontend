@@ -156,7 +156,7 @@ export function ChangeUserPasswordDialog({ usuario }: { usuario: Usuario }) {
 
           <label
             htmlFor={notifyId}
-            className="flex items-start gap-3 border bg-muted/30 p-3 text-sm"
+            className="rounded-xl flex items-start gap-3 border bg-muted/30 p-3 text-sm"
           >
             <input
               id={notifyId}

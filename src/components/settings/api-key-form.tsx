@@ -50,7 +50,7 @@ export function ApiKeyForm({ scopes }: { scopes: ScopeOption[] }) {
   if (mostrarKey) {
     return (
       <div className="space-y-3">
-        <div className="flex items-start gap-2 border border-[var(--estado-reservada-fg)]/30 bg-[var(--estado-reservada-bg)]/40 p-3">
+        <div className="rounded-xl flex items-start gap-2 border border-[var(--estado-reservada-fg)]/30 bg-[var(--estado-reservada-bg)]/40 p-3">
           <TriangleAlert className="mt-0.5 size-4 shrink-0 text-[var(--estado-reservada-fg)]" />
           <p className="text-sm">
             Copiala ahora: es la única vez que se muestra completa. Después solo
@@ -130,7 +130,7 @@ export function ApiKeyForm({ scopes }: { scopes: ScopeOption[] }) {
             <label
               key={scope}
               htmlFor={`scope-${scope}`}
-              className="flex cursor-pointer items-start gap-3 border p-3 text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/5"
+              className="rounded-xl flex cursor-pointer items-start gap-3 border p-3 text-sm has-[:checked]:border-primary has-[:checked]:bg-primary/5"
             >
               <input
                 type="checkbox"

@@ -11,7 +11,7 @@ export default async function MiSitioPage() {
   return <div className="mx-auto max-w-5xl space-y-5">
     <div><h1 className="text-2xl font-semibold">Mi sitio web</h1>
       <p className="text-sm text-muted-foreground">Completá la presentación de tu inmobiliaria y publicala cuando esté lista.</p></div>
-    <div className="border bg-muted/30 p-4 text-sm">
+    <div className="rounded-xl border bg-muted/30 p-4 text-sm">
       <p>Estado: <strong>{tenant.sitePublished ? "Publicado" : "Borrador"}</strong></p>
       <p className="mt-1 break-all">Dirección: {tenant.sitePublished
         ? <Link className="underline" href={url} target="_blank">{url}</Link> : url}</p>

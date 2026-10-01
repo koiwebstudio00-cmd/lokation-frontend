@@ -21,7 +21,7 @@ import type { Lead } from "@/lib/types";
 /** Vista de tabla de la bandeja. El mensaje no entra: para eso está el detalle. */
 export function LeadTable({ leads }: { leads: Lead[] }) {
   return (
-    <div className="overflow-x-auto border bg-background">
+    <div className="rounded-xl overflow-x-auto border bg-background">
       <Table>
         <TableHeader>
           <TableRow>

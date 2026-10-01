@@ -80,7 +80,7 @@ export function ReporteForm() {
 
       <div className="space-y-2">
         <Label>Imágenes (opcional, hasta {MAX})</Label>
-        <label className="flex cursor-pointer items-center gap-2 border border-dashed p-3 text-sm text-muted-foreground hover:bg-muted/40">
+        <label className="rounded-xl flex cursor-pointer items-center gap-2 border border-dashed p-3 text-sm text-muted-foreground hover:bg-muted/40">
           <Paperclip className="size-4" /> Agregar capturas
           <input
             type="file"
@@ -96,7 +96,7 @@ export function ReporteForm() {
         {files.length > 0 && (
           <ul className="flex flex-wrap gap-2">
             {files.map((f, i) => (
-              <li key={i} className="flex items-center gap-1 border px-2 py-1 text-xs">
+              <li key={i} className="rounded-xl flex items-center gap-1 border px-2 py-1 text-xs">
                 <span className="max-w-[160px] truncate">{f.name}</span>
                 <button
                   type="button"

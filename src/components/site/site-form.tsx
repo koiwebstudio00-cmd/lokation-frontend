@@ -23,7 +23,7 @@ export function SiteForm({ site }: { site: SiteData }) {
   const [state, action, pending] = useActionState<SiteState, FormData>(saveSite, {});
   const config = site.configSitio ?? {};
   return (
-    <form action={action} className="space-y-5 border bg-background p-5">
+    <form action={action} className="rounded-xl space-y-5 border bg-background p-5">
       <div className="grid gap-5 md:grid-cols-2">
         <div className="space-y-2"><Label htmlFor="site-name">Nombre de la inmobiliaria</Label>
           <Input id="site-name" name="nombre" defaultValue={site.nombre} maxLength={120} required /></div>
