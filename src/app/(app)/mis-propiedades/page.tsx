@@ -20,6 +20,7 @@ export default async function MisPropiedadesPage({
   const params = await searchParams;
   const [{ properties, count, page }, vista] = await Promise.all([
     getMyProperties({
+      zona_revisar: params.zona_revisar,
       pagina: params.pagina ? Number(params.pagina) : 1,
     }),
     getVista(),

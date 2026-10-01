@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { usePathname } from "next/navigation";
 import {
   Building2,
@@ -155,7 +156,7 @@ export function AppNav({
   consultasSinTomar: number;
 }) {
   const pathname = usePathname();
-  const { isMobile, setOpenMobile } = useSidebar();
+  const { isMobile, setOpenMobile, state } = useSidebar();
   const items = ITEMS.filter((i) => !i.soloAdmin || esAdmin(rol));
 
   // En el celular el cajón tapa la pantalla: al tocar un link hay que cerrarlo.
@@ -217,6 +218,23 @@ export function AppNav({
                 const pendientes = item.label === "Consultas" ? consultasSinTomar : 0;
                 const tooltip =
                   pendientes > 0 ? `${item.label} (${pendientes} sin tomar)` : item.label;
+
+                if (!isMobile && state === "collapsed") {
+                  return <SidebarMenuItem key={item.label}>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <SidebarMenuButton tooltip={tooltip} aria-label={tooltip} isActive={hayHijoActivo}>
+                          <item.icon /><span>{item.label}</span>
+                        </SidebarMenuButton>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent side="right" align="start" sideOffset={8}>
+                        {item.subs.map((sub) => <DropdownMenuItem asChild key={sub.href}>
+                          <Link href={sub.href} prefetch={false} aria-current={subActivo(pathname, sub, item.subs) ? "page" : undefined}>{sub.label}</Link>
+                        </DropdownMenuItem>)}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </SidebarMenuItem>;
+                }
 
                 return (
                   <Collapsible

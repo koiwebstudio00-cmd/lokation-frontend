@@ -17,6 +17,7 @@ const r2Hosts = (
   .filter(Boolean);
 
 const nextConfig: NextConfig = {
+  devIndicators: { position: "bottom-right" },
   logging: { incomingRequests: { ignore: [/\/api\/auth\/callback\//] } },
   images: {
     // Las fotos ya llegan optimizadas: el navegador las redimensiona a 1600px y

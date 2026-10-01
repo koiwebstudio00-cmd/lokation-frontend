@@ -1,5 +1,5 @@
 // Modelo que consumen los componentes del panel, en snake_case.
-// La API de Ubikka habla camelCase: la traducción vive en src/lib/queries.ts
+// La API (backend de Ubikka) habla camelCase: la traducción vive en src/lib/queries.ts
 // y ningún componente conoce el formato de la API.
 
 export type Operacion = "venta" | "alquiler" | "ambos";
@@ -40,6 +40,9 @@ export type AnalyticsPeriod = {
   from: string;
   to: string;
   timezone: string;
+  /** Período de comparación: mes calendario anterior si el rango es un mes
+   * completo; si no, los mismos días inmediatamente antes. */
+  previous: { from: string; to: string } | null;
   cohort_definition: string;
 };
 
@@ -61,6 +64,18 @@ export type AnalyticsOverview = {
     active_properties: number;
     active_properties_without_leads: number;
   };
+  previous_kpis: {
+    leads_created: number;
+    leads_taken: number;
+    take_rate: number;
+    median_take_minutes: number | null;
+    ganadas: number;
+    perdidas: number;
+    cohort_conversion_rate: number;
+    sofia_conversations: number;
+    handed_off_conversations: number;
+    handoff_rate: number;
+  } | null;
 };
 
 export type AnalyticsLeads = {
@@ -75,6 +90,14 @@ export type AnalyticsLeads = {
     median_take_minutes: number | null;
     p90_take_minutes: number | null;
   };
+  previous_summary: {
+    total: number;
+    taken: number;
+    untaken: number;
+    take_rate: number;
+    median_take_minutes: number | null;
+    p90_take_minutes: number | null;
+  } | null;
   by_channel: Record<string, number>;
   by_state: Record<string, number>;
   by_classification: Record<string, number>;
@@ -89,6 +112,65 @@ export type AnalyticsLeads = {
     titulo: string;
     destacada: boolean;
     consultas: number;
+  }[];
+};
+
+export type AnalyticsSofiaSummary = {
+  conversations: number;
+  handed_off: number;
+  handoff_rate: number;
+  median_handoff_take_minutes: number | null;
+  lead_messages: number;
+  ai_messages: number;
+  seller_messages: number;
+  median_lead_messages: number | null;
+  followed_up: number;
+  recovered_by_followup: number;
+  recovery_rate: number;
+  still_with_bot: number;
+};
+
+export type AnalyticsSofia = {
+  period: AnalyticsPeriod;
+  summary: AnalyticsSofiaSummary;
+  previous_summary: AnalyticsSofiaSummary | null;
+  by_handoff_result: Record<string, number>;
+  by_temperature: Record<string, number>;
+  by_intent: Record<string, number>;
+  by_classification: Record<string, number>;
+  /** 24 filas (hora 0–23, zona horaria de Tucumán). */
+  by_hour: { bucket: number; count: number }[];
+  /** 7 filas (1 = lunes … 7 = domingo). */
+  by_weekday: { bucket: number; count: number }[];
+};
+
+export type AnalyticsPropertiesSummary = {
+  created: number;
+  leads_with_property: number;
+  properties_with_leads: number;
+  available_without_leads: number;
+};
+
+export type AnalyticsProperties = {
+  period: AnalyticsPeriod;
+  summary: AnalyticsPropertiesSummary & { available: number };
+  previous_summary: AnalyticsPropertiesSummary | null;
+  inventory_by_state: Record<string, number>;
+  available_by_type: Record<string, number>;
+  leads_by_type: Record<string, number>;
+  leads_by_operation: Record<string, number>;
+  demand_by_zone: { zona: string; consultas: number; disponibles: number }[];
+  searched_zones: Record<string, number>;
+  searched_types: Record<string, number>;
+  top_properties: AnalyticsLeads["top_properties"];
+  idle_properties: {
+    property_id: string;
+    titulo: string;
+    zona: string | null;
+    operacion: string;
+    tipo: string;
+    created_at: string;
+    days_published: number;
   }[];
 };
 
@@ -131,6 +213,7 @@ export type Property = {
   descripcion: string | null;
   direccion: string | null;
   zona: string | null;
+  punto_referencia: string | null;
   ciudad: string | null;
   ambientes: number | null;
   dormitorios: number | null;
@@ -204,38 +287,6 @@ export const ESTADOS: { value: EstadoPropiedad; label: string }[] = [
   { value: "privado", label: "Privado (no se publica)" },
 ];
 
-/**
- * Valor centinela del `<select>` de zona para habilitar el input libre. No se
- * guarda nunca: cuando está elegido, el campo `zona` que viaja al servidor es el
- * del input de texto.
- */
-export const OTRA_ZONA = "__otra__";
-
-export const ZONAS = [
-  "Barrio Norte",
-  "Barrio Sur",
-  "Microcentro",
-  "Parque 9 de Julio",
-  "Parque Avellaneda",
-  "Ciudadela",
-  "Villa 9 de Julio",
-  "Villa Luján",
-  "Zona Abasto",
-  "Zona Quinta Agronómica",
-  "Parque Guillermina",
-  "Zona Portal",
-  "Las Talitas",
-  "Lomas de Tafí",
-  "Tafí Viejo",
-  "Yerba Buena",
-  "La Banda del Río Salí",
-  "Alderetes",
-  "San Pablo",
-  "Lules",
-  "Monteros",
-  "Concepción",
-] as const;
-
 // ── Opciones de alquiler (etiqueta ↔ valor canónico de la API) ───────────────
 export const DESTINOS: { value: DestinoAlquiler; label: string }[] = [
   { value: "vivienda", label: "Vivienda" },
@@ -301,6 +352,7 @@ export type Lead = {
   canal_ref: string | null;
   estado: EstadoLead;
   clasificacion: ClasificacionLead | null;
+  derivacion: DerivacionLead | null;
   assigned_to: string | null;
   /** Nombre del vendedor asignado, ya resuelto por la API (null si sin asignar). */
   asignado: string | null;
@@ -465,6 +517,29 @@ export const ESTADOS_LEAD: { value: EstadoLead; label: string }[] = [
   { value: "ganada", label: "Ganada" },
   { value: "perdida", label: "Perdida" },
 ];
+
+/** Motivos con los que Agente IA deriva a un humano (contrato del agente). */
+export type MotivoDerivacion =
+  | "visita"
+  | "reserva"
+  | "tasacion"
+  | "pedido_humano"
+  | "fuera_de_alcance";
+
+export const MOTIVOS_DERIVACION: Record<MotivoDerivacion, string> = {
+  visita: "Quiere visitar",
+  reserva: "Quiere reservar",
+  tasacion: "Tasación / quiere vender",
+  pedido_humano: "Pidió hablar con alguien",
+  fuera_de_alcance: "Fuera de alcance",
+};
+
+/** Última derivación del lead; `pendiente` = nadie la tomó todavía. */
+export interface DerivacionLead {
+  motivo: MotivoDerivacion;
+  pendiente: boolean;
+  asignado_at: string;
+}
 
 export const CLASIFICACIONES: { value: ClasificacionLead; label: string }[] = [
   { value: "potencial", label: "Cliente potencial" },

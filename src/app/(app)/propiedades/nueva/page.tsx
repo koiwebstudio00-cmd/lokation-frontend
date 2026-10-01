@@ -1,9 +1,11 @@
+import { getPropertyLocations } from "@/lib/queries";
 import { createProperty } from "@/actions/properties";
 import { PropertyForm } from "@/components/properties/property-form";
 
 export const metadata = { title: "Nueva propiedad — Ubikka" };
 
-export default function NuevaPropiedadPage() {
+export default async function NuevaPropiedadPage() {
+  const locations = await getPropertyLocations();
   return (
     <div className="mx-auto max-w-4xl space-y-4">
       <h1 className="text-2xl font-semibold">Nueva propiedad</h1>
@@ -12,7 +14,7 @@ export default function NuevaPropiedadPage() {
         podés agregar acá mismo o después desde el detalle.
       </p>
       <div className="border bg-background p-4 sm:p-6">
-        <PropertyForm action={createProperty} submitLabel="Crear propiedad" />
+        <PropertyForm locations={locations} action={createProperty} submitLabel="Crear propiedad" />
       </div>
     </div>
   );

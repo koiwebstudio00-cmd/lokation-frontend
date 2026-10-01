@@ -32,6 +32,7 @@ export default async function ConsultasPage({
       canal: params.canal,
       clasificacion: params.clasificacion,
       asignado: params.asignado,
+      atencion: params.atencion,
       pagina: params.pagina ? Number(params.pagina) : 1,
     }),
     esAdmin ? getVendedores() : Promise.resolve([]),

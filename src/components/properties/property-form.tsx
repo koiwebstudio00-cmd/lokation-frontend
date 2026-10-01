@@ -30,8 +30,6 @@ import {
   TIPOS,
   MONEDAS,
   ESTADOS,
-  ZONAS,
-  OTRA_ZONA,
   DESTINOS,
   PLAZOS,
   AJUSTES,
@@ -96,10 +94,12 @@ export function PropertyForm({
   action,
   property,
   submitLabel,
+  locations,
 }: {
   action: (prev: PropertyFormState, formData: FormData) => Promise<PropertyFormState>;
   property?: Property;
   submitLabel: string;
+  locations: { zonas: string[]; ciudades: string[] };
 }) {
   const router = useRouter();
   const [state, setState] = useState<PropertyFormState>({});
@@ -109,16 +109,6 @@ export function PropertyForm({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const isNew = !property;
   const e = state.errors ?? {};
-  const currentZone = property?.zona?.trim() ?? "";
-  // La zona se carga desde una lista cerrada (ZONAS) con un escape "Otra":
-  // sin eso, un barrio nuevo dejaría al vendedor trabado hasta un redeploy.
-  // Un valor viejo que no está en la lista abre el form directamente en "Otra"
-  // con el texto cargado, así no se pierde al editar la propiedad.
-  const zonaEnLista = currentZone !== "" && ZONAS.some((zone) => zone === currentZone);
-
-  const [zonaOtra, setZonaOtra] = useState(currentZone !== "" && !zonaEnLista);
-  const [zonaLista, setZonaLista] = useState(zonaEnLista ? currentZone : "");
-
   // La sección de alquiler y los campos "Otro"/"Fijo %" se muestran según lo elegido.
   const [operacion, setOperacion] = useState<Operacion>(property?.operacion ?? "venta");
   const [plazo, setPlazo] = useState(property?.plazo_contrato ?? "");
@@ -320,38 +310,40 @@ export function PropertyForm({
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Field label="Barrio / Zona" htmlFor="zona" error={e.zona}>
-              <Select
-                id="zona"
-                name={zonaOtra ? undefined : "zona"}
-                value={zonaOtra ? OTRA_ZONA : zonaLista}
-                onChange={(ev) => {
-                  const value = ev.target.value;
-                  setZonaOtra(value === OTRA_ZONA);
-                  if (value !== OTRA_ZONA) setZonaLista(value);
-                }}
-              >
-                <option value="">Seleccioná una zona</option>
-                {ZONAS.map((zone) => (
-                  <option key={zone} value={zone}>
-                    {zone}
-                  </option>
-                ))}
-                <option value={OTRA_ZONA}>Otra (especificar)</option>
-              </Select>
-              {zonaOtra && (
-                <Input
-                  name="zona"
-                  aria-label="Otra zona"
-                  className="mt-2"
-                  defaultValue={zonaEnLista ? "" : currentZone}
-                  placeholder="Escribí el barrio o la zona"
-                />
-              )}
+              <Input id="zona" name="zona" list="zonas-sugeridas" defaultValue={property?.zona ?? ""} placeholder="Escribí el barrio o la zona" />
+              <datalist id="zonas-sugeridas">
+                {locations.zonas.map(zone => <option key={zone} value={zone} />)}
+              </datalist>
             </Field>
             <Field label="Ciudad" htmlFor="ciudad" error={e.ciudad}>
-              <Input id="ciudad" name="ciudad" defaultValue={property?.ciudad ?? ""} />
+              <Input
+                id="ciudad"
+                name="ciudad"
+                list="ciudades-sugeridas"
+                autoComplete="off"
+                defaultValue={property?.ciudad ?? ""}
+                placeholder="Empezá a escribir…"
+              />
+              <datalist id="ciudades-sugeridas">
+                {locations.ciudades.map((ciudad) => (
+                  <option key={ciudad} value={ciudad} />
+                ))}
+              </datalist>
             </Field>
           </div>
+
+          <Field
+            label="Punto de referencia (opcional)"
+            htmlFor="punto_referencia"
+            error={e.punto_referencia}
+          >
+            <Input
+              id="punto_referencia"
+              name="punto_referencia"
+              defaultValue={property?.punto_referencia ?? ""}
+              placeholder="Frente a la plaza, a una cuadra de la avenida…"
+            />
+          </Field>
 
           <div className="space-y-2">
             <Label className="flex items-center gap-1.5">
@@ -604,7 +596,7 @@ export function PropertyForm({
             />
           </Field>
           <p className="text-xs text-muted-foreground">
-            El agente de IA puede compartir estos requisitos con quien consulte por el alquiler.
+            Agente IA (el asistente) puede compartir estos requisitos con quien consulte por el alquiler.
           </p>
         </CardContent>
       </Card>

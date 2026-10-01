@@ -3,7 +3,7 @@ import { updateProperty } from "@/actions/properties";
 import { PropertyForm } from "@/components/properties/property-form";
 import { PhotoManager } from "@/components/properties/photo-manager";
 import { getCurrentUser } from "@/lib/api";
-import { getProperty } from "@/lib/queries";
+import { getProperty, getPropertyLocations } from "@/lib/queries";
 
 export const metadata = { title: "Editar propiedad — Ubikka" };
 
@@ -13,7 +13,7 @@ export default async function EditarPropiedadPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const [detail, me] = await Promise.all([getProperty(id), getCurrentUser()]);
+  const [detail, me, locations] = await Promise.all([getProperty(id), getCurrentUser(), getPropertyLocations()]);
 
   if (!detail) notFound();
 
@@ -32,7 +32,7 @@ export default async function EditarPropiedadPage({
         <PhotoManager propertyId={property.id} images={images} />
       </div>
       <div className="border bg-background p-4 sm:p-6">
-        <PropertyForm action={action} property={property} submitLabel="Guardar cambios" />
+        <PropertyForm locations={locations} action={action} property={property} submitLabel="Guardar cambios" />
       </div>
     </div>
   );

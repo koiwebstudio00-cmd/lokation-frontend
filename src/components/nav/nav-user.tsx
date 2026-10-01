@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useTransition } from "react";
+import { useTheme } from "next-themes";
 import { ChevronsUpDown, LogOut, UserCog } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -19,7 +21,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { signOut } from "@/actions/auth";
-import { cn } from "@/lib/utils";
+
 
 /**
  * Pie de la barra lateral: identidad de quien está adentro y sus dos acciones.
@@ -38,6 +40,8 @@ function iniciales(nombre: string) {
 
 export function NavUser({ nombre, email }: { nombre: string; email: string }) {
   const { isMobile, setOpenMobile } = useSidebar();
+  const [pending, startTransition] = useTransition();
+  const { setTheme } = useTheme();
 
   return (
     <SidebarMenu>
@@ -46,6 +50,9 @@ export function NavUser({ nombre, email }: { nombre: string; email: string }) {
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
+              type="button"
+              aria-label="Mi cuenta"
+              tooltip="Mi cuenta"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="size-8">
@@ -53,7 +60,7 @@ export function NavUser({ nombre, email }: { nombre: string; email: string }) {
                   {iniciales(nombre)}
                 </AvatarFallback>
               </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
+              <div className="grid min-w-0 flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{nombre}</span>
                 <span className="truncate text-xs text-muted-foreground">{email}</span>
               </div>
@@ -63,7 +70,7 @@ export function NavUser({ nombre, email }: { nombre: string; email: string }) {
 
           <DropdownMenuContent
             className="w-(--radix-dropdown-menu-trigger-width) min-w-56"
-            side={isMobile ? "bottom" : "right"}
+            side={isMobile ? "top" : "right"}
             align="end"
             sideOffset={4}
           >
@@ -74,7 +81,7 @@ export function NavUser({ nombre, email }: { nombre: string; email: string }) {
                     {iniciales(nombre)}
                   </AvatarFallback>
                 </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
+                <div className="grid min-w-0 flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{nombre}</span>
                   <span className="truncate text-xs text-muted-foreground">{email}</span>
                 </div>
@@ -99,26 +106,17 @@ export function NavUser({ nombre, email }: { nombre: string; email: string }) {
 
             <DropdownMenuSeparator />
 
-            {/*
-              `signOut` es una Server Action: necesita un form que la dispare.
-              OJO: en mobile NO cerramos el cajón acá. Cerrarlo (setOpenMobile)
-              desmonta este <form> del DOM en el mismo click que el submit, y el
-              browser cancela el envío con "form is not connected" → el logout no
-              se dispara. Como `signOut` redirige a /login, el sidebar se
-              desmonta solo; no hace falta cerrarlo a mano.
-            */}
-            <form action={signOut}>
-              <button
-                type="submit"
-                className={cn(
-                  "relative flex w-full cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-left text-sm outline-hidden select-none",
-                  "focus:bg-accent focus:text-accent-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground"
-                )}
-              >
-                <LogOut />
-                Cerrar sesión
-              </button>
-            </form>
+            <DropdownMenuLabel>Apariencia</DropdownMenuLabel>
+            <DropdownMenuItem onSelect={() => setTheme("light")}>Tema claro</DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => setTheme("dark")}>Tema oscuro</DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => setTheme("system")}>Usar tema del dispositivo</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem disabled={pending} onSelect={(event) => {
+              event.preventDefault();
+              startTransition(() => signOut());
+            }}>
+              <LogOut />{pending ? "Cerrando sesión…" : "Cerrar sesión"}
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

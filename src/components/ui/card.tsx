@@ -4,14 +4,14 @@ import { cn } from "@/lib/utils";
 function Card({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("border bg-card text-card-foreground shadow-sm", className)}
+      className={cn("rounded-xl border bg-card text-card-foreground shadow-sm", className)}
       {...props}
     />
   );
 }
 
 function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
-  return <div className={cn("flex flex-col space-y-1.5 p-4", className)} {...props} />;
+  return <div className={cn("flex flex-col space-y-1.5 rounded-t-xl p-4", className)} {...props} />;
 }
 
 function CardTitle({ className, ...props }: React.ComponentProps<"h3">) {
