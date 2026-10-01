@@ -6,10 +6,26 @@ import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui"
 
 import { cn } from "@/lib/utils"
 
+const MenuActivationContext = React.createContext<(() => void) | null>(null)
+
 function DropdownMenu({
+  open: controlledOpen,
+  defaultOpen = false,
+  onOpenChange,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
-  return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />
+  const [internalOpen, setInternalOpen] = React.useState(defaultOpen)
+  const open = controlledOpen ?? internalOpen
+  const changeOpen = (next: boolean) => {
+    if (controlledOpen === undefined) setInternalOpen(next)
+    onOpenChange?.(next)
+  }
+
+  return (
+    <MenuActivationContext.Provider value={() => changeOpen(!open)}>
+      <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} open={open} onOpenChange={changeOpen} />
+    </MenuActivationContext.Provider>
+  )
 }
 
 function DropdownMenuPortal({
@@ -21,12 +37,28 @@ function DropdownMenuPortal({
 }
 
 function DropdownMenuTrigger({
+  onPointerDown,
+  onClick,
+  disabled,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Trigger>) {
+  const toggle = React.useContext(MenuActivationContext)
   return (
     <DropdownMenuPrimitive.Trigger
       data-slot="dropdown-menu-trigger"
       {...props}
+      disabled={disabled}
+      // Open on completed activation, including clicks from assistive input.
+      // Suppress Radix's pointerdown toggle so one click cannot toggle twice.
+      // Radix still handles Enter, Space, ArrowDown, focus and dismissal.
+      onPointerDown={(event) => {
+        onPointerDown?.(event)
+        if (!event.defaultPrevented && event.button === 0 && !event.ctrlKey) event.preventDefault()
+      }}
+      onClick={(event) => {
+        onClick?.(event)
+        if (!event.defaultPrevented && !disabled && !event.ctrlKey) toggle?.()
+      }}
     />
   )
 }

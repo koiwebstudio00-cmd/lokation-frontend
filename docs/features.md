@@ -230,3 +230,7 @@ con el cliente registrada en el CRM en vez de en el Gmail de cada vendedor.
 **Viabilidad.** M, detrás de `F7-API`.
 
 **Estado.** Pendiente.
+
+## Estado Ubikka · 2026-10-01
+
+El backlog anterior pertenece al prototipo. En Ubikka ya se incorporaron las mejoras de analíticas/reporte mensual, derivaciones pendientes y punto de referencia. Zonas y ciudades se sugieren desde el tenant, sin catálogo regional fijo. El diseño vigente y las comprobaciones pendientes están en [README](../README.md) y [design-system](design-system.md).

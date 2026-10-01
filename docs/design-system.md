@@ -1,3 +1,19 @@
+# Diseño vigente — Ubikka dashboard
+
+Actualizado: 2026-10-01.
+
+- Componentes shadcn/ui basados en Radix y Tailwind CSS.
+- Tema tweakcn `cmn4wp9hz000104lbgtucaj5m`; fuente Noto Sans JP servida localmente.
+- Los colores, sombras y radios se definen en `src/app/globals.css`. Radio base: `0.625rem`; superficies `rounded-xl`, controles `rounded-md` y badges redondeados.
+- Tarjetas, tablas, estados vacíos, formularios y probador del agente deben respetar esos radios. Las líneas divisorias internas no son contenedores.
+- Selector de tema en el extremo derecho del navbar; cuenta contiene perfil y cierre de sesión.
+- Sidebar expandido/contraído en escritorio y cajón en móvil. Mantener navegación por teclado, foco visible, cierre con Escape y elementos dentro del viewport.
+- Los requisitos de Ubikka prevalecen sobre el documento histórico siguiente.
+
+---
+
+## Referencia histórica del prototipo (no normativa)
+
 # Design System — Inmobiliaria Lamelas
 
 Basado en el logo: isotipo de edificio isométrico en verde sobre blanco. Identidad limpia, geométrica y de alto contraste.
