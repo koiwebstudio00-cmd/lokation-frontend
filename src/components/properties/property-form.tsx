@@ -202,7 +202,7 @@ export function PropertyForm({
             />
           </Field>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Field label="Operación *" htmlFor="operacion" error={e.operacion}>
               <Select
                 id="operacion"
@@ -318,7 +318,7 @@ export function PropertyForm({
             />
           </Field>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Field label="Barrio / Zona" htmlFor="zona" error={e.zona}>
               <Select
                 id="zona"
@@ -378,7 +378,7 @@ export function PropertyForm({
       <Card>
         <SectionHeader icon={Ruler} title="Características" optional />
         <CardContent className="space-y-4 pt-4">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <Field label="Ambientes" htmlFor="ambientes" icon={DoorOpen} error={e.ambientes}>
               <Input
                 id="ambientes"
@@ -426,7 +426,7 @@ export function PropertyForm({
             </p>
           )}
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Field label="Sup. cubierta (m²)" htmlFor="sup_cubierta" error={e.sup_cubierta}>
               <Input
                 id="sup_cubierta"
@@ -457,7 +457,7 @@ export function PropertyForm({
         <Card>
           <SectionHeader icon={KeyRound} title="Condiciones de alquiler" optional />
           <CardContent className="space-y-4 pt-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field label="Destino" htmlFor="destino" error={e.destino}>
                 <Select id="destino" name="destino" defaultValue={property?.destino ?? ""} className="w-full">
                   <option value="">Sin especificar</option>
@@ -478,7 +478,7 @@ export function PropertyForm({
               </Field>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field label="Plazo de contrato" htmlFor="plazo_contrato" error={e.plazo_contrato}>
                 <Select
                   id="plazo_contrato"
@@ -506,7 +506,7 @@ export function PropertyForm({
               )}
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field label="Ajuste" htmlFor="ajuste" error={e.ajuste}>
                 <Select
                   id="ajuste"
@@ -534,7 +534,7 @@ export function PropertyForm({
               )}
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field label="Índice de ajuste" htmlFor="indice_ajuste" error={e.indice_ajuste}>
                 <Select
                   id="indice_ajuste"
@@ -566,7 +566,7 @@ export function PropertyForm({
               )}
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field label="Mascotas" htmlFor="mascotas" error={e.mascotas}>
                 <Select id="mascotas" name="mascotas" defaultValue={property?.mascotas ?? ""}>
                   <option value="">Sin especificar</option>
