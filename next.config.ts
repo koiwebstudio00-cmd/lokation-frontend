@@ -17,6 +17,7 @@ const r2Hosts = (
   .filter(Boolean);
 
 const nextConfig: NextConfig = {
+  logging: { incomingRequests: { ignore: [/\/api\/auth\/callback\//] } },
   images: {
     // Las fotos ya llegan optimizadas: el navegador las redimensiona a 1600px y
     // las pasa a WebP (~150 KB) antes de subirlas a R2. Volver a pasarlas por la

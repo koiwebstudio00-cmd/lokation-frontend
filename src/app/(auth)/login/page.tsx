@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { signIn } from "@/actions/auth";
+import { passwordSignIn } from "@/actions/login-flow";
+import { GoogleLogin } from "@/components/google-login";
+import { googleEnabled } from "@/lib/google-auth";
 import { AuthForm } from "@/components/auth/auth-form";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
@@ -10,9 +12,9 @@ export const metadata = { title: "Iniciar sesión — Ubikka" };
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ clave?: string }>;
+  searchParams: Promise<{ clave?: string; google?: string }>;
 }) {
-  const { clave } = await searchParams;
+  const { clave, google } = await searchParams;
 
   return (
     <div className="space-y-4">
@@ -22,7 +24,8 @@ export default async function LoginPage({
           Listo, cambiamos tu contraseña. Entrá con la nueva.
         </p>
       )}
-      <AuthForm action={signIn} submitLabel="Entrar" pendingLabel="Entrando...">
+      {google === "error" && <p role="alert" className="text-sm text-destructive">No se pudo completar el acceso con Google. Usá el email de una cuenta habilitada en este panel o ingresá con contraseña.</p>}
+      <AuthForm action={passwordSignIn} submitLabel="Entrar" pendingLabel="Entrando...">
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <Input id="email" name="email" type="email" autoComplete="email" required />
@@ -37,6 +40,7 @@ export default async function LoginPage({
           />
         </div>
       </AuthForm>
+      <GoogleLogin enabled={googleEnabled} />
       <div className="space-y-1 text-sm">
         <p>
           <Link href="/recuperar" className="text-primary hover:underline">

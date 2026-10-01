@@ -269,3 +269,8 @@ export const getCurrentUser = cache(async (): Promise<SessionUser | null> => {
     throw error;
   }
 });
+
+/** Persiste únicamente las cookies propias de Ubikka después del login verificado. */
+export async function persistLoginResponse(response: Response) {
+  persist(await cookies(), parseSetCookies(response));
+}
