@@ -15,6 +15,7 @@ export interface SiteData {
   configSitio: {
     descripcion?: string; telefono?: string; email?: string;
     direccion?: string; ciudad?: string; imagen_portada_url?: string;
+    lema?: string; color_primario?: string;
   } | null;
 }
 
@@ -28,6 +29,15 @@ export function SiteForm({ site }: { site: SiteData }) {
           <Input id="site-name" name="nombre" defaultValue={site.nombre} maxLength={120} required /></div>
         <div className="space-y-2"><Label htmlFor="site-city">Ciudad</Label>
           <Input id="site-city" name="ciudad" defaultValue={config.ciudad ?? ""} maxLength={100} /></div>
+      </div>
+      <div className="grid gap-5 md:grid-cols-[1fr_auto]">
+        <div className="space-y-2"><Label htmlFor="site-tagline">Lema de portada</Label>
+          <Input id="site-tagline" name="lema" defaultValue={config.lema ?? ""} maxLength={100}
+            placeholder="Encontrá tu próximo lugar" />
+          <p className="text-xs text-muted-foreground">Una frase breve que aparece sobre la presentación.</p></div>
+        <div className="space-y-2"><Label htmlFor="site-color">Color principal</Label>
+          <Input id="site-color" name="color_primario" type="color"
+            defaultValue={config.color_primario ?? "#1b5148"} className="h-10 w-24 p-1" /></div>
       </div>
       <div className="space-y-2"><Label htmlFor="site-description">Descripción pública</Label>
         <Textarea id="site-description" name="descripcion" defaultValue={config.descripcion ?? ""}
