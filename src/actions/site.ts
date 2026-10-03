@@ -1,5 +1,6 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { ApiError, apiFetch, getCurrentUser } from "@/lib/api";
@@ -65,4 +66,18 @@ export async function saveSite(_previous: SiteState, formData: FormData): Promis
   } catch (error) {
     return { error: error instanceof ApiError ? error.message : "No pudimos guardar el sitio." };
   }
+}
+
+export async function chooseWebsiteMode(_previous: SiteState, formData: FormData): Promise<SiteState> {
+  const me = await getCurrentUser();
+  if (!me || !esAdmin(me.rol)) return { error: "No tenés permiso para configurar el sitio." };
+  const mode = z.enum(["managed", "custom"]).safeParse(formData.get("mode"));
+  if (!mode.success) return { error: "Elegí una opción válida." };
+  try {
+    await apiFetch("/v1/tenants/current", { method: "PATCH", body: { website_mode: mode.data } });
+  } catch (error) {
+    return { error: error instanceof ApiError ? error.message : "No pudimos guardar tu elección." };
+  }
+  revalidatePath("/mi-sitio");
+  redirect("/mi-sitio");
 }

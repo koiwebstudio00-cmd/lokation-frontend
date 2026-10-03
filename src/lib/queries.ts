@@ -1,5 +1,5 @@
 /**
- * Capa de adaptación entre backend de Ubikka y las pantallas del panel.
+ * Capa de adaptación entre backend de Lokation y las pantallas del panel.
  *
  * La API habla camelCase y manda los `numeric` como string (son Decimal en
  * Prisma). Los componentes hablan snake_case y esperan números. Toda esa

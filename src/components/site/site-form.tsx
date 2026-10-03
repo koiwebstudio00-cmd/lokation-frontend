@@ -15,11 +15,12 @@ export interface SiteData {
   configSitio: {
     descripcion?: string; telefono?: string; email?: string;
     direccion?: string; ciudad?: string; imagen_portada_url?: string;
+    website_mode?: "managed" | "custom";
     lema?: string; color_primario?: string;
   } | null;
 }
 
-export function SiteForm({ site }: { site: SiteData }) {
+export function SiteForm({ site, custom = false }: { site: SiteData; custom?: boolean }) {
   const [state, action, pending] = useActionState<SiteState, FormData>(saveSite, {});
   const config = site.configSitio ?? {};
   return (
@@ -62,11 +63,11 @@ export function SiteForm({ site }: { site: SiteData }) {
       {state.error && <p role="alert" className="text-sm text-destructive">{state.error}</p>}
       {state.success && <p role="status" className="text-sm text-emerald-700">{state.success}</p>}
       <div className="flex flex-wrap gap-3">
-        <Button type="submit" name="intent" value="save" disabled={pending}>Guardar borrador</Button>
-        <Button type="submit" name="intent" value={site.sitePublished ? "unpublish" : "publish"}
+        <Button type="submit" name="intent" value="save" disabled={pending}>{custom ? "Guardar información" : "Guardar borrador"}</Button>
+        {!custom && <Button type="submit" name="intent" value={site.sitePublished ? "unpublish" : "publish"}
           variant={site.sitePublished ? "outline" : "default"} disabled={pending}>
           {site.sitePublished ? "Retirar sitio" : "Publicar sitio"}
-        </Button>
+        </Button>}
       </div>
     </form>
   );

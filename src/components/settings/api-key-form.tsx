@@ -5,7 +5,7 @@ import { Check, Copy, KeyRound, TriangleAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createApiKey, type ApiKeyState } from "@/actions/api-keys";
+import { createApiKey, createWebsiteApiKey, type ApiKeyState } from "@/actions/api-keys";
 import type { ScopeOption } from "@/lib/types";
 
 /**
@@ -17,14 +17,14 @@ import type { ScopeOption } from "@/lib/types";
  * `GET /v1/integrations/scopes`: las etiquetas las escribe el backend una sola
  * vez y el panel no las duplica.
  */
-export function ApiKeyForm({ scopes }: { scopes: ScopeOption[] }) {
+export function ApiKeyForm({ scopes, websiteOnly = false }: { scopes: ScopeOption[]; websiteOnly?: boolean }) {
   const [state, formAction, pending] = useActionState<ApiKeyState, FormData>(
-    createApiKey,
+    websiteOnly ? createWebsiteApiKey : createApiKey,
     {}
   );
   const [copiada, setCopiada] = useState(false);
   const [descartada, setDescartada] = useState<string | null>(null);
-  const [elegidos, setElegidos] = useState<string[]>([]);
+  const [elegidos, setElegidos] = useState<string[]>(websiteOnly ? ["export:read"] : []);
 
   const mostrarKey = state.key && state.key !== descartada;
   const esDelAgente = state.scopes?.some((s) => s.startsWith("agent:"));
@@ -82,9 +82,7 @@ export function ApiKeyForm({ scopes }: { scopes: ScopeOption[] }) {
               </>
             ) : (
               <>
-                Va en el archivo <code>.env</code> del sitio público, como{" "}
-                <code>VITE_API_KEY</code>. Después hay que volver a publicar el
-                sitio.
+                Guardala como secreto en el servidor de tu web y enviala en el header <code>X-Api-Key</code>. Nunca la incluyas en JavaScript del navegador ni en variables VITE_* o NEXT_PUBLIC_*.
               </>
             )}
           </p>
@@ -95,7 +93,7 @@ export function ApiKeyForm({ scopes }: { scopes: ScopeOption[] }) {
           size="sm"
           onClick={() => {
             setDescartada(state.key!);
-            setElegidos([]);
+            setElegidos(websiteOnly ? ["export:read"] : []);
           }}
         >
           Listo, ya la guardé
@@ -138,6 +136,7 @@ export function ApiKeyForm({ scopes }: { scopes: ScopeOption[] }) {
                 name="scopes"
                 value={scope}
                 checked={elegidos.includes(scope)}
+                disabled={websiteOnly}
                 onChange={(e) => alternar(scope, e.currentTarget.checked)}
                 className="mt-0.5 size-4 shrink-0 accent-primary"
               />

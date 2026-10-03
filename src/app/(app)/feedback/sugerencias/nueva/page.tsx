@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { SugerenciaForm } from "@/components/feedback/sugerencia-form";
 
-export const metadata = { title: "Nueva sugerencia — Ubikka" };
+export const metadata = { title: "Nueva sugerencia — Lokation" };
 
 export default function NuevaSugerenciaPage() {
   return (

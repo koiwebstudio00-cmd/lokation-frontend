@@ -5,7 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Ubikka",
+  title: "Lokation",
   description: "Plataforma de gestión inmobiliaria",
   icons: {
     icon: "/icon.svg",

@@ -1,6 +1,6 @@
-# Ubikka · app-dashboard
+# Lokation · app-dashboard
 
-Este repositorio es parte del producto Ubikka, independiente de cualquier cliente anterior.
+Este repositorio es parte del producto Lokation, independiente de cualquier cliente anterior.
 
 Next.js. El navegador usa la API mediante el servidor del dashboard; la autorización real reside en backend. Toda pantalla debe obtener marca, contenido y permisos del tenant actual. No incorporar nombres ni activos de clientes anteriores.
 

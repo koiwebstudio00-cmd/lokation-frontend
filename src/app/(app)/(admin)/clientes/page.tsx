@@ -1,6 +1,6 @@
 import { Users } from "lucide-react";
 
-export const metadata = { title: "Clientes — Ubikka" };
+export const metadata = { title: "Clientes — Lokation" };
 
 export default function ClientesPage() {
   return (

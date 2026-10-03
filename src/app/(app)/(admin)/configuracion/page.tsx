@@ -13,7 +13,7 @@ import {
 import { getApiKeys, getApiKeyScopes } from "@/lib/queries";
 import { formatDate } from "@/lib/utils";
 
-export const metadata = { title: "Configuración — Ubikka" };
+export const metadata = { title: "Configuración — Lokation" };
 
 export default async function ConfiguracionPage() {
   const [keys, scopes] = await Promise.all([getApiKeys(), getApiKeyScopes()]);
@@ -38,8 +38,7 @@ export default async function ConfiguracionPage() {
         <div>
           {keys.length === 0 ? (
             <p className="p-6 text-center text-sm text-muted-foreground">
-              No hay ninguna key activa. Sin una, el sitio público no puede leer
-              las propiedades.
+              No hay ninguna key activa. Creá una si necesitás conectar una web propia o una integración.
             </p>
           ) : (
             <Table>
@@ -90,9 +89,7 @@ export default async function ConfiguracionPage() {
 
       <p className="text-xs text-muted-foreground">
         Cada key ve solo lo que le habilitan sus permisos, y siempre dentro de
-        esta inmobiliaria. La del sitio público es de solo lectura y puede
-        viajar en el código del sitio; la del agente escribe consultas y
-        derivaciones, así que va únicamente en la configuración del agente.
+        esta inmobiliaria. Guardá las claves únicamente en el servidor de tu web o integración, incluso las de solo lectura.
         Nunca uses acá una contraseña ni compartas tu sesión del panel.
       </p>
     </div>

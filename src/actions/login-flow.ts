@@ -2,6 +2,8 @@
 import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { loginRequest, pendingCookie } from "@/lib/login-flow";
+import { parseSetCookieHeader, toCookieOptions } from "better-auth/cookies";
+import { isGoogleCookie } from "@/lib/google-oauth";
 import { getGoogleAuth } from "@/lib/google-auth";
 
 export type LoginState = { error?: string };
@@ -32,7 +34,16 @@ export async function googleSignIn(_state: LoginState): Promise<LoginState> {
   try {
     (await cookies()).delete(pendingCookie);
     const auth = getGoogleAuth();
-    const result = await auth.api.signInSocial({ headers: await headers(), body: { provider: "google", callbackURL: `${process.env.BETTER_AUTH_URL}/api/auth/google-complete`, errorCallbackURL: `${process.env.BETTER_AUTH_URL}/login?google=error`, disableRedirect: true } });
+    const response = await auth.api.signInSocial({ asResponse: true, headers: await headers(), body: { provider: "google", callbackURL: `${process.env.BETTER_AUTH_URL}/api/auth/google-complete`, errorCallbackURL: `${process.env.BETTER_AUTH_URL}/login?google=error`, disableRedirect: true } });
+    if (!response.ok) throw new Error("No se pudo iniciar OAuth.");
+    const result = await response.json() as { url?: string };
+    const store = await cookies();
+    // Only state cookies are created at this stage; account/session cookies stay server-side.
+    for (const raw of response.headers.getSetCookie()) {
+      for (const [name, value] of parseSetCookieHeader(raw)) {
+        if (isGoogleCookie(name)) store.set(name, value.value, toCookieOptions(value));
+      }
+    }
     if (!result.url) throw new Error("Google no devolvió un enlace de acceso.");
     destination = result.url;
   } catch { return { error: "No se pudo iniciar el acceso con Google. Probá de nuevo." }; }

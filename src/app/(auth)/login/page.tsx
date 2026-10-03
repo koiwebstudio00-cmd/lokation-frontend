@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { Label } from "@/components/ui/label";
 
-export const metadata = { title: "Iniciar sesión — Ubikka" };
+export const metadata = { title: "Iniciar sesión — Lokation" };
 
 export default async function LoginPage({
   searchParams,

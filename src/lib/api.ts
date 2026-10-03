@@ -1,5 +1,5 @@
 /**
- * Transporte hacia el backend de Ubikka.
+ * Transporte hacia el backend de Lokation.
  *
  * El navegador nunca habla con la API: siempre pasa por el servidor de Next,
  * que reenvía las cookies de sesión del usuario. Todo lo de este archivo corre
@@ -270,7 +270,7 @@ export const getCurrentUser = cache(async (): Promise<SessionUser | null> => {
   }
 });
 
-/** Persiste únicamente las cookies propias de Ubikka después del login verificado. */
+/** Persiste únicamente las cookies propias de Lokation después del login verificado. */
 export async function persistLoginResponse(response: Response) {
   persist(await cookies(), parseSetCookies(response));
 }

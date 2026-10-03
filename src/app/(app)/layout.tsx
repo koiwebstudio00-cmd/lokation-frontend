@@ -1,3 +1,4 @@
+import { Notifications } from "@/components/notifications";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ThemeSwitcher } from "@/components/nav/theme-switcher";
@@ -27,13 +28,13 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         nombre={me.nombre}
         email={me.email}
         rol={me.rol}
-        tenantNombre={me.tenant?.nombre ?? "Ubikka"}
+        tenantNombre={me.tenant?.nombre ?? "Lokation"}
         consultasSinTomar={consultasSinTomar}
       />
       <SidebarInset className="min-w-0 bg-secondary">
         <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-2 border-b bg-background px-4 print:hidden">
           <SidebarTrigger />
-          <div className="ml-auto"><ThemeSwitcher /></div>
+          <div className="ml-auto flex items-center gap-2"><Notifications /><ThemeSwitcher /></div>
         </header>
         <div className="mx-auto w-full min-w-0 p-4 sm:p-6 print:p-0">{children}</div>
       </SidebarInset>

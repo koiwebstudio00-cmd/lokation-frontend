@@ -9,7 +9,7 @@ import { getInvitaciones, getUsuarios } from "@/lib/queries";
 import { formatDate } from "@/lib/utils";
 import type { Rol } from "@/lib/types";
 
-export const metadata = { title: "Equipo — Ubikka" };
+export const metadata = { title: "Equipo — Lokation" };
 
 const ROL_LABEL: Record<Rol, string> = {
   super_admin: "Soporte",

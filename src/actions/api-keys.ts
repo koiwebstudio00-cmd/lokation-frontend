@@ -69,6 +69,7 @@ export async function createApiKey(
       body: { nombre: nombre.data, scopes: scopes.data as ApiKeyScope[] },
     });
     revalidatePath("/configuracion");
+  revalidatePath("/mi-sitio");
     return { key, nombre: nombre.data, scopes: scopes.data as ApiKeyScope[] };
   } catch (error) {
     if (error instanceof ApiError) return { error: error.message };
@@ -90,5 +91,13 @@ export async function revokeApiKey(id: string): Promise<string | null> {
     return error instanceof ApiError ? error.message : "No pudimos revocar la key.";
   }
   revalidatePath("/configuracion");
+  revalidatePath("/mi-sitio");
   return null;
+}
+
+export async function createWebsiteApiKey(previous: ApiKeyState, formData: FormData): Promise<ApiKeyState> {
+  const fixed = new FormData();
+  fixed.set("nombre", String(formData.get("nombre") ?? ""));
+  fixed.set("scopes", "export:read");
+  return createApiKey(previous, fixed);
 }

@@ -1,7 +1,7 @@
 import { AgentSettingsPanel } from "@/components/whatsapp/agent-settings-panel";
 import { getChannels, getFollowupSettings } from "@/lib/queries";
 
-export const metadata = { title: "Ajustes del agente — Ubikka" };
+export const metadata = { title: "Ajustes del agente — Lokation" };
 
 export default async function AgentSettingsPage() {
   const [settings, channels] = await Promise.all([

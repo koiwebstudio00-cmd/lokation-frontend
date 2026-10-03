@@ -2,7 +2,7 @@ import { TriangleAlert } from "lucide-react";
 import { ChannelManager } from "@/components/whatsapp/channel-manager";
 import { getChannels } from "@/lib/queries";
 
-export const metadata = { title: "Conectar número — Ubikka" };
+export const metadata = { title: "Conectar número — Lokation" };
 
 /**
  * `?error=` lo escribe la pantalla de callback cuando Zernio no pudo confirmar

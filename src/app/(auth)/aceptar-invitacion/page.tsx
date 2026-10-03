@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { Label } from "@/components/ui/label";
 
-export const metadata = { title: "Aceptar invitación — Ubikka" };
+export const metadata = { title: "Aceptar invitación — Lokation" };
 
 export default async function AceptarInvitacionPage({
   searchParams,

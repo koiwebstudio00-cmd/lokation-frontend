@@ -2,7 +2,7 @@ import { getPropertyLocations } from "@/lib/queries";
 import { createProperty } from "@/actions/properties";
 import { PropertyForm } from "@/components/properties/property-form";
 
-export const metadata = { title: "Nueva propiedad — Ubikka" };
+export const metadata = { title: "Nueva propiedad — Lokation" };
 
 export default async function NuevaPropiedadPage() {
   const locations = await getPropertyLocations();

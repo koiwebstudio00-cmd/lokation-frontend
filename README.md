@@ -35,3 +35,14 @@ Consultas distingue fantasmas y derivaciones pendientes; el filtro **Necesita at
 5. Ejecutar `npm run lint` y `npm run build`.
 
 El build/lint pasaron durante la integración del tema y las mejoras. El último ajuste de activación de menús requiere la confirmación indicada arriba. No se modificaron los repositorios fuente de Lamelas.
+
+## Actualización: correos, notificaciones y web pública
+
+Ver [guía de implementación y pruebas](../docs/CORREOS_NOTIFICACIONES_WEB.md).
+Campana en navbar con contador, últimas cinco notificaciones y página `/notificaciones`. Lectura individual/global y actualización cada 45 segundos con pestaña visible.
+
+## Lokation: opciones de sitio
+
+Mi sitio web permite elegir el template administrado o una web propia conectada por API key de lectura. La elección persiste por inmobiliaria; las claves se guardan sólo en el servidor de la web propia. Guía manual de GitHub, Dokploy y Vercel: `../docs/DESPLIEGUE_DOKPLOY_LOKATION.md`.
+
+La guía autenticada `/mi-sitio/api`, enlazada desde Mi sitio web, explica configuración de API key en servidor, catálogo paginado, ficha/fotos, consultas generales y por `property_id`, datos opcionales de la inmobiliaria, respuestas HTTP y límites. Los ejemplos muestran la URL de API configurada y el slug del tenant actual, sin incluir claves reales.

@@ -1,12 +1,13 @@
 {
-  "name": "ubikka-app-dashboard",
+  "name": "lokation-app-dashboard",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:google": "node --experimental-strip-types --test tests/google-oauth.test.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
@@ -44,5 +45,5 @@
     "tailwindcss": "^4",
     "typescript": "^5"
   },
-  "description": "Dashboard de inmobiliarias de Ubikka"
+  "description": "Dashboard de inmobiliarias de Lokation"
 }

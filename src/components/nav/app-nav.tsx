@@ -179,7 +179,7 @@ export function AppNav({
                 <Logo className="shrink-0" />
                 <span className="min-w-0 font-semibold leading-tight">
                   <span className="block truncate">{tenantNombre}</span>
-                  <span className="block text-xs font-normal text-muted-foreground">Ubikka</span>
+                  <span className="block text-xs font-normal text-muted-foreground">Lokation</span>
                 </span>
               </Link>
             </SidebarMenuButton>

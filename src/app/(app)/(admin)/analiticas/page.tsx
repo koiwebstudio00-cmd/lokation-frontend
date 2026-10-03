@@ -21,7 +21,7 @@ import {
 } from "@/lib/queries";
 import type { AnalyticsPeriod } from "@/lib/types";
 
-export const metadata = { title: "Analíticas — Ubikka" };
+export const metadata = { title: "Analíticas — Lokation" };
 
 type Params = Record<string, string | undefined>;
 

@@ -10,7 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import type { Rol } from "@/lib/types";
 import { getPerfil } from "@/lib/queries";
 
-export const metadata = { title: "Mi perfil — Ubikka" };
+export const metadata = { title: "Mi perfil — Lokation" };
 
 const ROL_LABEL: Record<Rol, string> = {
   super_admin: "Soporte",

@@ -7,7 +7,7 @@ import { FeedbackList } from "@/components/feedback/feedback-list";
 import { Pagination } from "@/components/pagination";
 import { getFeedbackList } from "@/lib/queries";
 
-export const metadata = { title: "Sugerencias — Ubikka" };
+export const metadata = { title: "Sugerencias — Lokation" };
 
 type SearchParams = Promise<Record<string, string | undefined>>;
 

@@ -19,7 +19,7 @@ import {
   getAnalyticsSofia,
 } from "@/lib/queries";
 
-export const metadata = { title: "Reporte mensual — Ubikka" };
+export const metadata = { title: "Reporte mensual — Lokation" };
 
 const TZ = "America/Argentina/Tucuman";
 
@@ -95,7 +95,7 @@ export default async function MonthlyReportPage({ searchParams }: { searchParams
       </div>
 
       <header className="border-b-2 border-primary pb-4">
-        <p className="text-sm font-medium text-primary">{me.tenant?.nombre ?? "Inmobiliaria"} · Ubikka</p>
+        <p className="text-sm font-medium text-primary">{me.tenant?.nombre ?? "Inmobiliaria"} · Lokation</p>
         <h1 className="mt-1 text-3xl font-semibold capitalize">Reporte de {monthName(range.month)}</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Del {formatDate(range.from)} al {formatDate(range.to)}

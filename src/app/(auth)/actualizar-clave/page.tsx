@@ -4,7 +4,7 @@ import { AuthForm } from "@/components/auth/auth-form";
 import { PasswordInput } from "@/components/ui/password-input";
 import { Label } from "@/components/ui/label";
 
-export const metadata = { title: "Nueva contraseña — Ubikka" };
+export const metadata = { title: "Nueva contraseña — Lokation" };
 
 export default async function ActualizarClavePage({
   searchParams,
