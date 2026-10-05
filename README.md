@@ -1,4 +1,7 @@
-# Ubikka · app-dashboard
+# Lokation · app-dashboard
+
+> Identidad vigente (2026-10-04): **Lokation es la plataforma SaaS. Ubikka es una inmobiliaria registrada**, con web propia en ubikka-site, separada del template web-publica. [Estado actual](../docs/ESTADO_ACTUAL.md) y [backlog](../docs/FEATURES_FUTURAS.md) pertenecen al repositorio de documentacion y requieren el workspace completo para estos enlaces relativos.
+
 
 Dashboard de inmobiliarias de Ubikka. Este repositorio Git local se creó a partir del estado de trabajo de un prototipo técnico y no tiene remoto configurado.
 
@@ -8,7 +11,7 @@ El documento [README.legacy.md](README.legacy.md) y los documentos importados de
 
 ## Login con Google y 2FA por etapas
 
-Ver [configuración y pruebas](../docs/LOGIN_GOOGLE_2FA.md). Google usa Better Auth; las sesiones y los permisos de Ubikka continúan en el backend.
+Ver [configuración y pruebas](../docs/LOGIN_GOOGLE_2FA.md). Google usa Better Auth; las sesiones y los permisos de Lokation continúan en el backend.
 
 ## Interfaz y navegación · 2026-10-01
 
