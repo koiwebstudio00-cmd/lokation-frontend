@@ -14,6 +14,37 @@ export type PropertyFormState = {
   warning?: string;
 };
 
+export async function generatePropertyCopy(formData: FormData): Promise<
+  { draft: { titulo: string; descripcion: string } } | { error: string }
+> {
+  const text = (key: string) => String(formData.get(key) ?? "").trim();
+  const number = (key: string) => {
+    const value = text(key);
+    return value === "" ? null : Number(value);
+  };
+  try {
+    const result = await apiFetch<{ draft: { titulo: string; descripcion: string } }>(
+      "/v1/properties/copy-draft", {
+        method: "POST",
+        body: {
+          operacion: text("operacion"), tipo: text("tipo"),
+          zona: text("zona") || null, ciudad: text("ciudad") || null,
+          ambientes: number("ambientes"), dormitorios: number("dormitorios"),
+          banios: number("banios"), sup_cubierta: number("sup_cubierta"),
+          sup_total: number("sup_total"), precio: number("precio"),
+          moneda: text("moneda") || null,
+          precio_alquiler: number("precio_alquiler"),
+          moneda_alquiler: text("moneda_alquiler") || null,
+          mascotas: text("mascotas") || null, amoblado: text("amoblado") || null,
+        },
+      }
+    );
+    return { draft: result.draft };
+  } catch (error) {
+    return { error: error instanceof ApiError ? error.message : "No pudimos generar el borrador." };
+  }
+}
+
 function fieldErrors(issues: { path: PropertyKey[]; message: string }[]) {
   const errors: Record<string, string> = {};
   for (const issue of issues) {

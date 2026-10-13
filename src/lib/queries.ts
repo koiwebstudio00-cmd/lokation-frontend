@@ -33,6 +33,7 @@ import type {
   Invitacion,
   Lead,
   LeadDetalle,
+  LeadStatusEvent,
   Moneda,
   Operacion,
   Property,
@@ -359,6 +360,16 @@ interface ApiLead {
   assignee?: { id: string; nombre: string } | null;
   takenBy?: { id: string; nombre: string } | null;
   notes?: ApiLeadNote[];
+  statusHistory?: {
+    id: string;
+    fromState: EstadoLead;
+    toState: EstadoLead;
+    operation: "venta" | "alquiler" | null;
+    reason: string | null;
+    note: string | null;
+    createdAt: string;
+    actor: { nombre: string };
+  }[];
 }
 
 interface ApiLeadNote {
@@ -546,12 +557,37 @@ export function getAnalyticsProperties(filters: AnalyticsFilters) {
   });
 }
 
+export type PropertyCopyUsage = {
+  period: { from: string; to: string };
+  generations: number;
+  input_tokens: number;
+  output_tokens: number;
+};
+
+export async function getPropertyCopyUsage(): Promise<PropertyCopyUsage | null> {
+  try {
+    return await apiFetch<PropertyCopyUsage>("/v1/analytics/property-copy-usage");
+  } catch {
+    return null;
+  }
+}
+
 /** Devuelve null si no existe o si el usuario no tiene permiso de verla. */
 export async function getLead(id: string): Promise<LeadDetalle | null> {
   try {
     const { lead } = await apiFetch<{ lead: ApiLead }>(`/v1/leads/${id}`);
     return {
       ...toLead(lead),
+      historial_estados: (lead.statusHistory ?? []).map((event): LeadStatusEvent => ({
+        id: event.id,
+        from_state: event.fromState,
+        to_state: event.toState,
+        operation: event.operation,
+        reason: event.reason,
+        note: event.note,
+        actor: event.actor.nombre,
+        created_at: event.createdAt,
+      })),
       asignado: lead.assignee?.nombre ?? null,
       notas: (lead.notes ?? []).map((n) => ({
         id: n.id,
@@ -769,6 +805,7 @@ export async function getFollowupSettings(): Promise<FollowupSettings> {
 // El resumen de la home muestra tres contadores; no necesita todos los estados.
 export interface Resumen {
   propiedades: Record<"disponible" | "reservado" | "vendida", number>;
+  totalPropiedades: number;
   consultasNuevas: number;
   ultimasConsultas: Lead[];
   ultimasPropiedades: PropertyCardData[];
@@ -811,6 +848,7 @@ export async function getResumen(): Promise<Resumen> {
 
   return {
     propiedades: { disponible, reservado, vendida },
+    totalPropiedades: propiedades.meta.total,
     consultasNuevas: nuevas,
     ultimasConsultas: consultas.data.map(toLead),
     ultimasPropiedades: propiedades.data.map(toCard),

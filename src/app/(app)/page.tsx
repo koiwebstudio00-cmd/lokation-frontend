@@ -67,10 +67,7 @@ const OPERACION_LABEL: Record<Operacion, string> = {
 export default async function HomePage() {
   const [resumen, me] = await Promise.all([getResumen(), getCurrentUser()]);
   const admin = me ? esAdmin(me.rol) : false;
-  const total =
-    resumen.propiedades.disponible +
-    resumen.propiedades.reservado +
-    resumen.propiedades.vendida;
+  const total = resumen.totalPropiedades;
 
   // El vendedor está viendo su propio trabajo, no el de la inmobiliaria: los
   // textos tienen que decirlo, o los números se leen como totales del negocio.

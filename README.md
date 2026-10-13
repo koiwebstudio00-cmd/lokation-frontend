@@ -1,13 +1,19 @@
 # Lokation · app-dashboard
 
-> Identidad vigente (2026-10-04): **Lokation es la plataforma SaaS. Ubikka es una inmobiliaria registrada**, con web propia en ubikka-site, separada del template web-publica. [Estado actual](../docs/ESTADO_ACTUAL.md) y [backlog](../docs/FEATURES_FUTURAS.md) pertenecen al repositorio de documentacion y requieren el workspace completo para estos enlaces relativos.
+> Identidad vigente: **Lokation es la plataforma SaaS. Ubikka es una inmobiliaria registrada**, con web propia en ubikka-site, separada del template web-publica. [Estado actual](../docs/ESTADO_ACTUAL.md) y [backlog](../docs/FEATURES_FUTURAS.md) pertenecen al repositorio de documentación y requieren el workspace completo para estos enlaces relativos.
 
 
-Dashboard de inmobiliarias de Ubikka. Este repositorio Git local se creó a partir del estado de trabajo de un prototipo técnico y no tiene remoto configurado.
+Dashboard de las inmobiliarias de Lokation. Este repositorio Git local se creó a partir del estado de trabajo de un prototipo técnico; el remoto actual es `lokation-frontend`.
 
 Next.js. El navegador usa la API mediante el servidor del dashboard; la autorización real reside en backend. Toda pantalla debe obtener marca, contenido y permisos del tenant actual. No incorporar nombres ni activos de clientes anteriores.
 
 El documento [README.legacy.md](README.legacy.md) y los documentos importados describen el prototipo original y se conservan solo como referencia técnica. Plan vigente: [PLAN_IMPLEMENTACION.md](../docs/PLAN_IMPLEMENTACION.md).
+
+## Evolución local de alquileres · 2026-10-13
+
+El administrador dispone de resumen de alquileres, personas, contratos, servicios, cargos y cobros registrados, y mantenimiento. Desde el detalle de un contrato puede abrir vistas previas de inquilino y propietario. Estas vistas usan datos existentes y sólo están disponibles para administradores; todavía no hay acceso externo. La herramienta interna de liquidación permite ingresar comisión y gastos como importes manuales para simular un neto; no se guarda ni registra un pago al dueño.
+
+También se añadieron orden de fotografías, borradores revisables de texto con IA, paginación y cierre de consultas con historial. La API debe estar disponible para probar estas pantallas. Ver [recorrido de dos inmobiliarias](../docs/RECORRIDO_DOS_TENANTS.md) y [plan de evolución](../docs/PLAN_EVOLUCION_LOKATION_2026-10.md).
 
 ## Login con Google y 2FA por etapas
 

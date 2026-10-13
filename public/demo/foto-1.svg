@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Foto demo 1">
+  <rect width="800" height="600" fill="#dbeafe"/>
+  <rect x="105" y="125" width="590" height="385" rx="22" fill="#f8fafc" stroke="#2563eb" stroke-width="12"/>
+  <path d="M105 235h590M380 235v275" stroke="#94a3b8" stroke-width="10"/>
+  <circle cx="590" cy="180" r="34" fill="#fbbf24"/>
+  <text x="400" y="565" text-anchor="middle" font-family="Arial,sans-serif" font-size="34" fill="#1e3a8a">FOTO DEMO 1 · FRENTE</text>
+</svg>

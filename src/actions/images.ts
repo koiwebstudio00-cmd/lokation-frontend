@@ -73,6 +73,26 @@ export async function setPortada(
   return null;
 }
 
+/** Guarda el orden completo de las fotos de una propiedad. */
+export async function reorderPhotos(
+  propertyId: string,
+  ids: string[]
+): Promise<string | null> {
+  try {
+    await apiFetch(`/v1/properties/${propertyId}/images/order`, {
+      method: "PATCH",
+      body: { ids },
+    });
+  } catch (error) {
+    return message(error, "No se pudo guardar el orden de las fotos.");
+  }
+  revalidatePath("/propiedades");
+  revalidatePath("/mis-propiedades");
+  revalidatePath(`/propiedades/${propertyId}`);
+  revalidatePath(`/propiedades/${propertyId}/editar`);
+  return null;
+}
+
 /**
  * Borra la foto. La API borra también el objeto en R2 y, si era la portada,
  * promueve la siguiente.

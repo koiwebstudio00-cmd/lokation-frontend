@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Foto demo 3">
+  <rect width="800" height="600" fill="#fef3c7"/>
+  <rect x="95" y="115" width="610" height="405" rx="22" fill="#fffbeb" stroke="#d97706" stroke-width="12"/>
+  <rect x="150" y="185" width="230" height="245" rx="10" fill="#fde68a"/>
+  <path d="M450 185v245M565 185v245" stroke="#fbbf24" stroke-width="18"/>
+  <text x="400" y="565" text-anchor="middle" font-family="Arial,sans-serif" font-size="34" fill="#92400e">FOTO DEMO 3 · COCINA</text>
+</svg>

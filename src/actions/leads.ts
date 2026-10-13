@@ -25,7 +25,7 @@ function revalidar(id?: string) {
   if (id) revalidatePath(`/consultas/${id}`);
 }
 
-const estadoSchema = z.enum(["nueva", "en_contacto", "ganada", "perdida"]);
+const estadoSchema = z.enum(["nueva", "en_contacto"]);
 // "" = sin clasificar (borra la clasificación en la API con null).
 const clasificacionSchema = z.enum(["potencial", "fantasma", ""]);
 
@@ -50,6 +50,24 @@ export async function updateLeadEstado(id: string, estado: string): Promise<stri
     await apiFetch(`/v1/leads/${id}`, { method: "PATCH", body: { estado: parsed.data } });
   } catch (error) {
     return message(error, "No pudimos actualizar la consulta.");
+  }
+  revalidar(id);
+  return null;
+}
+
+const closeSchema = z.discriminatedUnion("resultado", [
+  z.object({ resultado: z.literal("ganada"), operacion: z.enum(["venta", "alquiler"]), nota: z.string().trim().max(1000) }),
+  z.object({ resultado: z.literal("perdida"), motivo: z.enum(["no_califica", "sin_respuesta", "sin_interes", "presupuesto", "eligio_otra", "otro"]), nota: z.string().trim().max(1000) }),
+]);
+
+export async function closeLeadOutcome(id: string, input: z.input<typeof closeSchema>): Promise<string | null> {
+  if (!z.string().uuid().safeParse(id).success) return "La consulta no es válida.";
+  const parsed = closeSchema.safeParse(input);
+  if (!parsed.success) return "Completá los datos del cierre.";
+  try {
+    await apiFetch(`/v1/leads/${id}/close`, { method: "POST", body: parsed.data });
+  } catch (error) {
+    return message(error, "No pudimos cerrar la consulta.");
   }
   revalidar(id);
   return null;

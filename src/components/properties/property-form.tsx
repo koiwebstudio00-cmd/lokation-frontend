@@ -15,6 +15,7 @@ import {
   Loader2,
   MapPin,
   Ruler,
+  Sparkles,
   StickyNote,
   X,
 } from "lucide-react";
@@ -41,7 +42,7 @@ import {
   type Property,
 } from "@/lib/types";
 import { PropertyMap } from "@/components/properties/property-map";
-import type { PropertyFormState } from "@/actions/properties";
+import { generatePropertyCopy, type PropertyFormState } from "@/actions/properties";
 
 const MAX_FOTOS = 20;
 
@@ -107,6 +108,11 @@ export function PropertyForm({
   const [photos, setPhotos] = useState<File[]>([]);
   const [uploadingPhotos, setUploadingPhotos] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const titleRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const [generatingCopy, setGeneratingCopy] = useState(false);
+  const [copyDraft, setCopyDraft] = useState<{ titulo: string; descripcion: string } | null>(null);
   const isNew = !property;
   const e = state.errors ?? {};
   // La sección de alquiler y los campos "Otro"/"Fijo %" se muestran según lo elegido.
@@ -177,13 +183,37 @@ export function PropertyForm({
     });
   }
 
+  async function handleGenerateCopy() {
+    if (!formRef.current || generatingCopy) return;
+    setGeneratingCopy(true);
+    setCopyDraft(null);
+    try {
+      const result = await generatePropertyCopy(new FormData(formRef.current));
+      if ("error" in result) toast.error(result.error);
+      else setCopyDraft(result.draft);
+    } catch {
+      toast.error("No pudimos generar el borrador.");
+    } finally {
+      setGeneratingCopy(false);
+    }
+  }
+
+  function applyCopyDraft() {
+    if (!copyDraft || !titleRef.current || !descriptionRef.current) return;
+    titleRef.current.value = copyDraft.titulo;
+    descriptionRef.current.value = copyDraft.descripcion;
+    setCopyDraft(null);
+    toast.success("Borrador aplicado. Revisalo antes de guardar.");
+  }
+
   return (
-    <form action={handleAction} className="space-y-6">
+    <form ref={formRef} action={handleAction} className="space-y-6">
       <Card>
         <SectionHeader icon={Building2} title="Información principal" />
         <CardContent className="space-y-4 pt-4">
           <Field label="Título *" htmlFor="titulo" error={e.titulo}>
             <Input
+              ref={titleRef}
               id="titulo"
               name="titulo"
               defaultValue={property?.titulo}
@@ -604,8 +634,27 @@ export function PropertyForm({
       <Card>
         <SectionHeader icon={StickyNote} title="Descripción y notas" optional />
         <CardContent className="space-y-4 pt-4">
+          <div className="rounded-lg border bg-muted/30 p-3 space-y-2">
+            <Button type="button" variant="outline" size="sm" disabled={generatingCopy || pending} onClick={handleGenerateCopy}>
+              {generatingCopy ? <Loader2 className="animate-spin" /> : <Sparkles />}
+              {generatingCopy ? "Generando..." : "Sugerir título y descripción con IA"}
+            </Button>
+            <p className="text-xs text-muted-foreground">Se usan los datos cargados en esta ficha. Revisá el borrador antes de aplicarlo y guardar.</p>
+          </div>
+          {copyDraft && (
+            <div className="space-y-3 rounded-lg border border-primary/30 p-4" aria-live="polite">
+              <p className="text-sm font-medium">Borrador para revisar</p>
+              <p className="text-sm font-semibold">{copyDraft.titulo}</p>
+              <p className="whitespace-pre-wrap text-sm">{copyDraft.descripcion}</p>
+              <div className="flex gap-2">
+                <Button type="button" size="sm" onClick={applyCopyDraft}>Aplicar a la ficha</Button>
+                <Button type="button" size="sm" variant="ghost" onClick={() => setCopyDraft(null)}>Descartar</Button>
+              </div>
+            </div>
+          )}
           <Field label="Descripción" htmlFor="descripcion" error={e.descripcion}>
             <Textarea
+              ref={descriptionRef}
               id="descripcion"
               name="descripcion"
               defaultValue={property?.descripcion ?? ""}

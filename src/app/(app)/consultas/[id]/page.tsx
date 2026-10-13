@@ -10,7 +10,7 @@ import {
   LeadFantasmaBadge,
   LeadSinTomarBadge,
 } from "@/components/leads/estado-badge";
-import { MOTIVOS_DERIVACION } from "@/lib/types";
+import { MOTIVOS_CIERRE, MOTIVOS_DERIVACION } from "@/lib/types";
 import { LeadAssignSelect } from "@/components/leads/lead-assign-select";
 import { LeadConversation } from "@/components/leads/lead-conversation";
 import { LeadEditarDatos } from "@/components/leads/lead-editar-datos";
@@ -235,6 +235,29 @@ export default async function ConsultaPage({
               )}
             </CardContent>
           </Card>
+
+          {(lead.historial_estados.length > 0 || lead.estado === "ganada" || lead.estado === "perdida") && (
+            <Card>
+              <CardHeader className="border-b bg-muted/40 py-3">
+                <CardTitle className="text-base">Historial de estado</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 pt-4">
+                {lead.historial_estados.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">Cierre anterior sin detalles registrados.</p>
+                ) : lead.historial_estados.map((event) => (
+                  <div key={event.id} className="border-l-2 border-primary/30 pl-3 text-sm">
+                    <p className="font-medium">
+                      {event.to_state === "ganada" ? "Ganada" : event.to_state === "perdida" ? "Perdida" : event.to_state === "en_contacto" ? "En contacto" : "Nueva"}
+                      {event.operation ? ` · ${event.operation === "venta" ? "Venta" : "Alquiler"}` : ""}
+                      {event.reason ? ` · ${MOTIVOS_CIERRE[event.reason] ?? event.reason}` : ""}
+                    </p>
+                    {event.note && <p className="whitespace-pre-wrap">{event.note}</p>}
+                    <p className="text-xs text-muted-foreground">{event.actor} · {formatDateTime(event.created_at)}</p>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          )}
 
           {(chat || notasAgente.length > 0) && (
             <Card>

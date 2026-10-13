@@ -1,4 +1,4 @@
-import { KeyRound } from "lucide-react";
+import { KeyRound, Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ApiKeyDialog } from "@/components/settings/api-key-dialog";
 import { RevokeApiKeyButton } from "@/components/settings/revoke-api-key-button";
@@ -10,13 +10,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getApiKeys, getApiKeyScopes } from "@/lib/queries";
+import { getApiKeys, getApiKeyScopes, getPropertyCopyUsage } from "@/lib/queries";
 import { formatDate } from "@/lib/utils";
 
 export const metadata = { title: "Configuración — Lokation" };
 
 export default async function ConfiguracionPage() {
-  const [keys, scopes] = await Promise.all([getApiKeys(), getApiKeyScopes()]);
+  const [keys, scopes, copyUsage] = await Promise.all([getApiKeys(), getApiKeyScopes(), getPropertyCopyUsage()]);
 
   return (
     <div className="mx-auto max-w-5xl space-y-4">
@@ -85,6 +85,25 @@ export default async function ConfiguracionPage() {
             </Table>
           )}
         </div>
+      </section>
+
+      <section className="rounded-xl border bg-background" aria-labelledby="copy-usage-title">
+        <div className="flex items-center gap-2 border-b bg-muted/40 px-4 py-3">
+          <Sparkles className="size-5 text-primary" />
+          <h2 id="copy-usage-title" className="font-semibold">IA para fichas · últimos 30 días</h2>
+        </div>
+        {copyUsage ? (
+          <>
+            <div className="grid gap-4 p-4 text-sm sm:grid-cols-3">
+              <div><p className="text-muted-foreground">Borradores generados</p><p className="text-xl font-semibold">{copyUsage.generations.toLocaleString("es-AR")}</p></div>
+              <div><p className="text-muted-foreground">Tokens de entrada</p><p className="text-xl font-semibold">{copyUsage.input_tokens.toLocaleString("es-AR")}</p></div>
+              <div><p className="text-muted-foreground">Tokens de salida</p><p className="text-xl font-semibold">{copyUsage.output_tokens.toLocaleString("es-AR")}</p></div>
+            </div>
+            <p className="px-4 pb-4 text-xs text-muted-foreground">Incluye sólo borradores de títulos y descripciones. Los tokens se suman cuando el proveedor informa su consumo; no representa un importe facturado.</p>
+          </>
+        ) : (
+          <p className="p-4 text-sm text-muted-foreground">No pudimos cargar el consumo de IA. Intentá actualizar la página.</p>
+        )}
       </section>
 
       <p className="text-xs text-muted-foreground">

@@ -376,10 +376,31 @@ export type LeadNota = {
   created_at: string;
 };
 
+export type LeadStatusEvent = {
+  id: string;
+  from_state: EstadoLead;
+  to_state: EstadoLead;
+  operation: "venta" | "alquiler" | null;
+  reason: string | null;
+  note: string | null;
+  actor: string;
+  created_at: string;
+};
+
+export const MOTIVOS_CIERRE: Record<string, string> = {
+  no_califica: "No califica",
+  sin_respuesta: "Sin respuesta",
+  sin_interes: "Sin interés",
+  presupuesto: "Presupuesto insuficiente",
+  eligio_otra: "Eligió otra propiedad",
+  otro: "Otro motivo",
+};
+
 export type LeadDetalle = Lead & {
   /** Nombre del vendedor asignado, ya resuelto por la API. */
   asignado: string | null;
   notas: LeadNota[];
+  historial_estados: LeadStatusEvent[];
 };
 
 // ── Agente de IA: conversaciones ─────────────────────────────────────────────

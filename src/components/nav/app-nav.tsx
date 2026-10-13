@@ -12,6 +12,7 @@ import {
   Inbox,
   KeyRound,
   Globe2,
+  FileText,
   Megaphone,
   Users,
 } from "lucide-react";
@@ -115,6 +116,12 @@ const ITEMS: Item[] = [
     ],
   },
   { href: "/clientes", label: "Clientes", icon: HeartHandshake, soloAdmin: true, subs: [] },
+  { label: "Alquileres", icon: FileText, soloAdmin: true, subs: [
+    { href: "/alquileres", label: "Resumen" },
+    { href: "/alquileres/contratos", label: "Contratos", incluye: ["/alquileres/contratos/"] },
+    { href: "/alquileres/personas", label: "Personas", incluye: ["/alquileres/personas/"] },
+    { href: "/alquileres/mantenimiento", label: "Mantenimiento", incluye: ["/alquileres/mantenimiento/"] },
+  ] },
   { href: "/equipo", label: "Equipo", icon: Users, soloAdmin: true, subs: [] },
   { href: "/mi-sitio", label: "Mi sitio web", icon: Globe2, soloAdmin: true, subs: [] },
   {
