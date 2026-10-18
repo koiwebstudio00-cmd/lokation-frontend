@@ -1,3 +1,4 @@
+import { LeadClients } from "@/components/clients/lead-clients";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Home, Mail, MessageSquare, Phone, UserCheck } from "lucide-react";
@@ -68,6 +69,7 @@ export default async function ConsultaPage({
             <p className="text-sm text-muted-foreground">
               {lead.telefono ? `${lead.telefono} · ` : ""}Entró el {formatDateTime(lead.created_at)}
             </p>
+            {me?.rol === "admin" && <LeadClients leadId={lead.id} />}
             {(lead.derivacion?.pendiente || lead.clasificacion === "fantasma") && (
               <div className="flex flex-wrap items-center gap-2 pt-1">
                 {lead.derivacion?.pendiente && (

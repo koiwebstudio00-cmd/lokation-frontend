@@ -34,6 +34,7 @@ async function renew(refreshToken: string): Promise<ParsedCookie[]> {
 
 export async function proxy(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith("/api/auth/")) return NextResponse.next();
+  if (request.nextUrl.pathname === "/portal" || request.nextUrl.pathname.startsWith("/portal/")) return NextResponse.next();
   const { pathname, searchParams } = request.nextUrl;
 
   // El refresh rota el token: si dos requests renuevan a la vez, el segundo

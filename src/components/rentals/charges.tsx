@@ -36,8 +36,9 @@ function VoidPayment({ contractId, id }: { contractId: string; id: string }) {
   </form>;
 }
 
-export function RentalCharges({ contractId, status, charges, paymentKeys }: {
-  contractId: string; status: string; charges: RentalCharge[]; paymentKeys: Record<string, string>
+export function RentalCharges({ contractId, status, charges, paymentKeys, settledChargeIds = [] }: {
+  contractId: string; status: string; charges: RentalCharge[]; paymentKeys: Record<string, string>;
+  settledChargeIds?: string[]
 }) {
   const [state, action, pending] = useActionState(createRentalCharge.bind(null, contractId), {});
   return <section className="space-y-4 rounded-xl border p-5">
@@ -58,7 +59,7 @@ export function RentalCharges({ contractId, status, charges, paymentKeys }: {
         <p>{contractDate(payment.paidAt)} · {payment.method} · {charge.currency} {contractAmount(payment.amount)}
           {payment.voidedAt ? ` · revertido: ${payment.voidReason}` : ""}</p>
         {payment.reference && <p className="text-muted-foreground">Referencia: {payment.reference}</p>}
-        {!payment.voidedAt && <VoidPayment contractId={contractId} id={payment.id} />}
+        {!payment.voidedAt && !settledChargeIds.includes(charge.id) && <VoidPayment contractId={contractId} id={payment.id} />}
       </li>)}</ul>}
       {charge.balance !== "0.00" && <PaymentForm contractId={contractId} chargeId={charge.id} idempotencyKey={paymentKeys[charge.id]} />}
     </div>)}

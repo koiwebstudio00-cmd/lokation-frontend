@@ -6,6 +6,7 @@ import type { MaintenanceRequest } from "@/lib/maintenance";
 import type { RentalCharge } from "@/components/rentals/charges";
 import type { RentalServiceAccount } from "@/components/rentals/service-account-form";
 import { SettlementPreview } from "@/components/rentals/settlement-preview";
+import type { RentalAdjustment, RentalSettlement } from "@/components/rentals/financials";
 
 export const metadata = { title: "Vistas de alquiler — Lokation" };
 
@@ -29,16 +30,19 @@ export default async function RentalViewsPage({ params, searchParams }: {
     throw error;
   }
 
-  const [servicesResult, chargesResult, maintenanceResult] = await Promise.all([
+  const [servicesResult, chargesResult, maintenanceResult, adjustmentsResult, settlementsResult] = await Promise.all([
     apiFetch<{ data: RentalServiceAccount[] }>(`/v1/rental-properties/${contract.property.id}/services`),
     apiFetch<{ data: RentalCharge[]; meta: { total: number; limit: number } }>(`/v1/rental-contracts/${id}/charges`),
     apiFetch<{ data: MaintenanceRequest[]; meta: { total: number; limit: number } }>(
       "/v1/maintenance-requests", { query: { property_id: contract.property.id, limit: 100 } }
     ),
+    apiFetch<{ data: RentalAdjustment[] }>(`/v1/rental-contracts/${id}/adjustments`),
+    apiFetch<{ data: RentalSettlement[] }>(`/v1/rental-contracts/${id}/settlements`),
   ]);
   const services = servicesResult.data.filter((item) => item.active && (item.visibility === "ambos" || item.visibility === role));
   const maintenance = maintenanceResult.data.filter((item) => role === "propietario" || item.contractId === id);
   const charges = chargesResult.data;
+  const activeSettlements = settlementsResult.data.filter((item) => item.status !== "cancelada");
   const isTenant = role === "inquilino";
 
   return <div className="mx-auto max-w-4xl space-y-5">
@@ -60,11 +64,17 @@ export default async function RentalViewsPage({ params, searchParams }: {
         <div><dt className="text-muted-foreground">Propiedad</dt><dd className="font-medium">{contract.property.titulo}</dd></div>
         <div><dt className="text-muted-foreground">Estado del contrato</dt><dd className="font-medium capitalize">{contract.status}</dd></div>
         <div><dt className="text-muted-foreground">Vigencia</dt><dd>{contractDate(contract.startDate)} al {contractDate(contract.endDate)}</dd></div>
-        <div><dt className="text-muted-foreground">Alquiler mensual</dt><dd>{contract.currency} {contractAmount(contract.monthlyRent)}</dd></div>
+        <div><dt className="text-muted-foreground">Alquiler inicial</dt><dd>{contract.currency} {contractAmount(contract.monthlyRent)}</dd></div>
         <div><dt className="text-muted-foreground">Vencimiento mensual</dt><dd>Día {contract.dueDay}</dd></div>
         <div><dt className="text-muted-foreground">{isTenant ? "Propietario" : "Inquilino"}</dt><dd>{isTenant ? contract.owner.nombre : contract.tenantPerson.nombre}</dd></div>
       </dl>
     </Section>
+
+    {adjustmentsResult.data.length > 0 && <Section title="Ajustes registrados">
+      <ul className="space-y-2 text-sm">{adjustmentsResult.data.map((item) => <li key={item.id}>
+        Desde {contractDate(item.effectivePeriod)} · {contract.currency} {contractAmount(item.amount)} · {item.reason}
+      </li>)}</ul>
+    </Section>}
 
     <Section title={isTenant ? "Alquileres y pagos" : "Cobros registrados"}>
       {charges.length ? <ul className="divide-y text-sm">{charges.map((charge) => <li key={charge.id} className="space-y-1 py-3 first:pt-0 last:pb-0">
@@ -90,6 +100,13 @@ export default async function RentalViewsPage({ params, searchParams }: {
       </li>)}</ul> : <p className="text-sm text-muted-foreground">No hay pedidos de mantenimiento para mostrar.</p>}
       {maintenanceResult.meta.total > maintenanceResult.meta.limit && <p className="text-xs text-muted-foreground">Se muestran los pedidos más recientes de la propiedad.</p>}
     </Section>
+
+    {!isTenant && <Section title="Liquidaciones y pagos informados">
+      {activeSettlements.length ? <ul className="space-y-2 text-sm">{activeSettlements.map((item) => <li key={item.id} className="rounded-lg border p-3">
+        <strong>{contractDate(item.charge.period)} · {item.currency} {contractAmount(item.net)}</strong>
+        <p className="capitalize">{item.status}{item.paidAt ? ` · pago informado el ${contractDate(item.paidAt)}` : ""}</p>
+      </li>)}</ul> : <p className="text-sm text-muted-foreground">Todavía no hay liquidaciones.</p>}
+    </Section>}
 
     {!isTenant && <div className="space-y-2"><p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Herramienta interna de la inmobiliaria</p>
       <SettlementPreview periods={charges.map((charge) => ({ id: charge.id, period: charge.period, paid: charge.paid, currency: charge.currency }))} />

@@ -222,6 +222,24 @@ export async function apiFetch<T>(path: string, init: ApiInit = {}): Promise<T> 
   return parse<T>(res);
 }
 
+/** Transporte de PDFs privados, con la misma sesión y CSRF del panel. */
+export async function apiBinary(path: string, init: { method?: "GET" | "POST"; body?: Uint8Array; contentType?: string } = {}) {
+  const store = await cookies();
+  const method = init.method ?? "GET";
+  const headers: Record<string, string> = {};
+  const cookie = cookieHeader(path, store, new Map());
+  if (cookie) headers.Cookie = cookie;
+  if (init.contentType) headers["Content-Type"] = init.contentType;
+  if (method === "POST") {
+    const csrf = store.get(CSRF_COOKIE)?.value;
+    if (csrf) headers["X-CSRF-Token"] = csrf;
+  }
+  const response = await fetch(API_URL + path, { method, headers,
+    body: init.body ? Buffer.from(init.body) : undefined, cache: "no-store" });
+  if (!response.ok) await parse(response);
+  return response;
+}
+
 /**
  * Login y aceptación de invitación: además de devolver el usuario, guardan las
  * cookies de sesión. Solo se puede llamar desde una server action o un route

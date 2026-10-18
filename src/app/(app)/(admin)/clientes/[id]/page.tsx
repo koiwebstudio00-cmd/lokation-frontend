@@ -1,5 +1,42 @@
+import Link from "next/link";
+import { z } from "zod";
 import { notFound } from "next/navigation";
+import { ApiError, apiFetch } from "@/lib/api";
+import { clientRoleLabels, type ClientDetail } from "@/lib/clients";
+import { contractDate, contractAmount } from "@/lib/rental-contracts";
+import { ClientDialog } from "@/components/clients/client-dialog";
+import { OperationButton } from "@/components/clients/operation-button";
+import { PortalAccess } from "@/components/rentals/portal-access";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-export default function ClienteDetallePage() {
-  notFound();
+export const metadata = { title: "Ficha de cliente — Lokation" };
+export default async function ClientPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ seccion?: string; q?: string; page?: string }> }) {
+  const [{ id }, query] = await Promise.all([params, searchParams]);
+  if (!z.uuid().safeParse(id).success) notFound();
+  const section = ["datos", "contratos", "operaciones", "portal"].includes(query.seccion ?? "") ? query.seccion! : "datos";
+  let person: ClientDetail;
+  try { ({ person } = await apiFetch<{ person: ClientDetail }>(`/v1/clients/${id}`)); }
+  catch (error) { if (error instanceof ApiError && error.status === 404) notFound(); throw error; }
+  const contracts = [...person.ownedContracts.map((c) => ({ ...c, role: "Propietario" })), ...person.occupiedContracts.map((c) => ({ ...c, role: "Inquilino" }))];
+  const accessResult = section === "portal" ? await apiFetch<{ access: { active: boolean; account: { email: string } } | null }>(`/v1/rental-people/${id}/portal-access`) : null;
+  const page = Math.max(1, Number.parseInt(query.page ?? "1", 10) || 1);
+  const q = typeof query.q === "string" ? query.q.slice(0, 100) : "";
+  const candidates = section === "operaciones" ? await apiFetch<{ data: { id: string; nombre: string; email: string | null; estado: string; property: { titulo: string } | null }[]; meta: { total: number; limit: number } }>(`/v1/clients/${id}/operation-candidates`, { query: { q, page, limit: 10 } }) : null;
+  const candidateUrl = (n: number) => `/clientes/${id}?${new URLSearchParams({ seccion: "operaciones", q, page: String(n) })}`;
+  return <div className="space-y-6"><Button asChild variant="outline" size="sm"><Link href="/clientes">← Clientes</Link></Button>
+    <header className="flex flex-wrap items-start justify-between gap-4"><div><h1 className="text-2xl font-semibold">{person.nombre}</h1><div className="mt-2 flex flex-wrap gap-2">{person.roles.map((r) => <Badge key={r} variant="secondary">{clientRoleLabels[r]}</Badge>)}</div></div><ClientDialog person={person} /></header>
+    <nav aria-label="Secciones del cliente" className="flex flex-wrap gap-2">{[{ key: "datos", label: "Datos" }, { key: "contratos", label: `Contratos (${contracts.length})` }, { key: "operaciones", label: `Operaciones (${person.commercialLinks.length})` }, { key: "portal", label: "Acceso al portal" }].map((tab) => <Button key={tab.key} asChild variant={section === tab.key ? "default" : "outline"}><Link href={`/clientes/${id}?seccion=${tab.key}`} aria-current={section === tab.key ? "page" : undefined}>{tab.label}</Link></Button>)}</nav>
+    {section === "datos" && <section className="space-y-5 rounded-xl border bg-background p-6"><h2 className="text-lg font-semibold">Datos del cliente</h2><dl className="grid gap-4 text-sm sm:grid-cols-2"><div><dt className="text-muted-foreground">Email</dt><dd>{person.email || "Sin email"}</dd></div><div><dt className="text-muted-foreground">Teléfono</dt><dd>{person.telefono || "Sin teléfono"}</dd></div></dl><p className="text-sm text-muted-foreground">Una sola ficha conserva sus contratos de alquiler y las operaciones comerciales que vincules. Los roles no conceden acceso al portal.</p></section>}
+    {section === "contratos" && <section className="rounded-xl border bg-background p-5"><h2 className="mb-4 text-lg font-semibold">Contratos vinculados</h2><Table><TableHeader><TableRow><TableHead>Propiedad</TableHead><TableHead>Rol</TableHead><TableHead>Estado</TableHead><TableHead>Vigencia</TableHead><TableHead>Alquiler inicial</TableHead><TableHead>Detalle</TableHead></TableRow></TableHeader><TableBody>{contracts.map((c) => <TableRow key={`${c.id}-${c.role}`}><TableCell><Link className="underline" href={`/propiedades/${c.property.id}`}>{c.property.titulo}</Link></TableCell><TableCell>{c.role}</TableCell><TableCell><Badge variant="secondary">{c.status}</Badge></TableCell><TableCell>{contractDate(c.startDate)} — {contractDate(c.endDate)}</TableCell><TableCell>{c.currency} {contractAmount(c.monthlyRent)}</TableCell><TableCell><Button asChild size="sm" variant="outline"><Link href={`/alquileres/contratos/${c.id}`}>Ver contrato</Link></Button></TableCell></TableRow>)}{!contracts.length && <TableRow><TableCell colSpan={6} className="py-8 text-center text-muted-foreground">Sin contratos de alquiler vinculados.</TableCell></TableRow>}</TableBody></Table></section>}
+    {section === "operaciones" && <>
+      <section className="rounded-xl border bg-background p-5"><h2 className="text-lg font-semibold">Operaciones comerciales vinculadas</h2><p className="mb-4 mt-1 text-sm text-muted-foreground">Consultas y oportunidades de la inmobiliaria. Su estado e historial se consultan en la operación original.</p><Table><TableHeader><TableRow><TableHead>Operación</TableHead><TableHead>Propiedad</TableHead><TableHead>Estado</TableHead><TableHead>Acciones</TableHead></TableRow></TableHeader><TableBody>{person.commercialLinks.map(({ lead }) => <TableRow key={lead.id}><TableCell><Link href={`/consultas/${lead.id}`} className="underline">{lead.nombre}</Link></TableCell><TableCell>{lead.property ? <Link href={`/propiedades/${lead.property.id}`} className="underline">{lead.property.titulo}</Link> : "Sin propiedad"}</TableCell><TableCell><Badge variant="secondary">{lead.estado.replaceAll("_", " ")}</Badge></TableCell><TableCell><div className="flex gap-2"><Button asChild size="sm" variant="outline"><Link href={`/consultas/${lead.id}`}>Ver operación</Link></Button><OperationButton personId={id} leadId={lead.id} unlink /></div></TableCell></TableRow>)}{!person.commercialLinks.length && <TableRow><TableCell colSpan={4} className="py-8 text-center text-muted-foreground">Sin operaciones vinculadas.</TableCell></TableRow>}</TableBody></Table></section>
+      <section className="space-y-4 rounded-xl border bg-background p-5"><h2 className="text-lg font-semibold">Vincular una operación existente</h2><p className="text-sm text-muted-foreground">Seleccioná la consulta que corresponde a este cliente. Desvincular conserva la consulta y su historial.</p><form className="flex gap-2" action={`/clientes/${id}`}><input type="hidden" name="seccion" value="operaciones" /><Input name="q" aria-label="Buscar operaciones" placeholder="Nombre o email de la consulta" defaultValue={q} maxLength={100} /><Button variant="outline">Buscar</Button></form><Table><TableHeader><TableRow><TableHead>Consulta</TableHead><TableHead>Propiedad</TableHead><TableHead>Acción</TableHead></TableRow></TableHeader><TableBody>{candidates?.data.map((lead) => <TableRow key={lead.id}><TableCell><Link href={`/consultas/${lead.id}`} className="underline">{lead.nombre}</Link><p className="text-xs text-muted-foreground">{lead.email || "Sin email"} · {lead.estado.replaceAll("_", " ")}</p></TableCell><TableCell>{lead.property?.titulo || "Sin propiedad"}</TableCell><TableCell><OperationButton personId={id} leadId={lead.id} /></TableCell></TableRow>)}{!candidates?.data.length && <TableRow><TableCell colSpan={3} className="py-6 text-center text-muted-foreground">No hay operaciones disponibles con esos criterios.</TableCell></TableRow>}</TableBody></Table>
+        {candidates && candidates.meta.total > candidates.meta.limit && <nav aria-label="Páginas de operaciones" className="flex items-center justify-center gap-4">{page > 1 && <Link className="underline" href={candidateUrl(page - 1)}>Anterior</Link>}<span className="text-sm">Página {page}</span>{page * candidates.meta.limit < candidates.meta.total && <Link className="underline" href={candidateUrl(page + 1)}>Siguiente</Link>}</nav>}
+      </section>
+    </>}
+    {section === "portal" && <PortalAccess personId={id} email={person.email} access={accessResult?.access ?? null} />}
+  </div>;
 }

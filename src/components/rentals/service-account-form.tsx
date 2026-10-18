@@ -25,7 +25,7 @@ export function ServiceAccounts({ propertyId, contractId, accounts }: {
   const [state, action, pending] = useActionState(createRentalService.bind(null, propertyId, contractId), {});
   return <section className="space-y-4 rounded-xl border p-5">
     <div><h2 className="font-semibold">Servicios de la propiedad</h2>
-      <p className="text-sm text-muted-foreground">Números de cuenta y medidor para la administración del alquiler. La visibilidad preparada se usará en los portales de inquilinos y propietarios.</p></div>
+      <p className="text-sm text-muted-foreground">Números de cuenta y medidor para la administración del alquiler. Elegí quién puede consultar cada servicio en su portal.</p></div>
     {accounts.length ? <ul className="divide-y text-sm">{accounts.map((account) => <li key={account.id} className="py-3">
       <div className="flex flex-wrap justify-between gap-2"><strong className="capitalize">{account.type} · {account.provider}</strong>
         <span>{account.active ? "Activo" : "Inactivo"} · visible: {account.visibility}</span></div>
@@ -42,7 +42,7 @@ export function ServiceAccounts({ propertyId, contractId, accounts }: {
       <label className="text-sm">Número de cuenta<input name="account_number" maxLength={100} className="mt-1 w-full rounded-md border bg-background p-2" /></label>
       <label className="text-sm">Número de medidor<input name="meter_number" maxLength={100} className="mt-1 w-full rounded-md border bg-background p-2" /></label>
       <label className="text-sm">Titular<input name="holder_name" maxLength={200} className="mt-1 w-full rounded-md border bg-background p-2" /></label>
-      <label className="text-sm">Visibilidad futura<select name="visibility" className="mt-1 w-full rounded-md border bg-background p-2">
+      <label className="text-sm">Visible para<select name="visibility" className="mt-1 w-full rounded-md border bg-background p-2">
         <option value="interna">Solo inmobiliaria</option><option value="inquilino">Inquilino</option>
         <option value="propietario">Propietario</option><option value="ambos">Ambos</option>
       </select></label>

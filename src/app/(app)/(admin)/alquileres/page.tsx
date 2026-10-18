@@ -33,7 +33,7 @@ export default async function RentalsOverviewPage() {
       </li>)}</ul> : <p className="mt-3 text-sm text-muted-foreground">No hay contratos que venzan en los próximos 30 días.</p>}
     </section>
     <nav className="flex flex-wrap gap-4 text-sm"><Link href="/alquileres/contratos" className="underline">Ver contratos</Link>
-      <Link href="/alquileres/personas" className="underline">Ver personas</Link>
+      <Link href="/clientes" className="underline">Ver clientes</Link>
       <Link href="/alquileres/mantenimiento" className="underline">Ver mantenimiento</Link></nav>
   </div>;
 }

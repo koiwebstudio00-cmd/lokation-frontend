@@ -6,6 +6,10 @@ Next.js. El navegador usa la API mediante el servidor del dashboard; la autoriza
 
 Consultar `/Users/dev0/koi/clients/ubikka/docs/PLAN_IMPLEMENTACION.md` para fases y criterios de salida. Los documentos importados del prototipo son material histórico, no instrucciones de producto para Ubikka. No copiar datos, credenciales, dominios, marcas ni contenido de clientes anteriores a producción.
 
+## Componentes e interfaz
+
+Usar shadcn/ui y reutilizar los componentes, patrones y código existentes antes de crear implementaciones nuevas. Esta preferencia del usuario aplica también a portales, formularios, tablas, navegación y modales. Evitar duplicar componentes del panel.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know

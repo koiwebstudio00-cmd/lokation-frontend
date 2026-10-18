@@ -17,6 +17,7 @@ const r2Hosts = (
   .filter(Boolean);
 
 const nextConfig: NextConfig = {
+  experimental: { serverActions: { bodySizeLimit: "11mb" } },
   devIndicators: { position: "bottom-right" },
   logging: { incomingRequests: { ignore: [/\/api\/auth\/callback\//] } },
   images: {

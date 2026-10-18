@@ -37,7 +37,12 @@ function iniciales(nombre: string) {
     .join("");
 }
 
-export function NavUser({ nombre, email }: { nombre: string; email: string }) {
+export function NavUser({ nombre, email, profileHref = "/perfil", onSignOut = signOut }: {
+  nombre: string;
+  email: string;
+  profileHref?: string;
+  onSignOut?: () => Promise<void>;
+}) {
   const { isMobile, setOpenMobile } = useSidebar();
   const [pending, startTransition] = useTransition();
 
@@ -93,7 +98,7 @@ export function NavUser({ nombre, email }: { nombre: string; email: string }) {
               <DropdownMenuItem asChild>
                 {/* En el celular el cajón tapa la pantalla: al navegar hay que cerrarlo. */}
                 <Link
-                  href="/perfil"
+                  href={profileHref}
                   prefetch={false}
                   onClick={() => isMobile && setOpenMobile(false)}
                 >
@@ -107,7 +112,7 @@ export function NavUser({ nombre, email }: { nombre: string; email: string }) {
 
             <DropdownMenuItem disabled={pending} onSelect={(event) => {
               event.preventDefault();
-              startTransition(() => signOut());
+              startTransition(() => onSignOut());
             }}>
               <LogOut />{pending ? "Cerrando sesión…" : "Cerrar sesión"}
             </DropdownMenuItem>

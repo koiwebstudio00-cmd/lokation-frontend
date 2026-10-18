@@ -119,8 +119,8 @@ const ITEMS: Item[] = [
   { label: "Alquileres", icon: FileText, soloAdmin: true, subs: [
     { href: "/alquileres", label: "Resumen" },
     { href: "/alquileres/contratos", label: "Contratos", incluye: ["/alquileres/contratos/"] },
-    { href: "/alquileres/personas", label: "Personas", incluye: ["/alquileres/personas/"] },
     { href: "/alquileres/mantenimiento", label: "Mantenimiento", incluye: ["/alquileres/mantenimiento/"] },
+    { href: "/alquileres/consultas", label: "Consultas y reclamos" },
   ] },
   { href: "/equipo", label: "Equipo", icon: Users, soloAdmin: true, subs: [] },
   { href: "/mi-sitio", label: "Mi sitio web", icon: Globe2, soloAdmin: true, subs: [] },
