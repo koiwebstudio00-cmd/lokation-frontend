@@ -22,7 +22,7 @@ export function PortalIdentity({ brand }: { brand: PortalBrand }) {
     <span className="flex size-11 shrink-0 items-center justify-center rounded-xl border bg-white p-2">
       {brand.logo_url && failed !== brand.logo_url ? <Image src={brand.logo_url} alt={`Logo de ${brand.nombre}`} width={36} height={36} unoptimized onError={() => setFailed(brand.logo_url)} className="max-h-9 object-contain" /> : <Logo className="size-7" />}
     </span>
-    <div className="min-w-0"><p className="truncate text-sm font-semibold">{brand.nombre || "Lokation"}</p><p className="text-xs text-muted-foreground">Portal de alquileres</p></div>
+    <div className="min-w-0"><p className="truncate text-sm font-semibold">{brand.nombre || "Cubiko AI"}</p><p className="text-xs text-muted-foreground">Portal de alquileres</p></div>
   </div>;
 }
 
@@ -87,10 +87,10 @@ function PortalShellContent({ brand, slug, email, nombre, contracts, children }:
       </div>
       <SidebarRail />
     </Sidebar>
-    <SidebarInset className="min-w-0 bg-secondary/60">
+    <SidebarInset className="min-w-0 bg-background">
       <header className="flex flex-wrap items-center gap-3 border-b bg-background/80 px-5 py-4 lg:px-9">
         <SidebarTrigger />
-        <div className="min-w-0 flex-1"><p className="text-xs text-muted-foreground">{brand.nombre || "Lokation"}</p><p className="mt-1 font-semibold">{label}</p></div>
+        <div className="min-w-0 flex-1"><p className="text-xs text-muted-foreground">{brand.nombre || "Cubiko AI"}</p><p className="mt-1 font-semibold">{label}</p></div>
         <ThemeSwitcher />
       </header>
       <div id="portal-content" className="mx-auto w-full max-w-6xl px-5 py-7 lg:px-9 lg:py-9">{children}</div>

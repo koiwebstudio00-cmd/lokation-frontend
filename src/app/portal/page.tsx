@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export const metadata = { title: "Acceso de inquilinos y propietarios — Lokation" };
+export const metadata = { title: "Acceso de inquilinos y propietarios — Cubiko AI" };
 
 export default async function PortalEntry({ searchParams }: {
   searchParams: Promise<{ inmobiliaria?: string }>
@@ -23,9 +23,9 @@ export default async function PortalEntry({ searchParams }: {
     }
     if (!error) redirect(`/portal/${slug}/ingresar`);
   }
-  return <main className="flex min-h-screen items-center justify-center bg-secondary p-6">
+  return <main className="flex min-h-screen items-center justify-center bg-background p-6">
     <section className="w-full max-w-md space-y-5 rounded-xl border bg-background p-6">
-      <p className="font-semibold">Lokation</p>
+      <p className="font-semibold">Cubiko AI</p>
       <h1 className="text-2xl font-semibold">Portal de alquileres</h1>
       <p className="text-sm text-muted-foreground">Acceso para inquilinos y propietarios. Usá el enlace de tu invitación o ingresá el identificador que te dio tu inmobiliaria.</p>
       <form action="/portal" method="get" className="space-y-3">

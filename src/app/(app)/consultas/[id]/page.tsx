@@ -25,7 +25,7 @@ import { getCurrentUser } from "@/lib/api";
 import { getConversacionDeLead, getLead, getVendedores } from "@/lib/queries";
 import { formatDateTime, waLink } from "@/lib/utils";
 
-export const metadata = { title: "Consulta — Lokation" };
+export const metadata = { title: "Consulta — Cubiko AI" };
 
 export default async function ConsultaPage({
   params,

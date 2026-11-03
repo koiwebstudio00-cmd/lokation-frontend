@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { PortalForgotForm } from "@/components/rentals/portal-forms";
 
-export const metadata = { title: "Recuperar acceso al portal — Lokation" };
+export const metadata = { title: "Recuperar acceso al portal — Cubiko AI" };
 export default async function PortalForgotPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   return <div className="mx-auto max-w-md space-y-5 rounded-xl border bg-background p-6">

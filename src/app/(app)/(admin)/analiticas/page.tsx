@@ -21,7 +21,7 @@ import {
 } from "@/lib/queries";
 import type { AnalyticsPeriod } from "@/lib/types";
 
-export const metadata = { title: "Analíticas — Lokation" };
+export const metadata = { title: "Analíticas — Cubiko AI" };
 
 type Params = Record<string, string | undefined>;
 

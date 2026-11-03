@@ -9,7 +9,7 @@ export function isGoogleCookie(name: string) {
 /** No nextCookies plugin: provider tokens must never be copied to the browser. */
 export function createGoogleOAuth(options: { baseURL: string; secret: string; clientId: string; clientSecret: string }) {
   return betterAuth({
-    appName: "Lokation", baseURL: options.baseURL, basePath: "/api/auth",
+    appName: "Cubiko AI", baseURL: options.baseURL, basePath: "/api/auth",
     secret: options.secret, trustedOrigins: [new URL(options.baseURL).origin],
     socialProviders: { google: { clientId: options.clientId, clientSecret: options.clientSecret, prompt: "select_account", accessType: "online" } },
     session: { expiresIn: 300, disableSessionRefresh: true, cookieCache: { enabled: true, maxAge: 300, strategy: "jwe", refreshCache: false } },

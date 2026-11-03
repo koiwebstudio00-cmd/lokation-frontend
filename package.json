@@ -1,5 +1,5 @@
 {
-  "name": "lokation-app-dashboard",
+  "name": "cubiko-ai-dashboard",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -45,5 +45,5 @@
     "tailwindcss": "^4",
     "typescript": "^5"
   },
-  "description": "Dashboard de inmobiliarias de Lokation"
+  "description": "Dashboard de gestión inmobiliaria de Cubiko AI"
 }

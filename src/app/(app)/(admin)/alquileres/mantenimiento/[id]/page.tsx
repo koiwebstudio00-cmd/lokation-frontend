@@ -5,7 +5,7 @@ import { formatDate } from "@/lib/utils";
 import type { MaintenanceRequest } from "@/lib/maintenance";
 import { MaintenanceTransition } from "@/components/rentals/maintenance-forms";
 
-export const metadata = { title: "Pedido de mantenimiento — Lokation" };
+export const metadata = { title: "Pedido de mantenimiento — Cubiko AI" };
 
 export default async function MaintenanceDetail({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

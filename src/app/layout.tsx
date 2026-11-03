@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/sonner";
-import "@fontsource-variable/noto-sans-jp";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Lokation",
+  title: "Cubiko AI",
   description: "Plataforma de gestión inmobiliaria",
   icons: {
     icon: "/icon.svg",

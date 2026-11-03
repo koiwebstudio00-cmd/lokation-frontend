@@ -3,7 +3,7 @@ import { apiFetch } from "@/lib/api";
 import { InquiryResponse } from "@/components/rentals/inquiry-response";
 import { formatDate } from "@/lib/utils";
 
-export const metadata = { title: "Consultas de alquiler — Lokation" };
+export const metadata = { title: "Consultas de alquiler — Cubiko AI" };
 type Inquiry = { id: string; contractId: string; title: string; description: string; category: string;
   status: string; response: string | null; createdAt: string; account: { email: string };
   contract: { property: { titulo: string } } };

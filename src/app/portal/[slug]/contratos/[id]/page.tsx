@@ -9,7 +9,7 @@ import { PortalWorkspace } from "@/components/rentals/portal-workspace";
 const portalSections = ["resumen", "contrato", "pagos", "documentos", "servicios", "mantenimiento", "consultas"] as const;
 import { Building2, FileText, MessageSquare, Wallet, Wrench } from "lucide-react";
 
-export const metadata = { title: "Detalle del alquiler — Lokation" };
+export const metadata = { title: "Detalle del alquiler — Cubiko AI" };
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return <section className="space-y-3 rounded-2xl border bg-background p-6 shadow-sm"><h2 className="text-lg font-semibold">{title}</h2>{children}</section>;
 }

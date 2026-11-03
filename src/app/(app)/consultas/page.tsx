@@ -12,7 +12,7 @@ import { getCurrentUser } from "@/lib/api";
 import { getLeads, getLeadStats, getVendedores } from "@/lib/queries";
 import { getVista } from "@/lib/vista";
 
-export const metadata = { title: "Consultas — Lokation" };
+export const metadata = { title: "Consultas — Cubiko AI" };
 
 type SearchParams = Promise<Record<string, string | undefined>>;
 

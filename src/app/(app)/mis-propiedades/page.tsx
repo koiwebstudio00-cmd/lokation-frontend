@@ -10,7 +10,7 @@ import { VistaToggle } from "@/components/vista-toggle";
 import { getMyProperties } from "@/lib/queries";
 import { getVista } from "@/lib/vista";
 
-export const metadata = { title: "Mis propiedades — Lokation" };
+export const metadata = { title: "Mis propiedades — Cubiko AI" };
 
 export default async function MisPropiedadesPage({
   searchParams,

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { PortalLoginForm } from "@/components/rentals/portal-forms";
 
-export const metadata = { title: "Ingresar al portal de alquileres — Lokation" };
+export const metadata = { title: "Ingresar al portal de alquileres — Cubiko AI" };
 export default async function PortalLoginPage({ params, searchParams }: {
   params: Promise<{ slug: string }>; searchParams: Promise<{ activado?: string; clave?: string }>
 }) {

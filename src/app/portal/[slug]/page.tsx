@@ -6,7 +6,7 @@ import { portalOverview } from "@/lib/rental-portal";
 import { contractAmount, contractDate } from "@/lib/rental-contracts";
 import { PortalWorkspace } from "@/components/rentals/portal-workspace";
 
-export const metadata = { title: "Mi portal de alquileres — Lokation" };
+export const metadata = { title: "Mi portal de alquileres — Cubiko AI" };
 export default async function PortalHomePage({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<{ vista?: string }> }) {
   const [{ slug }, query] = await Promise.all([params, searchParams]);
   let overview;

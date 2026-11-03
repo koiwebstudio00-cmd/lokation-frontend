@@ -2,7 +2,7 @@ import Link from "next/link";
 import { apiFetch } from "@/lib/api";
 import { contractAmount, contractDate } from "@/lib/rental-contracts";
 
-export const metadata = { title: "Alquileres — Lokation" };
+export const metadata = { title: "Alquileres — Cubiko AI" };
 
 type Overview = {
   contracts: Record<string, number>;

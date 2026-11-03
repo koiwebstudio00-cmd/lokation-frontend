@@ -8,7 +8,7 @@ export async function GET(request: Request) {
   let destination = "/login?google=error";
   try {
     const idToken = await exchangeGoogleIdentity(getGoogleAuth(), request, baseURL);
-    // Lokation validates Google's signature, active account, panel permissions and 2FA.
+    // Cubiko AI validates Google's signature, active account, panel permissions and 2FA.
     destination = await loginRequest("/v1/auth/google", { idToken });
   } catch { /* Do not log provider tokens, authorization codes or account data. */ }
   const response = NextResponse.redirect(new URL(destination, baseURL));

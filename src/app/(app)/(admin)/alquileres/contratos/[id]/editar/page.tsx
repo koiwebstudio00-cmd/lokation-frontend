@@ -5,7 +5,7 @@ import { ContractForm } from "@/components/rentals/contract-form";
 import { getRentalContractOptions } from "@/lib/rental-contract-options";
 import type { RentalContract } from "@/lib/rental-contracts";
 
-export const metadata = { title: "Editar contrato — Lokation" };
+export const metadata = { title: "Editar contrato — Cubiko AI" };
 
 export default async function EditContractPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

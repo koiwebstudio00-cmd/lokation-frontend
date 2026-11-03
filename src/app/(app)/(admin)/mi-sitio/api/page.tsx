@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import type { SiteData } from "@/components/site/site-form";
 
-export const metadata = { title: "Guía de integración API — Lokation" };
+export const metadata = { title: "Guía de integración API — Cubiko AI" };
 
 function Code({ children }: { children: string }) {
   return <pre tabIndex={0} className="max-w-full overflow-x-auto rounded-lg border bg-muted/50 p-4 text-xs leading-relaxed"><code>{children}</code></pre>;
@@ -20,13 +20,13 @@ export default async function ApiGuidePage() {
   const example = { nombre: "María Pérez", email: "maria@example.com", telefono: "3811234567", mensaje: "Estoy buscando un departamento para alquilar.", website: "" };
   return <div className="mx-auto min-w-0 max-w-5xl space-y-5 pb-8">
     <Button asChild variant="outline"><Link href="/mi-sitio">Volver a Mi sitio web</Link></Button>
-    <header className="space-y-2"><h1 className="text-2xl font-semibold">Conectá tu web con Lokation</h1><p className="text-muted-foreground">Guía para vos o tu desarrollador: mostrar propiedades y recibir consultas en el panel de {tenant.nombre}.</p></header>
-    <div className="space-y-2 rounded-xl border bg-muted/30 p-4 text-sm"><p className="break-all">API de este entorno: <strong>{base}</strong></p><p>Identificador de tu inmobiliaria: <code>{tenant.slug}</code></p><p>Si estás probando en localhost, reemplazá la URL por la API productiva al desplegar tu web. No necesitás publicar el template de Lokation para usar esta integración.</p></div>
+    <header className="space-y-2"><h1 className="text-2xl font-semibold">Conectá tu web con Cubiko AI</h1><p className="text-muted-foreground">Guía para vos o tu desarrollador: mostrar propiedades y recibir consultas en el panel de {tenant.nombre}.</p></header>
+    <div className="space-y-2 rounded-xl border bg-muted/30 p-4 text-sm"><p className="break-all">API de este entorno: <strong>{base}</strong></p><p>Identificador de tu inmobiliaria: <code>{tenant.slug}</code></p><p>Si estás probando en localhost, reemplazá la URL por la API productiva al desplegar tu web. No necesitás publicar el template de Cubiko AI para usar esta integración.</p></div>
     <nav aria-label="Secciones de la guía" className="flex flex-wrap gap-x-5 gap-y-2 text-sm underline underline-offset-4"><a href="#clave">API key</a><a href="#propiedades">Propiedades</a><a href="#consultas">Consultas</a><a href="#informacion">Datos de la inmobiliaria</a><a href="#verificacion">Prueba y errores</a></nav>
 
     <Section id="clave" title="1. Crear y guardar la API key">
       <p>En <Link href="/mi-sitio" className="underline">Mi sitio web</Link>, elegí <strong>Conectar mi web propia</strong> y creá una clave con un nombre reconocible. Se genera con el permiso <code>export:read</code> y se muestra completa una sola vez. Sólo permite leer información de tu inmobiliaria.</p>
-      <p>Guardala en las variables privadas del servidor de tu web. No uses prefijos <code>NEXT_PUBLIC_</code> o <code>VITE_</code>, ni incluyas la clave en el código del navegador. Si tu web es estática, agregá una función de servidor que consulte Lokation.</p>
+      <p>Guardala en las variables privadas del servidor de tu web. No uses prefijos <code>NEXT_PUBLIC_</code> o <code>VITE_</code>, ni incluyas la clave en el código del navegador. Si tu web es estática, agregá una función de servidor que consulte Cubiko AI.</p>
       <Code>{`# Variables privadas del servidor de TU WEB\nLOKATION_API_URL=${base}\nLOKATION_API_KEY=REEMPLAZAR_POR_TU_CLAVE`}</Code>
       <p>Podés revocarla desde Mi sitio web. La web que la use dejará de acceder hasta configurar una clave nueva.</p>
     </Section>
@@ -50,13 +50,13 @@ export default async function ApiGuidePage() {
       <h3 className="font-semibold">Consulta por una propiedad</h3>
       <p>Agregá <code>property_id</code> con el UUID que recibiste en <code>id</code> al consultar el catálogo. Debe pertenecer a tu inmobiliaria.</p>
       <Code>{JSON.stringify({ ...example, mensaje: "Quisiera coordinar una visita a esta propiedad.", property_id: "REEMPLAZAR_POR_EL_ID_DEL_CATALOGO" }, null, 2)}</Code>
-      <p>Para webs propias utilizá <code>property_id</code>. La alternativa <code>property_slug</code> actualmente requiere que el template de Lokation esté publicado y que la propiedad esté disponible.</p>
+      <p>Para webs propias utilizá <code>property_id</code>. La alternativa <code>property_slug</code> actualmente requiere que el template de Cubiko AI esté publicado y que la propiedad esté disponible.</p>
       <h3 className="font-semibold">Ejemplo de envío desde el servidor de tu web</h3>
       <Code>{`// Validá los datos recibidos de tu formulario antes de enviarlos.\nconst response = await fetch(${JSON.stringify(leads)}, {\n  method: "POST",\n  headers: { "Content-Type": "application/json" },\n  body: JSON.stringify({\n    nombre: "María Pérez",\n    email: "maria@example.com",\n    mensaje: "Quisiera recibir más información.",\n    // property_id: idDeLaPropiedad, // omitir en consultas generales\n    website: "",\n  }),\n});\nconst result = await response.json();\nif (!response.ok) {\n  throw new Error(result.error?.message ?? "No se pudo enviar la consulta");\n}\n// HTTP 201: { ok: true, lead_id: "..." }\n// Ahora sí, mostrar confirmación al visitante.`}</Code>
       <p><code>nombre</code> y <code>mensaje</code> son obligatorios (hasta 200 y 5000 caracteres). Email y teléfono son opcionales en la API; en tu formulario pedí al menos uno para poder responder. Omití el email si está vacío. El teléfono admite hasta 50 caracteres.</p>
       <p><code>website</code> es un campo trampa antispam: debe llegar vacío u omitido. Deshabilitá el botón mientras se envía y confirmá el éxito sólo al recibir HTTP 201. No reintentes automáticamente un POST fallido: podría duplicar una consulta ya guardada.</p>
       <p>La consulta aparece en <strong>Consultas → canal Web</strong>. Si tiene propiedad, queda vinculada y asignada a su agente creador. Las generales se distribuyen entre agentes disponibles; si no hay ninguno, quedan sin asignar. Se generan notificaciones y se intenta enviar correo cuando está configurado.</p>
-      <p>El endpoint admite 10 solicitudes por minuto por IP. Si enviás desde un único servidor, sus visitantes comparten ese límite: controlá el spam y manejá HTTP 429. No falsifiques encabezados de IP para evitarlo. Para llamar directamente desde el navegador se necesita autorizar el dominio en el CORS del backend; coordinalo con el operador de Lokation.</p>
+      <p>El endpoint admite 10 solicitudes por minuto por IP. Si enviás desde un único servidor, sus visitantes comparten ese límite: controlá el spam y manejá HTTP 429. No falsifiques encabezados de IP para evitarlo. Para llamar directamente desde el navegador se necesita autorizar el dominio en el CORS del backend; coordinalo con el operador de Cubiko AI.</p>
     </Section>
 
     <Section id="informacion" title="4. Información de la inmobiliaria (opcional)">

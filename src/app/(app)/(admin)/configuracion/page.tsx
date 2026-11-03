@@ -13,7 +13,7 @@ import {
 import { getApiKeys, getApiKeyScopes, getPropertyCopyUsage } from "@/lib/queries";
 import { formatDate } from "@/lib/utils";
 
-export const metadata = { title: "Configuración — Lokation" };
+export const metadata = { title: "Configuración — Cubiko AI" };
 
 export default async function ConfiguracionPage() {
   const [keys, scopes, copyUsage] = await Promise.all([getApiKeys(), getApiKeyScopes(), getPropertyCopyUsage()]);

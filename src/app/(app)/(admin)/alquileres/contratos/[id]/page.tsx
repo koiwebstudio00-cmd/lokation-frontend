@@ -10,7 +10,7 @@ import { RentalCharges, type RentalCharge } from "@/components/rentals/charges";
 import { RentalFinancials, type RentalAdjustment, type RentalSettlement } from "@/components/rentals/financials";
 import { RentalDocuments, type RentalDocument } from "@/components/rentals/documents";
 
-export const metadata = { title: "Contrato de alquiler — Lokation" };
+export const metadata = { title: "Contrato de alquiler — Cubiko AI" };
 
 export default async function ContractPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -60,6 +60,6 @@ export default async function ContractPage({ params }: { params: Promise<{ id: s
         {event.action === "edited" ? "Borrador editado" : event.action === "activated" ? "Marcado vigente" : "Finalizado"}
         {event.details.note ? ` · ${event.details.note}` : ""} · {formatDate(event.createdAt)}
       </li>)}</ul></section>}
-    <p className="text-sm text-muted-foreground">Lokation registra el estado administrativo y los cobros informados por la inmobiliaria. No firma documentos ni realiza cobros bancarios o transferencias al propietario.</p>
+    <p className="text-sm text-muted-foreground">Cubiko AI registra el estado administrativo y los cobros informados por la inmobiliaria. No firma documentos ni realiza cobros bancarios o transferencias al propietario.</p>
   </div>;
 }

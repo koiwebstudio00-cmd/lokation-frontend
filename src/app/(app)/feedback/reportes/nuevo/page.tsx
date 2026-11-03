@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ReporteForm } from "@/components/feedback/reporte-form";
 
-export const metadata = { title: "Reportar un error — Lokation" };
+export const metadata = { title: "Reportar un error — Cubiko AI" };
 
 export default function NuevoReportePage() {
   return (

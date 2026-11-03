@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ContractForm } from "@/components/rentals/contract-form";
 import { getRentalContractOptions } from "@/lib/rental-contract-options";
 
-export const metadata = { title: "Nuevo contrato — Lokation" };
+export const metadata = { title: "Nuevo contrato — Cubiko AI" };
 
 export default async function NewContractPage() {
   const options = await getRentalContractOptions();

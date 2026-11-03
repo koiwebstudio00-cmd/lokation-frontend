@@ -4,7 +4,7 @@ import { AuthForm } from "@/components/auth/auth-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export const metadata = { title: "Recuperar contraseña — Lokation" };
+export const metadata = { title: "Recuperar contraseña — Cubiko AI" };
 
 export default function RecuperarPage() {
   return (

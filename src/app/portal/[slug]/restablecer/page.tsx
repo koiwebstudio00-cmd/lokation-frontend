@@ -1,6 +1,6 @@
 import { PortalResetForm } from "@/components/rentals/portal-forms";
 
-export const metadata = { title: "Nueva contraseña del portal — Lokation" };
+export const metadata = { title: "Nueva contraseña del portal — Cubiko AI" };
 export default async function PortalResetPage({ params, searchParams }: {
   params: Promise<{ slug: string }>; searchParams: Promise<{ token?: string }>
 }) {

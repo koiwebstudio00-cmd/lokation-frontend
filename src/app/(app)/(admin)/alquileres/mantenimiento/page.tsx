@@ -4,7 +4,7 @@ import { getRentalContractOptions } from "@/lib/rental-contract-options";
 import type { MaintenanceRequest } from "@/lib/maintenance";
 import { MaintenanceCreateForm } from "@/components/rentals/maintenance-forms";
 
-export const metadata = { title: "Mantenimiento — Lokation" };
+export const metadata = { title: "Mantenimiento — Cubiko AI" };
 
 export default async function MaintenancePage({ searchParams }: {
   searchParams: Promise<{ property_id?: string; contract_id?: string; page?: string }>

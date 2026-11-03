@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { Label } from "@/components/ui/label";
 
-export const metadata = { title: "Iniciar sesión — Lokation" };
+export const metadata = { title: "Iniciar sesión — Cubiko AI" };
 
 export default async function LoginPage({
   searchParams,

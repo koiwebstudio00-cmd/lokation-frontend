@@ -28,10 +28,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         nombre={me.nombre}
         email={me.email}
         rol={me.rol}
-        tenantNombre={me.tenant?.nombre ?? "Lokation"}
+        tenantNombre={me.tenant?.nombre ?? "Cubiko AI"}
         consultasSinTomar={consultasSinTomar}
       />
-      <SidebarInset className="min-w-0 bg-secondary">
+      <SidebarInset className="min-w-0 bg-background">
         <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-2 border-b bg-background px-4 print:hidden">
           <SidebarTrigger />
           <div className="ml-auto flex items-center gap-2"><Notifications /><ThemeSwitcher /></div>

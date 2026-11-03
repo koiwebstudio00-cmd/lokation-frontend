@@ -7,7 +7,7 @@ import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-export const metadata = { title: "Clientes — Lokation" };
+export const metadata = { title: "Clientes — Cubiko AI" };
 export default async function ClientsPage({ searchParams }: { searchParams: Promise<{ q?: string; role?: string; page?: string }> }) {
   const query = await searchParams;
   const role = clientRoles.find((role) => role === query.role);

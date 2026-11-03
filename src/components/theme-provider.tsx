@@ -3,5 +3,5 @@
 import { ThemeProvider as Provider } from "next-themes";
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  return <Provider attribute="class" defaultTheme="light" enableSystem storageKey="ubikka-dashboard-theme">{children}</Provider>;
+  return <Provider attribute="class" defaultTheme="light" enableSystem storageKey="cubiko-dashboard-theme">{children}</Provider>;
 }

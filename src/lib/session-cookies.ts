@@ -1,5 +1,5 @@
 /**
- * Cookies de sesión que emite el backend de Lokation.
+ * Cookies de sesión que emite el backend de Cubiko AI.
  *
  * Vive separado de `lib/api.ts` porque el middleware corre en el runtime edge y
  * no puede importar `next/headers`.

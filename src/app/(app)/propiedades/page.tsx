@@ -8,7 +8,7 @@ import { VistaToggle } from "@/components/vista-toggle";
 import { getProperties, getVendedores } from "@/lib/queries";
 import { getVista } from "@/lib/vista";
 
-export const metadata = { title: "Propiedades — Lokation" };
+export const metadata = { title: "Propiedades — Cubiko AI" };
 
 type SearchParams = Promise<Record<string, string | undefined>>;
 

@@ -1,5 +1,5 @@
 // Modelo que consumen los componentes del panel, en snake_case.
-// La API (backend de Lokation) habla camelCase: la traducción vive en src/lib/queries.ts
+// La API (backend de Cubiko AI) habla camelCase: la traducción vive en src/lib/queries.ts
 // y ningún componente conoce el formato de la API.
 
 export type Operacion = "venta" | "alquiler" | "ambos";

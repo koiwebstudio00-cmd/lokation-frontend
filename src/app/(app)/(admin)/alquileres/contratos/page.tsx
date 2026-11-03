@@ -2,7 +2,7 @@ import Link from "next/link";
 import { apiFetch } from "@/lib/api";
 import { contractDate, type RentalContract } from "@/lib/rental-contracts";
 
-export const metadata = { title: "Contratos de alquiler — Lokation" };
+export const metadata = { title: "Contratos de alquiler — Cubiko AI" };
 
 export default async function ContractsPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
   const params = await searchParams;

@@ -8,7 +8,7 @@ import type { RentalServiceAccount } from "@/components/rentals/service-account-
 import { SettlementPreview } from "@/components/rentals/settlement-preview";
 import type { RentalAdjustment, RentalSettlement } from "@/components/rentals/financials";
 
-export const metadata = { title: "Vistas de alquiler — Lokation" };
+export const metadata = { title: "Vistas de alquiler — Cubiko AI" };
 
 type Role = "inquilino" | "propietario";
 

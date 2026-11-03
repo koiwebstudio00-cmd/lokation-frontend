@@ -1,4 +1,6 @@
-# Lokation · app-dashboard
+# Cubiko AI · app-dashboard
+
+Identidad visual actualizada el 2026-11-03: Cubiko AI, símbolo vectorial de casa y conversación, favicon naranja y tema tweakcn `cmlm09qdq000004l7a6e9681h` en claro y oscuro. La tipografía usa la pila del sistema. El sidebar muestra la plataforma y el nombre del tenant actual; los portales conservan su marca propia. Las referencias a Lokation en las secciones siguientes describen etapas anteriores del proyecto.
 
 > Identidad vigente: **Lokation es la plataforma SaaS. Ubikka es una inmobiliaria registrada**, con web propia en ubikka-site, separada del template web-publica. [Estado actual](../docs/ESTADO_ACTUAL.md) y [backlog](../docs/FEATURES_FUTURAS.md) pertenecen al repositorio de documentación y requieren el workspace completo para estos enlaces relativos.
 
@@ -22,8 +24,8 @@ Ver [configuración y pruebas](../docs/LOGIN_GOOGLE_2FA.md). Google usa Better A
 ## Interfaz y navegación · 2026-10-01
 
 - shadcn/ui con Radix, sidebar basado en `sidebar-07` y superficies redondeadas.
-- Tema tweakcn `cmn4wp9hz000104lbgtucaj5m`; tokens en `src/app/globals.css`. Noto Sans JP se sirve desde `@fontsource-variable/noto-sans-jp`.
-- Claro, oscuro y sistema desde el botón **Cambiar tema** a la derecha del navbar. Preferencia local `ubikka-dashboard-theme`.
+- Tema tweakcn `cmlm09qdq000004l7a6e9681h`; tokens en `src/app/globals.css`. Tipografía del sistema.
+- Claro, oscuro y sistema desde el botón **Cambiar tema** a la derecha del navbar. Preferencia local `cubiko-dashboard-theme`.
 - **Mi cuenta** contiene Mi perfil y Cerrar sesión. El desplegable se abre encima del botón. Los submenús contraídos usan DropdownMenu.
 - El wrapper compartido de DropdownMenu activa por `click`, evita doble alternancia por `pointerdown` y conserva los eventos de teclado, foco y cierre de Radix.
 

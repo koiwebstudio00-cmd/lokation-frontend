@@ -1,6 +1,6 @@
 import { PortalAcceptForm } from "@/components/rentals/portal-forms";
 
-export const metadata = { title: "Activar acceso al portal — Lokation" };
+export const metadata = { title: "Activar acceso al portal — Cubiko AI" };
 export default async function PortalActivatePage({ params, searchParams }: {
   params: Promise<{ slug: string }>; searchParams: Promise<{ token?: string }>
 }) {
