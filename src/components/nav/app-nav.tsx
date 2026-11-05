@@ -120,6 +120,7 @@ const ITEMS: Item[] = [
   { href: "/clientes", label: "Clientes", icon: HeartHandshake, soloAdmin: true, subs: [] },
   { label: "Alquileres", icon: FileText, soloAdmin: true, subs: [
     { href: "/alquileres", label: "Resumen" },
+    { href: "/alquileres/propiedades", label: "Propiedades administradas" },
     { href: "/alquileres/contratos", label: "Contratos", incluye: ["/alquileres/contratos/"] },
     { href: "/alquileres/mantenimiento", label: "Mantenimiento", incluye: ["/alquileres/mantenimiento/"] },
     { href: "/alquileres/consultas", label: "Consultas y reclamos" },

@@ -5,7 +5,7 @@ import { deleteRentalDocument, uploadRentalDocument } from "@/actions/rental-doc
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
 
-export type RentalDocument = { id: string; title: string; kind: string; visibility: string; size: number; createdAt: string };
+export type RentalDocument = { personId?: string | null; dossierKind?: string | null; person?: { id: string; nombre: string } | null; id: string; title: string; kind: string; visibility: string; size: number; createdAt: string };
 export function DeleteDocument({ contractId, id }: { contractId: string | null; id: string }) {
   const [state, action, pending] = useActionState(deleteRentalDocument.bind(null, contractId, id), {});
   return <form action={action} className="inline-flex items-center gap-2">

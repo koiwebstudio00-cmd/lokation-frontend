@@ -199,6 +199,8 @@ export type UserProfile = {
 }
 
 export type Property = {
+  managed?: boolean;
+  administrationOnly?: boolean;
   id: string;
   tenant_id: string;
   user_id: string;

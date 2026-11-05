@@ -4,11 +4,14 @@ export type RentalContract = {
   startDate: string;
   endDate: string;
   monthlyRent: string;
+  terms?: { commissionRate: string; commissionBasis: string; adjustmentMethod: string; frequencyMonths: number | null; fixedPercent: string | null }[];
+  currentRent?: string;
+  currentRentSince?: string;
   currency: "ARS" | "USD";
   dueDay: number;
   createdAt: string;
   closedAt: string | null;
-  events?: { id: string; action: "edited" | "activated" | "finished";
+  events?: { id: string; action: "edited" | "activated" | "finished" | "terms_changed";
     details: { note?: string }; actorId: string; createdAt: string }[];
   property: { id: string; titulo: string; slug: string };
   owner: { id: string; nombre: string };

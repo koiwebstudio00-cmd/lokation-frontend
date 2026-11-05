@@ -114,6 +114,7 @@ export default async function PropiedadPage({
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
+      {property.administrationOnly && <p role="status" className="rounded-lg border bg-muted p-4 text-sm">Propiedad de administración privada. No se ofrece en la web, exportaciones ni agente de IA, aunque cambies su estado comercial.</p>}
       <Button asChild variant="outline" size="sm">
           <Link href="/propiedades" prefetch={false}>
             <ArrowLeft /> Volver
@@ -137,7 +138,7 @@ export default async function PropiedadPage({
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <SharePropertyButton propertyId={property.id} />
+          {!property.administrationOnly && <SharePropertyButton propertyId={property.id} />}
           <EstadoBadge estado={property.estado} />
         </div>
       </div>

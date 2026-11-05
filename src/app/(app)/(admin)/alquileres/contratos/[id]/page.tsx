@@ -1,3 +1,6 @@
+import { ContractDossier, type DossierPeople } from "@/components/rentals/contract-dossier";
+import type { VaultFile } from "@/components/rentals/file-vault";
+import { ContractTermsPanel, type TermsOverview } from "@/components/rentals/contract-terms";
 import Link from "next/link";
 import { randomUUID } from "node:crypto";
 import { notFound } from "next/navigation";
@@ -21,12 +24,14 @@ export default async function ContractPage({ params }: { params: Promise<{ id: s
     if (error instanceof ApiError && error.status === 404) notFound();
     throw error;
   }
-  const [services, charges, adjustments, settlements, documents] = await Promise.all([
+  const [services, charges, adjustments, settlements, documents, terms, dossier] = await Promise.all([
     apiFetch<{ data: RentalServiceAccount[] }>(`/v1/rental-properties/${contract.property.id}/services`),
     apiFetch<{ data: RentalCharge[] }>(`/v1/rental-contracts/${id}/charges`),
     apiFetch<{ data: RentalAdjustment[] }>(`/v1/rental-contracts/${id}/adjustments`),
     apiFetch<{ data: RentalSettlement[] }>(`/v1/rental-contracts/${id}/settlements`),
-    apiFetch<{ data: RentalDocument[] }>(`/v1/rental-contracts/${id}/documents`)
+    apiFetch<{ data: (RentalDocument & { mimeType: string; originalName: string | null })[] }>(`/v1/rental-contracts/${id}/documents`),
+    apiFetch<TermsOverview>(`/v1/rental-contracts/${id}/terms`),
+    apiFetch<DossierPeople>(`/v1/rental-contracts/${id}/dossier`)
   ]);
   return <div className="mx-auto max-w-3xl space-y-5">
     <Link href="/alquileres/contratos" className="text-sm underline">← Contratos</Link>
@@ -37,9 +42,10 @@ export default async function ContractPage({ params }: { params: Promise<{ id: s
       <div><dt className="text-sm text-muted-foreground">Propietario</dt><dd><Link className="underline" href={`/clientes/${contract.owner.id}`}>{contract.owner.nombre}</Link></dd></div>
       <div><dt className="text-sm text-muted-foreground">Inquilino</dt><dd><Link className="underline" href={`/clientes/${contract.tenantPerson.id}`}>{contract.tenantPerson.nombre}</Link></dd></div>
       <div><dt className="text-sm text-muted-foreground">Vigencia prevista</dt><dd>{contractDate(contract.startDate)} al {contractDate(contract.endDate)}</dd></div>
-      <div><dt className="text-sm text-muted-foreground">Importe mensual</dt><dd>{contract.currency} {contractAmount(contract.monthlyRent)}</dd></div>
+      <div><dt className="text-sm text-muted-foreground">Importe mensual inicial</dt><dd>{contract.currency} {contractAmount(contract.monthlyRent)}</dd></div>
       <div><dt className="text-sm text-muted-foreground">Día de vencimiento</dt><dd>{contract.dueDay}</dd></div>
       <div><dt className="text-sm text-muted-foreground">Estado</dt><dd className="capitalize">{contract.status}</dd></div>
+      <div><dt className="text-sm text-muted-foreground">Importe vigente</dt><dd>{contract.currency} {contractAmount(contract.currentRent ?? contract.monthlyRent)} · Desde {contractDate(contract.currentRentSince ?? contract.startDate)}</dd></div>
     </dl>
     <nav aria-label="Vistas previas del contrato" className="flex flex-wrap gap-3 text-sm">
       <Link href={`/alquileres/contratos/${id}/vistas?rol=inquilino`} className="rounded-md border px-3 py-2 hover:bg-muted">Vista de inquilino</Link>
@@ -47,17 +53,19 @@ export default async function ContractPage({ params }: { params: Promise<{ id: s
     </nav>
     {contract.status === "borrador" && <ContractTransition id={id} transition="activate" />}
     {contract.status === "vigente" && <ContractTransition id={id} transition="finish" />}
+    <ContractTermsPanel contractId={id} overview={terms} />
     <ServiceAccounts propertyId={contract.property.id} contractId={id} accounts={services.data} />
     <RentalCharges contractId={id} status={contract.status} charges={charges.data}
       settledChargeIds={settlements.data.filter((item) => item.status !== "cancelada").map((item) => item.chargeId)}
       paymentKeys={Object.fromEntries(charges.data.map((charge) => [charge.id, randomUUID()]))} />
     <RentalFinancials contractId={id} status={contract.status} adjustments={adjustments.data}
-      charges={charges.data} settlements={settlements.data} />
-    <RentalDocuments contractId={id} documents={documents.data} />
+      charges={charges.data} settlements={settlements.data} terms={terms} />
+    <ContractDossier contractId={id} people={dossier} status={contract.status} files={documents.data.filter(d => d.personId).map(d => ({ ...d, contractId: id, contract: { property: contract.property, owner: contract.owner, tenantPerson: contract.tenantPerson } } as VaultFile))} />
+    <RentalDocuments contractId={id} documents={documents.data.filter(d => !d.personId)} />
     <Link href={`/alquileres/mantenimiento?property_id=${contract.property.id}&contract_id=${id}`} className="inline-block text-sm underline">Ver o registrar mantenimiento de esta propiedad</Link>
     {!!contract.events?.length && <section className="rounded-xl border p-5"><h2 className="font-semibold">Historial</h2>
       <ul className="mt-3 space-y-2 text-sm">{contract.events.map((event) => <li key={event.id}>
-        {event.action === "edited" ? "Borrador editado" : event.action === "activated" ? "Marcado vigente" : "Finalizado"}
+        {event.action === "edited" ? "Borrador editado" : event.action === "activated" ? "Marcado vigente" : event.action === "terms_changed" ? "Condiciones actualizadas" : "Finalizado"}
         {event.details.note ? ` · ${event.details.note}` : ""} · {formatDate(event.createdAt)}
       </li>)}</ul></section>}
     <p className="text-sm text-muted-foreground">Cubiko AI registra el estado administrativo y los cobros informados por la inmobiliaria. No firma documentos ni realiza cobros bancarios o transferencias al propietario.</p>

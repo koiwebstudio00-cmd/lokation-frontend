@@ -1,3 +1,4 @@
+import { dossierLabels } from "@/lib/rental-dossiers";
 import { VaultUpload } from "@/components/rentals/vault-upload";
 import Link from "next/link";
 import { FolderLock } from "lucide-react";
@@ -15,18 +16,20 @@ export default async function FilesPage({ searchParams }: { searchParams: Promis
   const q = value("q").slice(0, 160);
   const kind = ["contrato", "comprobante", "inventario", "otro"].includes(value("kind")) ? value("kind") : "";
   const visibility = ["interna", "inquilino", "propietario", "ambos"].includes(value("visibility")) ? value("visibility") : "";
+  const dossierKind = Object.hasOwn(dossierLabels, value("dossierKind")) ? value("dossierKind") : "";
   const requested = Number(value("page"));
   const page = Number.isSafeInteger(requested) && requested > 0 && requested <= 100000 ? requested : 1;
-  const query = { ...(q ? { q } : {}), ...(kind ? { kind } : {}), ...(visibility ? { visibility } : {}), page };
+  const query = { ...(dossierKind ? { dossierKind } : {}), ...(q ? { q } : {}), ...(kind ? { kind } : {}), ...(visibility ? { visibility } : {}), page };
   const result = await apiFetch<{ data: VaultFile[]; meta: { total: number; limit: number } }>("/v1/rental-documents", { query });
   const pages = Math.max(1, Math.ceil(result.meta.total / result.meta.limit));
-  const href = (next: number) => `?${new URLSearchParams({ q, kind, visibility, page: String(next) })}`;
+  const href = (next: number) => `?${new URLSearchParams({ q, kind, visibility, dossierKind, page: String(next) })}`;
   return <div className="mx-auto max-w-7xl space-y-6">
     <header className="flex flex-wrap items-center justify-between gap-4"><div><h1 className="flex items-center gap-2 text-2xl font-semibold"><FolderLock className="text-primary" />Bóveda de archivos</h1><p className="mt-1 text-sm text-muted-foreground">Documentos y fotos privados de tu inmobiliaria. {result.meta.total} archivos encontrados.</p></div><VaultUpload /></header>
-    <form key={`${q}:${kind}:${visibility}`} className="grid items-end gap-4 rounded-xl border bg-card p-4 sm:grid-cols-2 lg:grid-cols-4">
+    <form key={`${q}:${kind}:${visibility}:${dossierKind}`} className="grid items-end gap-4 rounded-xl border bg-card p-4 sm:grid-cols-2 lg:grid-cols-4">
       <div className="space-y-2"><Label htmlFor="file-search">Buscar</Label><Input id="file-search" name="q" defaultValue={q} placeholder="Archivo, propiedad o persona" maxLength={160} /></div>
       <div className="space-y-2"><Label htmlFor="file-kind">Tipo de documento</Label><Select id="file-kind" name="kind" defaultValue={kind || "todos"}>{["todos", "contrato", "comprobante", "inventario", "otro"].map(item => <option key={item} value={item}>{item === "todos" ? "Todos los tipos" : item}</option>)}</Select></div>
       <div className="space-y-2"><Label htmlFor="file-visibility">Visibilidad</Label><Select id="file-visibility" name="visibility" defaultValue={visibility || "todas"}>{["todas", "interna", "inquilino", "propietario", "ambos"].map(item => <option key={item} value={item}>{item === "todas" ? "Todas" : item}</option>)}</Select></div>
+      <div className="space-y-2"><Label htmlFor="file-dossier">Legajo</Label><Select id="file-dossier" name="dossierKind" defaultValue={dossierKind}><option value="">Todos los archivos</option>{Object.entries(dossierLabels).map(([key,label]) => <option key={key} value={key}>{label}</option>)}</Select></div>
       <div className="flex gap-2"><Button type="submit">Filtrar</Button><Button asChild variant="ghost"><Link href="/archivos">Limpiar</Link></Button></div>
     </form>
     <FileVault files={result.data} />

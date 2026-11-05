@@ -8,6 +8,7 @@ import { contractAmount, contractDate } from "@/lib/rental-contracts";
 export type RentalCharge = {
   id: string; period: string; dueDate: string; amount: string; currency: "ARS" | "USD";
   paid: string; balance: string;
+  commissionProposal?: { termsId: string; rate: string; basis: string; base: string; amount: string } | null;
   payments: { id: string; amount: string; paidAt: string; method: string; reference: string | null;
     voidedAt: string | null; voidReason: string | null }[];
 };

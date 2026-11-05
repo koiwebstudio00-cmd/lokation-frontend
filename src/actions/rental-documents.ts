@@ -47,9 +47,32 @@ export async function uploadVaultFile(_state: State, form: FormData): Promise<St
   if (!parsed.success) return { error: parsed.error.issues[0].message };
   if (!(file instanceof File) || !file.size || file.size > 10 * 1024 * 1024) return { error: "Elegí un archivo de hasta 10 MB." };
   try {
-    const query = new URLSearchParams({ ...parsed.data, originalName: file.name.slice(0, 255) });
+    const context = z.object({ contractId: uuid, personId: uuid, dossierKind: z.enum(["identidad", "ingresos", "garantia", "otro"]) }).safeParse({ contractId: form.get("contractId"), personId: form.get("personId"), dossierKind: form.get("dossierKind") });
+    if (form.has("contractId") && !context.success) return { error: "Seleccioná una persona y categoría de legajo válidas." };
+    const query = new URLSearchParams({ ...parsed.data, originalName: file.name.slice(0, 255), ...(context.success ? context.data : {}) });
     await apiBinary(`/v1/rental-documents?${query}`, { method: "POST", contentType: "application/octet-stream", body: new Uint8Array(await file.arrayBuffer()) });
     revalidatePath("/archivos");
+    if (context.success) revalidatePath(`/alquileres/contratos/${context.data.contractId}`);
     return { success: "Archivo privado guardado." };
   } catch (error) { return { error: error instanceof ApiError ? error.message : "No pudimos subir el archivo." }; }
+}
+
+export async function linkGuarantor(contractId: string, _state: State, form: FormData): Promise<State> {
+  void _state;
+  const personId = String(form.get("personId") ?? "");
+  if (!uuid.safeParse(contractId).success || !uuid.safeParse(personId).success) return { error: "Seleccioná un garante." };
+  try {
+    await apiFetch(`/v1/rental-contracts/${contractId}/guarantors`, { method: "POST", body: { personId } });
+    revalidatePath(`/alquileres/contratos/${contractId}`);
+    return { success: "Garante vinculado." };
+  } catch(error) { return { error: error instanceof ApiError ? error.message : "No pudimos vincular el garante." }; }
+}
+export async function unlinkGuarantor(contractId: string, personId: string, _state: State): Promise<State> {
+  void _state;
+  if (!uuid.safeParse(contractId).success || !uuid.safeParse(personId).success) return { error: "Garante inválido." };
+  try {
+    await apiFetch(`/v1/rental-contracts/${contractId}/guarantors/${personId}`, { method: "DELETE" });
+    revalidatePath(`/alquileres/contratos/${contractId}`);
+    return { success: "Garante desvinculado." };
+  } catch(error) { return { error: error instanceof ApiError ? error.message : "No pudimos quitar el vínculo." }; }
 }

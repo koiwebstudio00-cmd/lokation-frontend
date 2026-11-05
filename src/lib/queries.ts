@@ -98,6 +98,8 @@ interface ApiProperty {
   banios: number | null;
   supCubierta: string | null;
   supTotal: string | null;
+  managed?: boolean;
+  administrationOnly?: boolean;
   estado: EstadoPropiedad;
   destacada: boolean;
   notas: string | null;
@@ -173,6 +175,8 @@ function toProperty(p: ApiProperty): Property {
     sup_cubierta: num(p.supCubierta),
     sup_total: num(p.supTotal),
     estado: p.estado,
+    managed: p.managed,
+    administrationOnly: p.administrationOnly,
     destacada: p.destacada,
     notas: p.notas,
     requisitos: p.requisitos,
