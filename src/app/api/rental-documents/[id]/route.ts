@@ -4,9 +4,10 @@ export async function GET(_request: Request, context: { params: Promise<{ id: st
   const { id } = await context.params;
   if (!/^[0-9a-f-]{36}$/.test(id)) return new Response(null, { status: 404 });
   try {
-    const response = await apiBinary(`/v1/rental-documents/${id}/content`);
-    return new Response(response.body, { headers: { "Content-Type": "application/pdf",
-      "Content-Disposition": "attachment; filename=\"documento.pdf\"", "Cache-Control": "no-store",
+    const preview = new URL(_request.url).searchParams.get("preview") === "1";
+    const response = await apiBinary(`/v1/rental-documents/${id}/content${preview ? "?preview=1" : ""}`);
+    return new Response(response.body, { headers: { "Content-Type": response.headers.get("Content-Type") || "application/octet-stream",
+      "Content-Disposition": response.headers.get("Content-Disposition") || "attachment", "Cache-Control": "no-store",
       "X-Content-Type-Options": "nosniff" } });
   } catch { return new Response(null, { status: 404 }); }
 }

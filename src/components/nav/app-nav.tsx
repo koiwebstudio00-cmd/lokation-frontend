@@ -5,6 +5,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { usePathname } from "next/navigation";
 import {
   Building2,
+  FolderLock,
+  ListTodo,
   ChartNoAxesCombined,
   ChevronRight,
   HeartHandshake,
@@ -122,6 +124,8 @@ const ITEMS: Item[] = [
     { href: "/alquileres/mantenimiento", label: "Mantenimiento", incluye: ["/alquileres/mantenimiento/"] },
     { href: "/alquileres/consultas", label: "Consultas y reclamos" },
   ] },
+  { href: "/tareas", label: "Tareas", icon: ListTodo, soloAdmin: false, subs: [] },
+  { href: "/archivos", label: "Archivos", icon: FolderLock, soloAdmin: true, subs: [] },
   { href: "/equipo", label: "Equipo", icon: Users, soloAdmin: true, subs: [] },
   { href: "/mi-sitio", label: "Mi sitio web", icon: Globe2, soloAdmin: true, subs: [] },
   {

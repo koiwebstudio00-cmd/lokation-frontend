@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
 
 export type RentalDocument = { id: string; title: string; kind: string; visibility: string; size: number; createdAt: string };
-function DeleteDocument({ contractId, id }: { contractId: string; id: string }) {
+export function DeleteDocument({ contractId, id }: { contractId: string | null; id: string }) {
   const [state, action, pending] = useActionState(deleteRentalDocument.bind(null, contractId, id), {});
   return <form action={action} className="inline-flex items-center gap-2">
     <Button type="submit" variant="outline" size="sm" disabled={pending}>Eliminar</Button>
