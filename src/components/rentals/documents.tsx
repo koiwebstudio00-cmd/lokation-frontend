@@ -1,7 +1,8 @@
 "use client";
 
 import { useActionState, useEffect, useRef } from "react";
-import { deleteRentalDocument, uploadRentalDocument } from "@/actions/rental-documents";
+import { uploadRentalDocument } from "@/lib/upload-private-file";
+import { deleteRentalDocument } from "@/actions/rental-documents";
 import { Button } from "@/components/ui/button";
 import { formatDate } from "@/lib/utils";
 
