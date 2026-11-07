@@ -10,7 +10,7 @@ export type RentalDocument = { personId?: string | null; dossierKind?: string | 
 export function DeleteDocument({ contractId, id }: { contractId: string | null; id: string }) {
   const [state, action, pending] = useActionState(deleteRentalDocument.bind(null, contractId, id), {});
   return <form action={action} className="inline-flex items-center gap-2">
-    <Button type="submit" variant="outline" size="sm" disabled={pending}>Eliminar</Button>
+    <Button type="submit" variant="outline" size="sm" disabled={pending}>Enviar a papelera</Button>
     {state.error && <span role="alert" className="text-xs text-destructive">{state.error}</span>}
     {state.success && <span role="status" className="text-xs">{state.success}</span>}
   </form>;

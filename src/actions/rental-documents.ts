@@ -6,7 +6,7 @@ import { ApiError, apiFetch } from "@/lib/api";
 
 type State = { error?: string; success?: string };
 const uuid = z.uuid();
-export async function prepareDocumentUpload(metadata: { mode: "vault" | "contract"; title: string; kind: string; visibility?: string; originalName: string; size: number; contractId?: string; personId?: string; dossierKind?: string }): Promise<{ url?: string; token?: string; error?: string }> {
+export async function prepareDocumentUpload(metadata: { folderId?: string; mode: "vault" | "contract"; title: string; kind: string; visibility?: string; originalName: string; size: number; contractId?: string; personId?: string; dossierKind?: string }): Promise<{ url?: string; token?: string; error?: string }> {
   try { return await apiFetch<{url:string;token:string}>("/v1/rental-documents/upload-ticket", { method: "POST", body: metadata }); }
   catch(error) { return { error: error instanceof ApiError ? error.message : "No pudimos autorizar la carga." }; }
 }
@@ -23,7 +23,7 @@ export async function deleteRentalDocument(contractId: string | null, documentId
     await apiFetch(`/v1/rental-documents/${documentId}`, { method: "DELETE" });
     revalidatePath("/archivos");
     if (contractId) revalidatePath(`/alquileres/contratos/${contractId}`);
-    return { success: "Documento eliminado." };
+    return { success: "Documento enviado a la papelera." };
   } catch (error) { return { error: error instanceof ApiError ? error.message : "No pudimos eliminar el documento." }; }
 }
 
