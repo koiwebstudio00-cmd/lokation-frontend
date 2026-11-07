@@ -34,7 +34,7 @@ function message(error: unknown, fallback: string): string {
 
 const inviteSchema = z.object({
   email: z.string().trim().email("Email inválido"),
-  rol: z.enum(["admin", "agente"]),
+  rol: z.enum(["admin", "agente", "community"]),
 });
 
 export async function inviteUser(_prev: TeamState, formData: FormData): Promise<TeamState> {
@@ -75,11 +75,11 @@ export async function revokeInvitation(id: string): Promise<string | null> {
  */
 export async function updateUsuario(
   id: string,
-  data: { rol?: "admin" | "agente"; estado?: "activo" | "inactivo" }
+  data: { rol?: "admin" | "agente" | "community"; estado?: "activo" | "inactivo" }
 ): Promise<string | null> {
   const parsed = z
     .object({
-      rol: z.enum(["admin", "agente"]).optional(),
+      rol: z.enum(["admin", "agente", "community"]).optional(),
       estado: z.enum(["activo", "inactivo"]).optional(),
     })
     .safeParse(data);

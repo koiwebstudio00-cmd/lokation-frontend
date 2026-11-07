@@ -1,3 +1,5 @@
+import { getCurrentUser } from "@/lib/api";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Pencil, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -17,6 +19,7 @@ export default async function MisPropiedadesPage({
 }: {
   searchParams: Promise<Record<string, string | undefined>>;
 }) {
+  if((await getCurrentUser())?.rol === "community") redirect("/propiedades");
   const params = await searchParams;
   const [{ properties, count, page }, vista] = await Promise.all([
     getMyProperties({

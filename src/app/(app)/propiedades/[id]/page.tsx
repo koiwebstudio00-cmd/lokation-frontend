@@ -53,7 +53,7 @@ export default async function PropiedadPage({
   const esAdmin = me?.rol === "admin" || me?.rol === "super_admin";
   // El admin gestiona todas las propiedades del tenant (la RLS ya lo permite),
   // no solo las propias. El vendedor solo las suyas.
-  const puedeGestionar = isOwner || esAdmin;
+  const puedeGestionar = me?.rol !== "community" && (isOwner || esAdmin);
 
   const facts = [
     property.ambientes != null && {

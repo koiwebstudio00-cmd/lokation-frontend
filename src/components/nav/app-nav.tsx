@@ -169,7 +169,10 @@ export function AppNav({
 }) {
   const pathname = usePathname();
   const { isMobile, setOpenMobile, state } = useSidebar();
-  const items = ITEMS.filter((i) => !i.soloAdmin || esAdmin(rol));
+  const items = ITEMS.filter((i) => rol === "community"
+    ? ["Inicio","Propiedades","Tareas","Archivos","Feedback"].includes(i.label)
+    : !i.soloAdmin || esAdmin(rol)).map(i => rol === "community" && i.label === "Propiedades"
+      ? {...i,subs:i.subs.filter(s=>s.href === "/propiedades")} : i);
 
   // En el celular el cajón tapa la pantalla: al tocar un link hay que cerrarlo.
   // En escritorio la barra es fija y no hay nada que cerrar.

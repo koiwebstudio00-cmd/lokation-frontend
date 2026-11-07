@@ -10,11 +10,9 @@ import { getConsultasSinTomarCount } from "@/lib/queries";
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   // El middleware ya frena a quien no tiene sesión; esto cubre el caso de un
   // access vencido entre medio y le da a la navegación el rol para filtrarse.
-  const [me, consultasSinTomar] = await Promise.all([
-    getCurrentUser(),
-    getConsultasSinTomarCount(),
-  ]);
+  const me = await getCurrentUser();
   if (!me) redirect("/login");
+  const consultasSinTomar = me.rol === "community" ? 0 : await getConsultasSinTomarCount();
 
   // `sidebar_state` la escribe el propio SidebarProvider al abrir o cerrar la
   // barra. Leerla acá, en el server, evita que la primera pintura muestre la
@@ -34,7 +32,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <SidebarInset className="min-w-0 bg-background">
         <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-2 border-b bg-background px-4 print:hidden">
           <SidebarTrigger />
-          <div className="ml-auto flex items-center gap-2"><Notifications /><ThemeSwitcher /></div>
+          <div className="ml-auto flex items-center gap-2">{me.rol !== "community" && <Notifications />}<ThemeSwitcher /></div>
         </header>
         <div className="mx-auto w-full min-w-0 p-4 sm:p-6 print:p-0">{children}</div>
       </SidebarInset>

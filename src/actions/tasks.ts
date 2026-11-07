@@ -8,14 +8,14 @@ export async function saveTask(id: string | null, _state: State, form: FormData)
     priority: form.get("priority"), dueDate: form.get("dueDate") || null };
   try {
     await apiFetch(id ? `/v1/tasks/${encodeURIComponent(id)}` : "/v1/tasks", { method: id ? "PATCH" : "POST", body });
-    revalidatePath("/tareas");
+    revalidatePath("/tareas");revalidatePath("/");
     return { success: "Tarea guardada." };
   } catch (error) { return { error: error instanceof ApiError ? error.message : "No pudimos guardar la tarea." }; }
 }
 export async function changeTaskStatus(id: string, _state: State, form: FormData): Promise<State> {
   try {
     await apiFetch(`/v1/tasks/${encodeURIComponent(id)}`, { method: "PATCH", body: { status: form.get("status") } });
-    revalidatePath("/tareas");
+    revalidatePath("/tareas");revalidatePath("/");
     return { success: "Estado actualizado." };
   } catch (error) { return { error: error instanceof ApiError ? error.message : "No pudimos actualizar la tarea." }; }
 }

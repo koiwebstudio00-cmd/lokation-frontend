@@ -1,3 +1,4 @@
+import {getCurrentUser} from "@/lib/api";
 import { Suspense } from "react";
 import { SearchX } from "lucide-react";
 import { PropertyCard } from "@/components/properties/property-card";
@@ -18,6 +19,7 @@ export default async function PropiedadesPage({
   searchParams: SearchParams;
 }) {
   const params = await searchParams;
+  const community=(await getCurrentUser())?.rol === "community";
   const [{ properties, count, page }, vendedores, vista] = await Promise.all([
     getProperties({
       q: params.q,
@@ -29,7 +31,7 @@ export default async function PropiedadesPage({
       zona_revisar: params.zona_revisar,
       pagina: params.pagina ? Number(params.pagina) : 1,
     }),
-    getVendedores(),
+    community ? Promise.resolve([]) : getVendedores(),
     getVista(),
   ]);
 

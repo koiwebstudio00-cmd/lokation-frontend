@@ -108,7 +108,7 @@ export function PropertyFilters({
             </option>
           ))}
         </Select>
-        <Select
+        {vendedores.length>0&&<Select
           aria-label="Vendedor"
           value={searchParams.get("vendedor") ?? ""}
           onChange={(e) => setParam("vendedor", e.target.value)}
@@ -120,7 +120,7 @@ export function PropertyFilters({
               {v.nombre}
             </option>
           ))}
-        </Select>
+        </Select>}
       </div>
       <label className="flex w-fit items-center gap-2 text-sm text-muted-foreground">
         <input

@@ -34,7 +34,7 @@ export default async function PortalEntry({ searchParams }: {
         {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
         <Button type="submit" className="w-full">Ir a mi portal</Button>
       </form>
-      <Link href="/login" className="text-sm underline">Soy administrador o agente</Link>
+      <Link href="/login" className="text-sm underline">Soy parte del equipo inmobiliario</Link>
     </section>
   </main>;
 }

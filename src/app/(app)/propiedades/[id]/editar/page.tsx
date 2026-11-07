@@ -21,7 +21,7 @@ export default async function EditarPropiedadPage({
   // El dueño edita lo suyo; el admin, cualquier propiedad del tenant (la RLS ya
   // lo permite). Solo se redirige a un vendedor que abre una propiedad ajena.
   const esAdmin = me?.rol === "admin" || me?.rol === "super_admin";
-  if (property.user_id !== me?.id && !esAdmin) redirect(`/propiedades/${id}`);
+  if (me?.rol === "community" || (property.user_id !== me?.id && !esAdmin)) redirect(`/propiedades/${id}`);
 
   const action = updateProperty.bind(null, id);
 

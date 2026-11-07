@@ -57,7 +57,7 @@ export function UserActions({ usuario, esYo }: { usuario: Usuario; esYo: boolean
         aria-label={`Rol de ${usuario.nombre}`}
         className="h-9 w-40 text-sm"
         onChange={(e) =>
-          run({ rol: e.target.value as "admin" | "agente" }, "Rol actualizado")
+          run({ rol: e.target.value as "admin" | "agente" | "community" }, "Rol actualizado")
         }
       >
         {ROLES.map((r) => (

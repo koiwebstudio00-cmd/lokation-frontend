@@ -1,12 +1,11 @@
 "use client";
 import { useActionState, useEffect, useState } from "react";
-import { Plus, Circle, Clock, CheckCircle2, Ban } from "lucide-react";
+import { Plus, Circle, Clock, CheckCircle2, Ban, ListTodo } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
 import { saveTask, changeTaskStatus } from "@/actions/tasks";
@@ -16,7 +15,7 @@ export type Task = { id: string; title: string; description: string; status: str
   createdAt: string; assignedToId: string; assignedTo: TeamMember; createdBy: { nombre: string } };
 export const taskStatuses = { pendiente: "Pendiente", en_curso: "En curso", completada: "Completada", cancelada: "Cancelada" };
 const statusIcons = { pendiente: Circle, en_curso: Clock, completada: CheckCircle2, cancelada: Ban };
-const statusColors: Record<string, string> = { pendiente: "bg-amber-100 text-amber-900", en_curso: "bg-blue-100 text-blue-900", completada: "bg-emerald-100 text-emerald-900", cancelada: "bg-muted text-muted-foreground" };
+const statusColors: Record<string, string> = { pendiente: "text-muted-foreground", en_curso: "text-blue-700 dark:text-blue-400", completada: "text-emerald-700 dark:text-emerald-400", cancelada: "bg-muted text-muted-foreground" };
 function TaskForm({ task, members, onDone }: { task?: Task; members: TeamMember[]; onDone: () => void }) {
   const [state, action, pending] = useActionState(saveTask.bind(null, task?.id ?? null), {});
   useEffect(() => { if (state.success) onDone(); }, [state, onDone]);
@@ -31,20 +30,28 @@ function TaskForm({ task, members, onDone }: { task?: Task; members: TeamMember[
 }
 export function TaskEditor({ task, members }: { task?: Task; members: TeamMember[] }) {
   const [open, setOpen] = useState(false);
-  return <Dialog open={open} onOpenChange={setOpen}><DialogTrigger asChild><Button variant={task ? "outline" : "default"}>{!task && <Plus className="size-4" />}{task ? "Editar" : "Nueva tarea"}</Button></DialogTrigger><DialogContent><DialogHeader><DialogTitle>{task ? "Editar tarea" : "Nueva tarea"}</DialogTitle><DialogDescription>Asigná un responsable del equipo y una fecha de vencimiento opcional.</DialogDescription></DialogHeader><TaskForm task={task} members={members} onDone={() => setOpen(false)} /></DialogContent></Dialog>;
+  return <Dialog open={open} onOpenChange={setOpen}><DialogTrigger asChild><Button size="sm" variant={task ? "ghost" : "default"}>{!task && <Plus className="size-4" />}{task ? "Editar" : "Nueva tarea"}</Button></DialogTrigger><DialogContent><DialogHeader><DialogTitle>{task ? "Editar tarea" : "Nueva tarea"}</DialogTitle><DialogDescription>Asigná un responsable del equipo y una fecha de vencimiento opcional.</DialogDescription></DialogHeader><TaskForm task={task} members={members} onDone={() => setOpen(false)} /></DialogContent></Dialog>;
 }
 function TaskStatus({ task }: { task: Task }) {
   const [state, action, pending] = useActionState(changeTaskStatus.bind(null, task.id), {});
   return <form action={action} className="space-y-3"><Label htmlFor={`status-${task.id}`}>Estado</Label><div className="flex gap-2"><Select id={`status-${task.id}`} name="status" defaultValue={task.status} key={task.status}>{Object.entries(taskStatuses).map(([key, label]) => <option key={key} value={key}>{label}</option>)}</Select><Button disabled={pending} type="submit">Actualizar</Button></div>{state.error && <p role="alert">{state.error}</p>}{state.success && <p role="status" className="text-sm">{state.success}</p>}</form>;
 }
 export function TaskTable({ tasks, members, admin, today }: { tasks: Task[]; members: TeamMember[]; admin: boolean; today: string }) {
-  if (!tasks.length) return <p className="rounded-xl border border-dashed p-12 text-center text-muted-foreground">No hay tareas con estos filtros.</p>;
-  return <div className="rounded-xl border"><Table><TableHeader><TableRow><TableHead>Tarea</TableHead><TableHead>Responsable</TableHead><TableHead>Estado</TableHead><TableHead>Vencimiento</TableHead><TableHead>Acciones</TableHead></TableRow></TableHeader><TableBody>{tasks.map(task => {
+  if (!tasks.length) return <div className="border-y py-14 text-center"><ListTodo className="mx-auto mb-3 size-6 text-muted-foreground"/><p className="text-sm font-medium">No hay tareas para mostrar</p><p className="mt-1 text-sm text-muted-foreground">Las tareas que coincidan con estos filtros aparecerán acá.</p></div>;
+  return <Table><TableHeader><TableRow><TableHead>Tarea</TableHead>{admin && <TableHead>Responsable</TableHead>}<TableHead>Estado</TableHead><TableHead className="hidden md:table-cell">Prioridad</TableHead><TableHead className="text-right">Vencimiento</TableHead>{admin && <TableHead><span className="sr-only">Acciones</span></TableHead>}</TableRow></TableHeader><TableBody>{tasks.map(task => {
     const Icon = statusIcons[task.status as keyof typeof statusIcons] ?? Circle;
     const overdue = task.dueDate && task.dueDate.slice(0, 10) < today && !["completada", "cancelada"].includes(task.status);
-    return <TableRow key={task.id}><TableCell><p className="font-medium">{task.title}</p><p className="text-xs capitalize text-muted-foreground">Prioridad {task.priority}</p></TableCell><TableCell>{task.assignedTo.nombre}</TableCell><TableCell><Badge className={statusColors[task.status]}><Icon className="mr-1 size-3" />{taskStatuses[task.status as keyof typeof taskStatuses]}</Badge></TableCell><TableCell>{task.dueDate?.slice(0, 10) ?? "Sin fecha"}{overdue && <Badge variant="outline" className="ml-2 border-red-300 bg-red-50 text-red-800">Vencida</Badge>}</TableCell><TableCell><div className="flex gap-2">
-      <Dialog><DialogTrigger asChild><Button variant="outline">Ver detalle</Button></DialogTrigger><DialogContent><DialogHeader><DialogTitle>{task.title}</DialogTitle><DialogDescription>Asignada a {task.assignedTo.nombre} · Creada por {task.createdBy.nombre}</DialogDescription></DialogHeader><p className="whitespace-pre-wrap break-words text-sm">{task.description || "Sin descripción"}</p><TaskStatus task={task} /></DialogContent></Dialog>
-      {admin && <TaskEditor task={task} members={members} />}
-    </div></TableCell></TableRow>;
-  })}</TableBody></Table></div>;
+    const due = task.dueDate ? new Intl.DateTimeFormat("es-AR", { day: "numeric", month: "short", timeZone: "UTC" }).format(new Date(task.dueDate)) : "Sin fecha";
+    return <TableRow key={task.id}>
+      <TableCell className="w-full min-w-40 max-w-md py-4 whitespace-normal">
+        <Dialog><DialogTrigger asChild><Button variant="link" className="h-auto max-w-full justify-start p-0 text-left font-medium whitespace-normal text-foreground hover:text-primary">{task.title}</Button></DialogTrigger><DialogContent><DialogHeader><DialogTitle>{task.title}</DialogTitle><DialogDescription>Asignada a {task.assignedTo.nombre} · Creada por {task.createdBy.nombre}</DialogDescription></DialogHeader><div className="flex flex-wrap gap-4 border-y py-3 text-sm text-muted-foreground"><span className="capitalize">Prioridad {task.priority}</span><span>Vencimiento: {task.dueDate?.slice(0, 10) ?? "Sin fecha"}</span></div><p className="whitespace-pre-wrap break-words text-sm">{task.description || "Sin descripción"}</p><TaskStatus task={task} /></DialogContent></Dialog>
+        <p className="mt-1 text-xs capitalize text-muted-foreground md:hidden">Prioridad {task.priority}</p>
+      </TableCell>
+      {admin && <TableCell className="text-muted-foreground">{task.assignedTo.nombre}</TableCell>}
+      <TableCell><span className={`inline-flex items-center gap-2 text-xs ${statusColors[task.status]}`}><Icon aria-hidden="true" className="size-3.5" />{taskStatuses[task.status as keyof typeof taskStatuses]}</span></TableCell>
+      <TableCell className="hidden text-xs md:table-cell"><span className={task.priority === "alta" ? "font-medium text-amber-700 dark:text-amber-400" : "text-muted-foreground"}>{task.priority === "alta" ? "Alta" : task.priority === "baja" ? "Baja" : "Normal"}</span></TableCell>
+      <TableCell className={`text-right text-xs tabular-nums ${overdue ? "text-destructive" : "text-muted-foreground"}`}><time dateTime={task.dueDate?.slice(0,10)}>{due}</time>{overdue && <span className="mt-1 block text-[11px]">Vencida</span>}</TableCell>
+      {admin && <TableCell><TaskEditor task={task} members={members} /></TableCell>}
+    </TableRow>;
+  })}</TableBody></Table>;
 }

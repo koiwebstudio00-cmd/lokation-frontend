@@ -32,7 +32,7 @@ export type IndiceAjuste = "icl" | "ipc" | "fijo";
 export type MascotasAlquiler = "se_permiten" | "no_se_permiten" | "sin_especificar";
 export type AmobladoAlquiler = "amoblado" | "sin_amoblar" | "sin_especificar";
 
-export type Rol = "super_admin" | "admin" | "agente";
+export type Rol = "super_admin" | "admin" | "agente" | "community";
 
 // ── Analíticas comerciales (cohortes con datos actuales) ────────────────────
 
@@ -577,9 +577,10 @@ export const CANALES: { value: CanalLead; label: string }[] = [
   { value: "manual", label: "Carga manual" },
 ];
 
-export const ROLES: { value: "admin" | "agente"; label: string }[] = [
+export const ROLES: { value: "admin" | "agente" | "community"; label: string }[] = [
   { value: "admin", label: "Administrador" },
   { value: "agente", label: "Vendedor" },
+  { value: "community", label: "Community" },
 ];
 
 // ── Feedback: sugerencias y reportes de error del panel ──────────────────────

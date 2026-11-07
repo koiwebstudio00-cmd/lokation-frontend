@@ -29,5 +29,5 @@ async function Contents({params}:{params:Params}){
   const comparison=filters.sort==="modified"?new Date(a.updatedAt??0).getTime()-new Date(b.updatedAt??0).getTime():a.name.localeCompare(b.name,"es");
   return (filters.direction==="asc"?1:-1)*(comparison||a.id.localeCompare(b.id));
  });
- return <VaultBrowser files={result.data} folders={folders} visibleFolders={visibleFolders} users={usersResult.data.filter(u=>u.rol!=="admin")} admin={admin} folderId={folderId} view={view} filters={filters} total={result.meta.total}/>;
+ return <VaultBrowser files={result.data} folders={folders} visibleFolders={visibleFolders} users={usersResult.data.filter(u=>u.rol!=="admin"&&u.rol!=="community")} admin={admin} community={me?.rol === "community"} folderId={folderId} view={view} filters={filters} total={result.meta.total}/>;
 }

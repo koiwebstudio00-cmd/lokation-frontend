@@ -1,15 +1,14 @@
+import { HomeSummary } from "@/components/home-summary";
+import { CommunityHome } from "@/components/community-home";
 import Link from "next/link";
 import Image from "next/image";
 import {
   ArrowRight,
   Building2,
-  CircleDollarSign,
   Home,
   ImageOff,
   Inbox,
-  KeyRound,
   Plus,
-  ShieldCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CanalBadge, LeadEstadoBadge } from "@/components/leads/estado-badge";
@@ -31,33 +30,6 @@ import type { Lead, Operacion } from "@/lib/types";
 
 export const metadata = { title: "Inicio — Cubiko AI" };
 
-const ESTADO_CARDS = [
-  {
-    estado: "disponible",
-    label: "Disponibles",
-    detail: "Listas para publicar",
-    color: "var(--estado-disponible-fg)",
-    bg: "bg-[var(--estado-disponible-bg)]",
-    icon: KeyRound,
-  },
-  {
-    estado: "reservado",
-    label: "Reservadas",
-    detail: "Con operación en curso",
-    color: "var(--estado-reservada-fg)",
-    bg: "bg-[var(--estado-reservada-bg)]",
-    icon: ShieldCheck,
-  },
-  {
-    estado: "vendida",
-    label: "Vendidas",
-    detail: "Cerradas en el sistema",
-    color: "var(--estado-vendida-fg)",
-    bg: "bg-[var(--estado-vendida-bg)]",
-    icon: CircleDollarSign,
-  },
-] as const;
-
 const OPERACION_LABEL: Record<Operacion, string> = {
   venta: "Venta",
   alquiler: "Alquiler",
@@ -65,7 +37,9 @@ const OPERACION_LABEL: Record<Operacion, string> = {
 };
 
 export default async function HomePage() {
-  const [resumen, me] = await Promise.all([getResumen(), getCurrentUser()]);
+  const me = await getCurrentUser();
+  if(me?.rol === "community") return <CommunityHome nombre={me.nombre}/>;
+  const resumen = await getResumen();
   const admin = me ? esAdmin(me.rol) : false;
   const total = resumen.totalPropiedades;
 
@@ -90,7 +64,7 @@ export default async function HomePage() {
       };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <h1 className="text-2xl font-semibold">
@@ -105,57 +79,12 @@ export default async function HomePage() {
         </Button>
       </div>
 
-      {/* Contadores. Cada uno lleva al listado ya filtrado. */}
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        {ESTADO_CARDS.map((c) => (
-          <Link
-            key={c.estado}
-            href={`${textos.verPropiedades}?estado=${c.estado}`}
-            prefetch={false}
-            className="rounded-xl group relative overflow-hidden border bg-background p-4 transition-colors hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            <span className="absolute inset-x-0 top-0 h-1" style={{ background: c.color }} />
-            <div className="flex items-start justify-between gap-3">
-              <span className={`flex size-10 rounded-lg items-center justify-center ${c.bg}`}>
-                <c.icon className="size-5" style={{ color: c.color }} />
-              </span>
-              <ArrowRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
-            </div>
-            <p
-              className="mt-4 text-4xl font-semibold leading-none tabular-nums"
-              style={{ color: c.color }}
-            >
-              {resumen.propiedades[c.estado]}
-            </p>
-            <div className="mt-2">
-              <p className="font-medium">{c.label}</p>
-              <p className="text-xs text-muted-foreground">{c.detail}</p>
-            </div>
-          </Link>
-        ))}
-        <Link
-          href="/consultas?estado=nueva"
-          prefetch={false}
-          className="rounded-xl group relative overflow-hidden border bg-background p-4 transition-colors hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        >
-          <span className="absolute inset-x-0 top-0 h-1 bg-primary" />
-          <div className="flex items-start justify-between gap-3">
-            <span className="flex size-10 rounded-lg items-center justify-center bg-accent text-accent-foreground">
-              <Inbox className="size-5" />
-            </span>
-            <ArrowRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
-          </div>
-          <p className="mt-4 text-4xl font-semibold leading-none tabular-nums text-primary">
-            {resumen.consultasNuevas}
-          </p>
-          <div className="mt-2">
-            <p className="font-medium">
-              {resumen.consultasNuevas === 1 ? "Consulta nueva" : "Consultas nuevas"}
-            </p>
-            <p className="text-xs text-muted-foreground">Pendientes de primera respuesta</p>
-          </div>
-        </Link>
-      </div>
+      <HomeSummary items={[
+        { label: "Disponibles", value: resumen.propiedades.disponible, href: `${textos.verPropiedades}?estado=disponible`, description: "Listas para publicar" },
+        { label: "Reservadas", value: resumen.propiedades.reservado, href: `${textos.verPropiedades}?estado=reservado`, description: "Con operación en curso" },
+        { label: "Vendidas", value: resumen.propiedades.vendida, href: `${textos.verPropiedades}?estado=vendida`, description: "Operaciones cerradas" },
+        { label: "Consultas nuevas", value: resumen.consultasNuevas, href: "/consultas?estado=nueva", description: "Pendientes de respuesta" },
+      ]} />
 
       <section className="space-y-3">
         <div className="flex items-center justify-between">
@@ -169,7 +98,7 @@ export default async function HomePage() {
           </Button>
         </div>
         {resumen.ultimasConsultas.length === 0 ? (
-          <p className="rounded-xl border border-dashed p-6 text-center text-sm text-muted-foreground">
+          <p className="border-y py-10 text-center text-sm text-muted-foreground">
             {textos.consultasVacio}
           </p>
         ) : (
@@ -189,7 +118,7 @@ export default async function HomePage() {
           </Button>
         </div>
         {resumen.ultimasPropiedades.length === 0 ? (
-          <p className="rounded-xl border border-dashed p-6 text-center text-sm text-muted-foreground">
+          <p className="border-y py-10 text-center text-sm text-muted-foreground">
             {textos.propiedadesVacio}
           </p>
         ) : (
@@ -202,7 +131,7 @@ export default async function HomePage() {
 
 function HomeLeadTable({ leads }: { leads: Lead[] }) {
   return (
-    <div className="rounded-xl overflow-x-auto border bg-background">
+    <div className="overflow-x-auto">
       <Table>
         <TableHeader>
           <TableRow>
@@ -267,7 +196,7 @@ function HomeLeadTable({ leads }: { leads: Lead[] }) {
 
 function HomePropertyTable({ properties }: { properties: PropertyCardData[] }) {
   return (
-    <div className="rounded-xl overflow-x-auto border bg-background">
+    <div className="overflow-x-auto">
       <Table>
         <TableHeader>
           <TableRow>

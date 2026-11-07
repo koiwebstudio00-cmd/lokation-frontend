@@ -14,6 +14,7 @@ export const metadata = { title: "Mi perfil — Cubiko AI" };
 
 const ROL_LABEL: Record<Rol, string> = {
   super_admin: "Soporte",
+  community: "Community",
   admin: "Administrador",
   agente: "Vendedor",
 };

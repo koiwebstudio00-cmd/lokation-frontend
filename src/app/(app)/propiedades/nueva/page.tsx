@@ -1,3 +1,5 @@
+import { getCurrentUser } from "@/lib/api";
+import { redirect } from "next/navigation";
 import { getPropertyLocations } from "@/lib/queries";
 import { createProperty } from "@/actions/properties";
 import { PropertyForm } from "@/components/properties/property-form";
@@ -5,6 +7,7 @@ import { PropertyForm } from "@/components/properties/property-form";
 export const metadata = { title: "Nueva propiedad — Cubiko AI" };
 
 export default async function NuevaPropiedadPage() {
+  if((await getCurrentUser())?.rol === "community") redirect("/propiedades");
   const locations = await getPropertyLocations();
   return (
     <div className="mx-auto max-w-4xl space-y-4">

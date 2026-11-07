@@ -19,7 +19,7 @@ export default async function LoginPage({
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-semibold">Acceso de inmobiliarias</h1>
-      <p className="text-sm text-muted-foreground">Ingresá con tu cuenta de administrador o agente.</p>
+      <p className="text-sm text-muted-foreground">Ingresá con tu cuenta del equipo de la inmobiliaria.</p>
       <div className="rounded-lg border p-3 text-sm">
         <p>¿Sos inquilino o propietario?</p>
         <Link href="/portal" className="font-medium text-primary underline">Ingresar al portal de alquileres</Link>
