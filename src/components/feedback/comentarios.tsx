@@ -1,4 +1,5 @@
 "use client";
+import { FeedbackVisibilityNotice } from "./visibility-notice";
 
 import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
@@ -39,11 +40,11 @@ export function Comentarios({
   return (
     <div className="space-y-3">
       {comentarios.length === 0 ? (
-        <p className="text-sm text-muted-foreground">Sin comentarios todavía.</p>
+        <p className="text-sm text-muted-foreground">Todavía no hay respuestas.</p>
       ) : (
         <ul className="space-y-3">
           {comentarios.map((c) => (
-            <li key={c.id} className="rounded-xl border bg-muted/30 p-3">
+            <li key={c.id} className="border-l-2 pl-4 py-2">
               <p className="whitespace-pre-wrap text-sm">{c.cuerpo}</p>
               <p className="mt-1 text-xs text-muted-foreground">
                 {c.autor ?? "—"} · {formatDateTime(c.created_at)}
@@ -53,10 +54,11 @@ export function Comentarios({
         </ul>
       )}
       <div className="space-y-2">
-        <Textarea ref={ref} rows={3} placeholder="Escribir un comentario interno..." />
+        <FeedbackVisibilityNotice />
+        <Textarea ref={ref} rows={3} aria-label="Tu respuesta" placeholder="Escribí una respuesta…" maxLength={5000} />
         {error && <p className="text-sm text-destructive">{error}</p>}
         <Button size="sm" onClick={enviar} disabled={pending}>
-          {pending ? "Guardando..." : "Comentar"}
+          {pending ? "Guardando..." : "Responder"}
         </Button>
       </div>
     </div>

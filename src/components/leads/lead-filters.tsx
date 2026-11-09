@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { MobileFilters } from "@/components/mobile-filters";
 import { Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -57,6 +58,7 @@ export function LeadFilters({
           aria-label="Buscar consultas"
         />
       </div>
+      <MobileFilters count={["estado", "canal", "clasificacion", "atencion", "asignado"].filter(key => searchParams.get(key)).length}>
       <div
         className={
           puedeFiltrarPorVendedor
@@ -140,6 +142,7 @@ export function LeadFilters({
           <X /> Limpiar filtros
         </Button>
       )}
+      </MobileFilters>
     </div>
   );
 }

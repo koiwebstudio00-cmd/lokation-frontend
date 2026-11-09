@@ -1,3 +1,6 @@
+import Link from "next/link";
+import { Logo } from "@/components/logo";
+import { MobileNav } from "@/components/nav/mobile-nav";
 import { Notifications } from "@/components/notifications";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -29,12 +32,17 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         tenantNombre={me.tenant?.nombre ?? "Cubiko AI"}
         consultasSinTomar={consultasSinTomar}
       />
-      <SidebarInset className="min-w-0 bg-background">
-        <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-2 border-b bg-background px-4 print:hidden">
-          <SidebarTrigger />
-          <div className="ml-auto flex items-center gap-2">{me.rol !== "community" && <Notifications />}<ThemeSwitcher /></div>
+      <SidebarInset className="min-w-0 bg-muted/50 md:bg-background">
+        <header className="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-2 border-b bg-background/85 px-4 backdrop-blur-lg print:hidden">
+          <SidebarTrigger className="hidden md:inline-flex" />
+          <Link href="/" prefetch={false} className="flex min-w-0 items-center gap-2 font-semibold md:hidden" aria-label="Cubiko AI · Inicio">
+            <Logo className="size-7" />
+            <span className="truncate">Cubiko AI</span>
+          </Link>
+          <div className="ml-auto flex shrink-0 items-center gap-1"><ThemeSwitcher />{me.rol !== "community" && <Notifications />}</div>
         </header>
         <div className="mx-auto w-full min-w-0 p-4 sm:p-6 print:p-0">{children}</div>
+      <MobileNav rol={me.rol} count={consultasSinTomar}/>
       </SidebarInset>
     </SidebarProvider>
   );

@@ -22,7 +22,7 @@ export function EliminarFeedback({ id, tipo }: { id: string; tipo: FeedbackTipo 
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
-  const volver = tipo === "error" ? "/feedback/reportes" : "/feedback/sugerencias";
+  const volver = "/feedback";
 
   function eliminar() {
     setError(null);

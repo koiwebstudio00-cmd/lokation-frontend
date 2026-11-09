@@ -98,15 +98,8 @@ const ITEMS: Item[] = [
     soloAdmin: true,
     subs: [],
   },
-  {
-    label: "Feedback",
-    icon: Megaphone,
-    soloAdmin: false,
-    subs: [
-      { href: "/feedback/sugerencias", label: "Sugerencias", incluye: ["/feedback/sugerencias/"] },
-      { href: "/feedback/reportes", label: "Reportes de error", incluye: ["/feedback/reportes/"] },
-    ],
-  },
+  {href:"/feedback",label:"Feedback",icon:Megaphone,soloAdmin:false,subs:[]},
+  {href:"/captaciones",label:"Captaciones",icon:FileText,soloAdmin:false,subs:[]},
   {
     label: "WhatsApp",
     icon: WhatsappIcon,

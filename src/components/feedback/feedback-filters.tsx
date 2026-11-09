@@ -35,7 +35,7 @@ export function FeedbackFilters() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q]);
 
-  const hasFilters = ["q", "estado"].some((k) => searchParams.get(k));
+  const hasFilters = ["q", "estado", "tipo"].some((k) => searchParams.get(k));
 
   return (
     <div className="space-y-2">
@@ -49,7 +49,8 @@ export function FeedbackFilters() {
           aria-label="Buscar"
         />
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
+        <Select aria-label="Tipo de feedback" value={searchParams.get("tipo")??""} onChange={e=>setParam("tipo",e.target.value)} className="h-9 text-sm"><option value="">Todos los tipos</option><option value="sugerencia">Sugerencias</option><option value="error">Problemas y errores</option></Select>
         <Select
           aria-label="Estado"
           value={searchParams.get("estado") ?? ""}

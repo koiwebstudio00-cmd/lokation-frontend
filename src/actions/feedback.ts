@@ -38,6 +38,7 @@ export async function crearFeedback(input: {
         ...(input.user_agent ? { user_agent: input.user_agent } : {}),
       },
     });
+    revalidatePath("/feedback");
     revalidatePath(input.tipo === "error" ? "/feedback/reportes" : "/feedback/sugerencias");
     return { id: item.id };
   } catch (error) {
@@ -55,6 +56,7 @@ export async function cambiarEstadoFeedback(
     return message(error, "No se pudo cambiar el estado.");
   }
   revalidatePath(`/feedback/${id}`);
+  revalidatePath("/feedback");
   revalidatePath("/feedback/sugerencias");
   revalidatePath("/feedback/reportes");
   return null;
@@ -66,6 +68,7 @@ export async function borrarFeedback(id: string): Promise<string | null> {
   } catch (error) {
     return message(error, "No se pudo eliminar.");
   }
+  revalidatePath("/feedback");
   revalidatePath("/feedback/sugerencias");
   revalidatePath("/feedback/reportes");
   return null;
@@ -78,6 +81,7 @@ export async function agregarComentario(id: string, cuerpo: string): Promise<str
     return message(error, "No se pudo guardar el comentario.");
   }
   revalidatePath(`/feedback/${id}`);
+  revalidatePath("/feedback");
   return null;
 }
 

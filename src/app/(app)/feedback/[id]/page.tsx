@@ -2,14 +2,13 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, MessageSquare, Paperclip } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
 import { AdjuntosGallery } from "@/components/feedback/adjuntos-gallery";
 import { Comentarios } from "@/components/feedback/comentarios";
 import { EliminarFeedback } from "@/components/feedback/eliminar-feedback";
 import { FeedbackEstadoBadge, FeedbackTipoBadge } from "@/components/feedback/estado-badge";
 import { FeedbackEstadoSelect } from "@/components/feedback/estado-select";
 import { getCurrentUser } from "@/lib/api";
-import { esAdmin } from "@/lib/permisos";
 import { getFeedbackItem } from "@/lib/queries";
 import { formatDateTime } from "@/lib/utils";
 
@@ -24,9 +23,9 @@ export default async function FeedbackDetallePage({
   const [item, me] = await Promise.all([getFeedbackItem(id), getCurrentUser()]);
   if (!item) notFound();
 
-  const admin = me ? esAdmin(me.rol) : false;
+  const admin = me?.rol === "super_admin";
   const esAutor = me?.id === item.autor?.id;
-  const volver = item.tipo === "error" ? "/feedback/reportes" : "/feedback/sugerencias";
+  const volver = "/feedback";
 
   return (
     <div className="mx-auto max-w-3xl space-y-4">
@@ -54,11 +53,11 @@ export default async function FeedbackDetallePage({
         )}
       </div>
 
-      <Card>
-        <CardHeader className="border-b bg-muted/40 py-3">
-          <CardTitle className="text-base">Descripción</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3 pt-4">
+      <section className="space-y-4 border-t pt-5">
+        <header className="py-1">
+          <h2 className="text-base font-semibold">Publicación</h2>
+        </header>
+        <div className="space-y-3 pt-4">
           <p className="whitespace-pre-wrap text-sm">{item.descripcion}</p>
           {(item.url_contexto || item.user_agent) && (
             <dl className="space-y-1 border-t pt-3 text-xs text-muted-foreground">
@@ -76,34 +75,34 @@ export default async function FeedbackDetallePage({
               )}
             </dl>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </section>
 
       {item.tipo === "error" && (
-        <Card>
-          <CardHeader className="flex-row items-center gap-2 space-y-0 border-b bg-muted/40 py-3">
+        <section className="space-y-4 border-t pt-5">
+          <header className="flex items-center gap-2 space-y-0 py-1">
             <Paperclip className="size-5 text-primary" />
-            <CardTitle className="text-base">Imágenes</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-4">
+            <h2 className="text-base font-semibold">Imágenes</h2>
+          </header>
+          <div className="pt-4">
             <AdjuntosGallery
               feedbackId={item.id}
               adjuntos={item.adjuntos}
               puedeEliminar={admin || esAutor}
             />
-          </CardContent>
-        </Card>
+          </div>
+        </section>
       )}
 
-      <Card>
-        <CardHeader className="flex-row items-center gap-2 space-y-0 border-b bg-muted/40 py-3">
+      <section className="space-y-4 border-t pt-5">
+        <header className="flex items-center gap-2 space-y-0 py-1">
           <MessageSquare className="size-5 text-primary" />
-          <CardTitle className="text-base">Comentarios internos</CardTitle>
-        </CardHeader>
-        <CardContent className="pt-4">
+          <h2 className="text-base font-semibold">Respuestas</h2>
+        </header>
+        <div className="pt-4">
           <Comentarios id={item.id} comentarios={item.comentarios} />
-        </CardContent>
-      </Card>
+        </div>
+      </section>
 
       {admin && <EliminarFeedback id={item.id} tipo={item.tipo} />}
     </div>

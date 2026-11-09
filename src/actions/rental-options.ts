@@ -2,13 +2,13 @@
 import { apiFetch, ApiError } from "@/lib/api";
 import { revalidatePath } from "next/cache";
 export type RentalOption = { id: string; label: string };
-export async function searchRentalOptions(kind: "property" | "propietario" | "inquilino" | "garante" | "all-properties", q: string, page: number): Promise<{ options: RentalOption[]; more: boolean; error?: string }> {
+export async function searchRentalOptions(kind: "property" | "propietario" | "inquilino" | "garante" | "all-properties" | "client", q: string, page: number): Promise<{ options: RentalOption[]; more: boolean; error?: string }> {
   try {
     if (kind === "property" || kind === "all-properties") {
       const result = await apiFetch<{ data: { id: string; titulo: string; direccion: string | null; administrationOnly: boolean }[]; meta: { total: number; limit: number } }>("/v1/rental-properties", { query: { q, page, scope: kind === "property" ? "eligible" : "all" } });
       return { options: result.data.map(p => ({ id: p.id, label: `${p.titulo}${p.direccion ? ` · ${p.direccion}` : ""}${p.administrationOnly ? " · Administración privada" : ""}` })), more: page * result.meta.limit < result.meta.total };
     }
-    const result = await apiFetch<{ data: { id: string; nombre: string; email: string | null }[]; meta: { total: number; limit: number } }>("/v1/rental-people", { query: { ...(q ? { q: q.slice(0,100) } : {}), page, role: kind } });
+    const result = await apiFetch<{ data: { id: string; nombre: string; email: string | null }[]; meta: { total: number; limit: number } }>("/v1/rental-people", { query: { ...(q ? { q: q.slice(0,100) } : {}), page, ...(kind === "client" ? {} : {role: kind}) } });
     return { options: result.data.map(p => ({ id: p.id, label: `${p.nombre}${p.email ? ` · ${p.email}` : ""}` })), more: page * result.meta.limit < result.meta.total };
   } catch (error) { return { options: [], more: false, error: error instanceof ApiError ? error.message : "No pudimos cargar las opciones." }; }
 }

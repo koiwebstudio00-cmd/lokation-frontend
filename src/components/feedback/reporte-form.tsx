@@ -1,4 +1,5 @@
 "use client";
+import { FeedbackVisibilityNotice } from "./visibility-notice";
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
@@ -65,6 +66,7 @@ export function ReporteForm() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-4">
+      <FeedbackVisibilityNotice />
       <div className="space-y-2">
         <Label htmlFor="titulo">¿Qué salió mal?</Label>
         <Input id="titulo" name="titulo" autoComplete="off" required maxLength={200} placeholder="Un título corto del error" />

@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
-export function RentalOptionPicker({ name, title, kind, initial }: { name: string; title: string; kind: "property" | "propietario" | "inquilino" | "garante" | "all-properties"; initial?: RentalOption }) {
+export function RentalOptionPicker({ name, title, kind, initial, optional = false }: { name: string; title: string; kind: "property" | "propietario" | "inquilino" | "garante" | "all-properties" | "client"; optional?: boolean; initial?: RentalOption }) {
   const [selected, setSelected] = useState(initial);
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -17,6 +17,7 @@ export function RentalOptionPicker({ name, title, kind, initial }: { name: strin
   function load(q: string, next: number) { start(async () => { const data = await searchRentalOptions(kind, q, next); setResult(data); setPage(next); setAppliedQuery(q); }); }
   return <div className="space-y-2"><Label htmlFor={`${name}-picker`}>{title}</Label><input type="hidden" name={name} value={selected?.id ?? ""} />
     <Button id={`${name}-picker`} type="button" variant="outline" className="h-auto min-h-11 w-full justify-start whitespace-normal text-left" onClick={() => { setOpen(true); load(query, 1); }}>{selected?.label ?? `Elegí ${title.toLowerCase()}`}</Button>
+    {optional && selected && <Button type="button" variant="ghost" size="sm" onClick={() => setSelected(undefined)}>Quitar vínculo</Button>}
     <Dialog open={open} onOpenChange={setOpen}><DialogContent><DialogHeader><DialogTitle>Seleccionar {title.toLowerCase()}</DialogTitle><DialogDescription>Buscá registros de tu inmobiliaria. La selección se conserva al cambiar de página.</DialogDescription></DialogHeader>
       <div className="flex gap-2"><Input aria-label={`Buscar ${title.toLowerCase()}`} value={query} onChange={e => setQuery(e.target.value)} maxLength={160} onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); if (!pending) load(query, 1); } }} /><Button type="button" disabled={pending} onClick={() => load(query, 1)}>Buscar</Button></div>
       {result.error && <p role="alert">{result.error}</p>}

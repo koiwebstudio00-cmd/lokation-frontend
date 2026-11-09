@@ -743,7 +743,7 @@ export function PropertyForm({
         </p>
       )}
 
-      <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+      <div className="sticky bottom-0 z-10 flex flex-col-reverse gap-3 border-t bg-background py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:static sm:flex-row sm:justify-end sm:border-0">
         <Button type="submit" size="lg" className="w-full sm:w-auto" disabled={pending}>
           {(pending || uploadingPhotos) && <Loader2 className="animate-spin" />}
           {uploadingPhotos ? "Subiendo fotos..." : pending ? "Guardando..." : submitLabel}

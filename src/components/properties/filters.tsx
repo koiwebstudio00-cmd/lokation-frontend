@@ -2,6 +2,7 @@
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { MobileFilters } from "@/components/mobile-filters";
 import { Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -56,6 +57,7 @@ export function PropertyFilters({
           aria-label="Buscar"
         />
       </div>
+      <MobileFilters count={["operacion", "tipo", "estado", "vendedor", "dormitorios", "zona_revisar"].filter(key => searchParams.get(key)).length}>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
         <Select
           aria-label="Operación"
@@ -143,6 +145,7 @@ export function PropertyFilters({
           <X /> Limpiar filtros
         </Button>
       )}
+      </MobileFilters>
     </div>
   );
 }
