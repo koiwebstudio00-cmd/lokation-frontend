@@ -323,21 +323,26 @@ export interface Perfil {
 
 /**
  * Datos del usuario logueado para la pantalla de perfil. `/auth/me` no manda
- * la fecha de alta, así que la sacamos del listado de usuarios del tenant.
+ * la fecha de alta, así que la sacamos del listado de usuarios del tenant
+ * solo para los roles que pueden consultarlo. Community usa sus datos de
+ * sesión y no muestra esa fecha opcional: no tiene acceso al equipo.
  */
 export async function getPerfil(): Promise<Perfil | null> {
   const me = await getCurrentUser();
   if (!me) return null;
 
-  const { data } = await apiFetch<{ data: (Perfil & { createdAt: string })[] }>("/v1/users");
-  const row = data.find((u) => u.id === me.id);
+  let createdAt = "";
+  if (me.rol !== "community") {
+    const { data } = await apiFetch<{ data: (Perfil & { createdAt: string })[] }>("/v1/users");
+    createdAt = data.find((u) => u.id === me.id)?.createdAt ?? "";
+  }
 
   return {
     id: me.id,
     nombre: me.nombre,
     email: me.email,
     rol: me.rol,
-    created_at: row?.createdAt ?? "",
+    created_at: createdAt,
   };
 }
 
